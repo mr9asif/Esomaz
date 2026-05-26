@@ -1,11 +1,9 @@
+import "dotenv/config";
 import express from 'express';
 import { prisma } from './config/prisma.js';
-
+import authRouter from "./modules/auth/auth.routes.js";
 const app =express();
-
-
-
-
+app.use(express.json());
 
 export const startServer=async()=> {
   try {
@@ -22,7 +20,7 @@ export const startServer=async()=> {
   }
 }
 
-
+app.use('/api/v1/auth', authRouter  )
 
 
 export default app;
