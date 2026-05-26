@@ -1,8 +1,22 @@
+import cookieParser from "cookie-parser";
+import cors from 'cors';
 import "dotenv/config";
 import express from 'express';
 import { prisma } from './config/prisma.js';
 import authRouter from "./modules/auth/auth.routes.js";
-const app =express();
+import userRouter from './modules/user/user.route.js';
+
+
+const app =express(); 
+
+// middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your frontend URL
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(express.json());
 
 export const startServer=async()=> {
@@ -20,7 +34,10 @@ export const startServer=async()=> {
   }
 }
 
+
+// routes
 app.use('/api/v1/auth', authRouter  )
+app.use('/api/user', userRouter)
 
 
 export default app;
