@@ -10,25 +10,78 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
-
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  name      String
-  username  String   @unique
-  email     String   @unique
-  password  String
+  name     String
+  username String @unique
+  email    String @unique
+  password String
 
-  bio       String?
+  bio String?
 
-  avatar    String?
+  avatar     String?
   coverPhoto String?
-  
- isVerified  Boolean  @default(false)
+
+  isVerified Boolean    @default(false)
+  posts      Post[]
+  reactions  Reaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  content String?
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  media     PostMedia[]
+  reactions Reaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PostMedia {
+  id String @id @default(uuid())
+
+  url  String
+  type MediaType
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Reaction {
+  id String @id @default(uuid())
+
+  userId String
+  postId String
+
+  type ReactionType
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  HAHA
+  WOW
+  SAD
+  ANGRY
 }
