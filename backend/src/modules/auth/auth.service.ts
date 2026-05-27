@@ -46,12 +46,14 @@ const registerUser = async (
       password: hashedPassword,
     },
   });
-  console.log(user)
+
 
   const token = generateToken({
     id: user.id,
     email: user.email,
   });
+
+  
 
   return {
     token,
@@ -108,7 +110,15 @@ const loginUser = async (
   };
 };
 
+
+const logoutUser = async()=>{
+   return {
+     success:true,
+     message:"logout successfully!"
+   }
+}
 export const AuthService = {
   registerUser,
   loginUser,
+  logoutUser
 };

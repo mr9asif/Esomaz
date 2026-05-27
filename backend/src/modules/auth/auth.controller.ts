@@ -57,6 +57,31 @@ res.cookie("token", result.token, cookieOptions);
   }
 };
 
+
+
+export const logout = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await AuthService.logoutUser();
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
 export const AuthController = {
   register,
   login,

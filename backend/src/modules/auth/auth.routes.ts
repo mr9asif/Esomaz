@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest.js";
-import { AuthController } from "./auth.controller.js";
+import { AuthController, logout } from "./auth.controller.js";
 
 
 import {
-    loginValidationSchema,
-    registerValidationSchema,
+  loginValidationSchema,
+  registerValidationSchema,
 } from "./auth.validation.js";
 
 const router = Router();
@@ -28,5 +28,7 @@ router.post(
 
   AuthController.login
 );
+
+router.post('/logout', logout)
 
 export default router;

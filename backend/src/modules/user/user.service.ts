@@ -3,10 +3,10 @@ import { prisma } from "../../config/prisma.js";
 
 
 
-export const getMeService = async () => {
+export const getMeService = async (userId:string) => {
   const user = await prisma.user.findUnique({
     where: {
-      id:"2c432336-5d52-4dbd-8f16-3deadd43668b",
+      id:userId,
     },
     select: {
       id: true,
@@ -20,6 +20,6 @@ export const getMeService = async () => {
       createdAt: true,
     },
   });
-console.log(user)
+// console.log(user)
   return user;
 };

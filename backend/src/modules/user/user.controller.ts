@@ -12,12 +12,14 @@ export const getMe = async (
 console.log(userId)
 
   console.log("Controller reached");
-
-//   return res.json({
-//     success: true,
-//     message: "working",
-//   });
-    const user = await getMeService();
+if (!userId) {
+  return res.status(401).json({
+    success: false,
+    message: "Unauthorized",
+  });
+}
+    const user = await getMeService(userId);
+    console.log("user", user)
    
     if (!user) {
       return res.status(404).json({
