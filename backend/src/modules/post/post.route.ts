@@ -14,5 +14,4 @@ router.get("/:id", getPostById);
 router.delete("/:id", protect, deletePost);
 
 
-// adfksdlfsdkfl
 export default router;
