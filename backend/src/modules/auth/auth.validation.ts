@@ -22,7 +22,9 @@ export const registerValidationSchema = z.object({
 });
 
 export const loginValidationSchema = z.object({
-  email: z.email(),
+  identifier: z
+    .string()
+    .min(3, "Email or username is required"),
 
   password: z
     .string()

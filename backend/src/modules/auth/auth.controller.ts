@@ -35,10 +35,12 @@ const login = async (
   res: Response
 ) => {
   try {
+    const { identifier, password } =
+  req.body;
     const result =
       await AuthService.loginUser(
-        req.body.email,
-        req.body.password
+          identifier,
+  password
       );
 
     

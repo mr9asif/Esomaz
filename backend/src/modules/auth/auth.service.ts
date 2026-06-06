@@ -69,15 +69,21 @@ const registerUser = async (
 };
 
 const loginUser = async (
-  email: string,
+  identifier: string,
   password: string
 ) => {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: {
-      email,
+      OR: [
+        {
+          email: identifier,
+        },
+        {
+          username: identifier,
+        },
+      ],
     },
   });
-
   if (!user) {
     throw new Error("Invalid credentials");
   }
