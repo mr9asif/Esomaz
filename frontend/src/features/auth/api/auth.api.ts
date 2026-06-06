@@ -20,7 +20,7 @@ export const registerUser = async (
   payload: RegisterPayload
 ) => {
   const { data } = await api.post(
-    "/auth/register",
+    "v1/auth/register",
     payload
   );
 

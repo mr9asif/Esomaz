@@ -8,8 +8,8 @@ const AuthLayout = ({
   children,
 }: Props) => {
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="hidden lg:flex flex-1 bg-blue-600 text-white items-center justify-center">
+    <div className="min-h-screen bg-gray-50 flex  overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-blue-600 text-white items-center justify-center border">
         <div className="max-w-md">
           <h1 className="text-5xl font-bold mb-4">
             Connect.
