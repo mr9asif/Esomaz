@@ -1,14 +1,15 @@
 import api from "@/api/axios";
+
 import type {
-    LoginPayload,
-    RegisterPayload,
+  LoginPayload,
+  RegisterPayload,
 } from "../types/auth.types";
 
 export const loginUser = async (
   payload: LoginPayload
 ) => {
   const { data } = await api.post(
-    "/auth/login",
+    "v1/auth/login",
     payload
   );
 
@@ -29,14 +30,6 @@ export const registerUser = async (
 export const getMe = async () => {
   const { data } = await api.get(
     "/user/me"
-  );
-
-  return data;
-};
-
-export const logoutUser = async () => {
-  const { data } = await api.post(
-    "/auth/logout"
   );
 
   return data;
