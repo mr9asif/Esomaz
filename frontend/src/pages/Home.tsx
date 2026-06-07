@@ -1,26 +1,19 @@
 import { useMe } from "@/features/auth/hooks/useMe";
+import MainLayout from "@/layouts/MainLayout";
 
 const Home = () => {
-  const { data, isLoading } = useMe();
-  console.log(data)
-
-  if (isLoading) {
-    return <h1>Loading...</h1>;
-  }
+  const { data } = useMe();
 
   return (
-    <div>
-      <h1>Home Page</h1>
+    <MainLayout>
+      <h1 className="text-2xl font-bold ">
+        Home Feed
+      </h1>
 
-      {data?.data ? (
-        <>
-          <p>{data.data.name}</p>
-          <p>{data.data.email}</p>
-        </>
-      ) : (
-        <p>Not Logged In</p>
-      )}
-    </div>
+      <p>
+        Welcome {data?.data?.name}
+      </p>
+    </MainLayout>
   );
 };
 
