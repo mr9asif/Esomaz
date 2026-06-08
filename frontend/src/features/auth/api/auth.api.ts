@@ -34,3 +34,10 @@ export const getMe = async () => {
 
   return data;
 };
+export const logout = async () => {
+  const { data } = await api.post(
+    "v1/auth/logout"
+  );
+
+  return data;
+};

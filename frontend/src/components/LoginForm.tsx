@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,7 +20,7 @@ import {
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const {user}=useAuth();
+  const {user, }=useAuth();
   console.log(user)
   const [showPassword, setShowPassword] =
   useState(false);
@@ -65,6 +66,13 @@ const LoginForm = () => {
 
   return (
     <>
+    <Link
+  to="/"
+  className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition mb-6"
+>
+  <ArrowLeft size={18} />
+  Back to Home
+</Link>
     
     <form
       onSubmit={handleSubmit(

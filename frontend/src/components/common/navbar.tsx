@@ -1,3 +1,5 @@
+import { logout } from '@/features/auth/api/auth.api';
+import { queryClient } from '@/lib/react_query';
 import { useAuth } from "@/provider/UseAuth";
 import {
   Bell,
@@ -13,12 +15,30 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const {user}=useAuth();
+
+  const navigate = useNavigate();
+  
+
+  const handleLogout = async () => {
+  try {
+    await logout();
+
+    setProfileOpen(false);
+    setOpen(false);
+
+queryClient.setQueryData(["me"], null);
+
+    navigate("/");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <>
@@ -95,6 +115,7 @@ const Navbar = () => {
 
            <div className="relative">
 
+  {user ? (
   <button
     onClick={() => setProfileOpen(!profileOpen)}
   >
@@ -103,6 +124,25 @@ const Navbar = () => {
       className="w-10 h-10 rounded-full cursor-pointer"
     />
   </button>
+) : (
+  <div className="flex items-center gap-3">
+
+    <NavLink
+      to="/login"
+      className="px-4 py-2 text-sm font-medium"
+    >
+      Login
+    </NavLink>
+
+    <NavLink
+      to="/register"
+      className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700"
+    >
+      Register
+    </NavLink>
+
+  </div>
+)}
 
   {profileOpen && (
     <div className="absolute right-0 top-12 w-56 bg-white border rounded-xl shadow-lg overflow-hidden">
@@ -135,12 +175,13 @@ const Navbar = () => {
         Settings
       </NavLink>
 
-      <button
-        className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
-      >
-        <LogOut size={18} />
-        Logout
-      </button>
+   <button
+  onClick={handleLogout}
+  className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+>
+  <LogOut size={18} />
+  Logout
+</button>
 
     </div>
   )}
@@ -217,10 +258,13 @@ const Navbar = () => {
                 Settings
               </NavLink>
 
-              <button className="flex gap-3 text-red-500">
-                <LogOut />
-                Logout
-              </button>
+             <button
+  onClick={handleLogout}
+  className="flex gap-3 text-red-500"
+>
+  <LogOut />
+  Logout
+</button>
 
             </div>
           </div>

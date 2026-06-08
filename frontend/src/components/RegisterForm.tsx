@@ -14,6 +14,7 @@ import {
   type RegisterFormData,
 } from "@/features/auth/schemas/register.schema";
 import { useAuth } from "@/provider/UseAuth";
+import { ArrowLeft } from "lucide-react";
 import { useRegister } from "../features/auth/hooks/useRegister";
 
 const RegisterForm = () => {
@@ -66,6 +67,14 @@ const RegisterForm = () => {
   };
 
   return (
+    <>
+    <Link
+  to="/"
+  className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition mb-6"
+>
+  <ArrowLeft size={18} />
+  Back to Home
+</Link>
     <form
       onSubmit={handleSubmit(
         onSubmit
@@ -186,7 +195,9 @@ const RegisterForm = () => {
         </Link>
       </p>
     </form>
+    </>
   );
+
 };
 
 export default RegisterForm;
