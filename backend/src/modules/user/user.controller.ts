@@ -1,9 +1,9 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 
 import { prisma } from "../../config/prisma.js";
 import type { AuthRequest } from "../../middleware/protect.js";
 import uploadToCloudinary from "../../util/uploadToCloudinary.js";
-import { getMeService } from "./user.service.js";
+import { getMeService, UserService } from "./user.service.js";
 
 export const getMe = async (
   req: AuthRequest,
@@ -173,3 +173,38 @@ export const updateCoverPhoto = async (
     });
   }
 };
+
+// profile-get username
+
+
+export const getUserProfile = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { username } = req.params;
+
+    const currentUserId = req.user?.id;
+
+    const result =
+      await UserService.getUserProfileService(
+        username as string,
+        currentUserId
+      );
+
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Something went wrong",
+    });
+  }
+};
+
