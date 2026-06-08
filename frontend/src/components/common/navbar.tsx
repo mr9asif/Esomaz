@@ -1,3 +1,4 @@
+import { useAuth } from "@/provider/UseAuth";
 import {
   Bell,
   Compass,
@@ -16,6 +17,8 @@ import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const {user}=useAuth();
 
   return (
     <>
@@ -90,10 +93,59 @@ const Navbar = () => {
 
             <Bell size={22} />
 
-            <img
-              src="https://i.pravatar.cc/150?img=3"
-              className="w-10 h-10 rounded-full"
-            />
+           <div className="relative">
+
+  <button
+    onClick={() => setProfileOpen(!profileOpen)}
+  >
+    <img
+      src="https://i.pravatar.cc/150?img=3"
+      className="w-10 h-10 rounded-full cursor-pointer"
+    />
+  </button>
+
+  {profileOpen && (
+    <div className="absolute right-0 top-12 w-56 bg-white border rounded-xl shadow-lg overflow-hidden">
+
+      <div className="p-4 border-b">
+
+        <p className="font-semibold">
+          {user?.name}
+        </p>
+
+        <p className="text-sm text-gray-500">
+        {user?.username}
+        </p>
+
+      </div>
+
+      <NavLink
+        to="/profile"
+        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+      >
+        <User size={18} />
+        Profile
+      </NavLink>
+
+      <NavLink
+        to="/settings"
+        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+      >
+        <Settings size={18} />
+        Settings
+      </NavLink>
+
+      <button
+        className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+      >
+        <LogOut size={18} />
+        Logout
+      </button>
+
+    </div>
+  )}
+
+</div>
 
           </div>
         </div>
