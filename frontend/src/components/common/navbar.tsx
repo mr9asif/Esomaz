@@ -160,7 +160,7 @@ queryClient.setQueryData(["me"], null);
       </div>
 
       <NavLink
-        to="/profile"
+       to={`/profile/${user?.username}`}
         className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
       >
         <User size={18} />
@@ -248,7 +248,7 @@ queryClient.setQueryData(["me"], null);
 
               <hr />
 
-              <NavLink to="/profile" className="flex gap-3">
+              <NavLink to={`/profile/${user?.username}`} className="flex gap-3">
                 <User />
                 Profile
               </NavLink>

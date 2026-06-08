@@ -1,5 +1,5 @@
 type Props = {
-  name: string;
+  name?: string;
   avatar?: string | null;
 };
 
@@ -7,12 +7,13 @@ const ProfileAvatar = ({
   name,
   avatar,
 }: Props) => {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const initials =
+    name
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "?";
 
   return (
     <div className="-mt-20 flex justify-center">
