@@ -3,19 +3,24 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
+
 
 import Input from "@/components/ui/Input";
 import { queryClient } from "@/lib/react_query";
 
+import { useAuth } from "@/provider/UseAuth";
 import { useLogin } from "../features/auth/hooks/useLogin";
 import {
-    loginSchema,
-    type LoginFormData,
+  loginSchema,
+  type LoginFormData,
 } from "../features/auth/schemas/login.schema";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const {user}=useAuth();
+  console.log(user)
   const [showPassword, setShowPassword] =
   useState(false);
 
@@ -30,6 +35,9 @@ const LoginForm = () => {
     resolver:
       zodResolver(loginSchema),
   });
+  if (user) {
+    return <Navigate to="/" replace />;
+}
 
   const onSubmit = (
     values: LoginFormData
@@ -56,6 +64,8 @@ const LoginForm = () => {
   };
 
   return (
+    <>
+    
     <form
       onSubmit={handleSubmit(
         onSubmit
@@ -169,7 +179,9 @@ const LoginForm = () => {
   </Link>
 </p>
     </form>
+    </>
   );
+
 };
 
 export default LoginForm;

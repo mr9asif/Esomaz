@@ -4,19 +4,21 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
 import Input from "@/components/ui/Input";
 
 import {
-    registerSchema,
-    type RegisterFormData,
+  registerSchema,
+  type RegisterFormData,
 } from "@/features/auth/schemas/register.schema";
+import { useAuth } from "@/provider/UseAuth";
 import { useRegister } from "../features/auth/hooks/useRegister";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const {user} = useAuth();
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -33,6 +35,9 @@ const RegisterForm = () => {
       zodResolver(registerSchema),
   });
 
+    if (user) {
+    return <Navigate to="/" replace />;
+}
   const onSubmit = (
     values: RegisterFormData
   ) => {
