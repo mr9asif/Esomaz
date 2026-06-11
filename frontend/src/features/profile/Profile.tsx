@@ -10,9 +10,15 @@ const ProfilePage = () => {
   const { username } = useParams();
 
 
-  const { data, isLoading } =
-    useProfile(username!);
+const { data, isLoading } =
+useProfile(username!);
+
     console.log(data)
+
+    const isMe = username === data.data.username;
+    console.log("Isme",isMe)
+    console.log("username", username);
+    console.log("isme", data.data.username)
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,37 +30,37 @@ const ProfilePage = () => {
     <div>
     <ProfileCover
   coverPhoto={
-    data.coverPhoto
+    data.data.coverPhoto
   }
 />
 
 <ProfileAvatar
-  avatar={data.avatar}
-  name={data.name}
+  avatar={data.data.avatar}
+  name={data.data.name}
 />
 
 <ProfileInfo
-  name={data.name}
-  username={data.username}
-  bio={data.bio}
-  location={data.location}
-  website={data.website}
+  name={data.data.name}
+  username={data.data.username}
+  bio={data.data.bio}
+  location={data.data.location}
+  website={data.data.website}
 />
 
 <ProfileStats
   followers={
-    data.followersCount
+    data.data.followersCount
   }
   following={
-    data.followingCount
+    data.data.followingCount
   }
-  posts={data.postsCount}
+  posts={data.data.postsCount}
 />
 
 <ProfileAction
-  isMe={data.isMe}
+  isMe={isMe}
   isFollowing={
-    data.isFollowing
+    data.data.isFollowing
   }
 />
     </div>
