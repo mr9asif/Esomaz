@@ -15,10 +15,8 @@ useProfile(username!);
 
     console.log(data)
 
-    const isMe = username === data.data.username;
-    console.log("Isme",isMe)
-    console.log("username", username);
-    console.log("isme", data.data.username)
+    const isMe = username === data?.data?.username;
+    
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -62,6 +60,7 @@ useProfile(username!);
   isFollowing={
     data.data.isFollowing
   }
+    username={data.data.username}
 />
     </div>
   );
