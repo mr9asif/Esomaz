@@ -9,19 +9,19 @@ import uploadToCloudinary from "../../util/uploadToCloudinary.js";
 export const createPostService = async (
   authorId: string,
   content?: string,
-  image?: Express.Multer.File,
+  images?: Express.Multer.File[],
   video?: Express.Multer.File
 ) => {
 
   // Don't allow empty post
-  if (!content && !image && !video) {
+  if (!content && !images && !video) {
     throw new Error(
       "Post cannot be empty"
     );
   }
 
   // Don't allow image + video together
-  if (image && video) {
+  if (images && video) {
     throw new Error(
       "Upload either an image or a video."
     );
@@ -33,7 +33,10 @@ export const createPostService = async (
   }[] = [];
 
   // Upload image
-  if (image) {
+if (images && images.length > 0) {
+
+  for (const image of images) {
+
     const uploaded =
       await uploadToCloudinary(
         image.buffer,
@@ -45,8 +48,10 @@ export const createPostService = async (
       url: uploaded.secure_url,
       type: "IMAGE",
     });
+
   }
 
+}
   // Upload video
   if (video) {
     const uploaded =

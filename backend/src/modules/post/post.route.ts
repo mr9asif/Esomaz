@@ -11,8 +11,8 @@ router.post(
   protect,
   upload.fields([
     {
-      name: "image",
-      maxCount: 1,
+      name: "images",
+      maxCount: 5,
     },
     {
       name: "video",

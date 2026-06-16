@@ -120,7 +120,7 @@ queryClient.setQueryData(["me"], null);
     onClick={() => setProfileOpen(!profileOpen)}
   >
     <img
-      src="https://i.pravatar.cc/150?img=3"
+      src={user ? user.avatar : "https://i.postimg.cc/sXPgwMqt/default-profile.jpg"}
       className="w-10 h-10 rounded-full cursor-pointer"
     />
   </button>
