@@ -10,12 +10,14 @@ type Props = {
   isMe: boolean;
   isFollowing?: boolean;
   username: string;
+    onEdit?: () => void;
 };
 
 const ProfileAction = ({
   isMe,
   isFollowing,
   username,
+  onEdit
 }: Props) => {
   const handleShare = async () => {
     const url = `${window.location.origin}/profile/${username}`;
@@ -43,10 +45,13 @@ const ProfileAction = ({
   if (isMe) {
     return (
       <div className="flex flex-wrap justify-center gap-3 mt-6">
-        <button className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
-          <Pencil size={18} />
-          Edit Profile
-        </button>
+       <button
+  onClick={onEdit}
+  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
+>
+  <Pencil size={18} />
+  Edit Profile
+</button>
 
         <button
           onClick={handleShare}

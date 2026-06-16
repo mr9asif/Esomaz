@@ -1,67 +1,82 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { useAuth } from "@/provider/UseAuth";
+
+import EditProfileModel from "@/components/profile/EditProfileModel";
 import ProfileAction from "@/components/profile/ProfileAction";
 import ProfileAvatar from "@/components/profile/ProfileAvatar";
 import ProfileCover from "@/components/profile/ProfileCover";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import ProfileStats from "@/components/profile/ProfileStates";
-import { useParams } from "react-router-dom";
+
 import { useProfile } from "./useProfile";
 
 const ProfilePage = () => {
   const { username } = useParams();
 
+  const { user } = useAuth();
 
-const { data, isLoading } =
-useProfile(username!);
+  const [open, setOpen] = useState(false);
+  console.log(open)
 
-    console.log(data)
+  const { data, isLoading } = useProfile(username!);
 
-    const isMe = username === data?.data?.username;
-    
+  const profile = data?.data;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading || !profile) {
+    return (
+      <div className="flex justify-center py-20">
+        Loading...
+      </div>
+    );
   }
 
-  console.log(data);
+  const isMe = user?.id === profile.id;
 
   return (
-    <div>
-    <ProfileCover
-  coverPhoto={
-    data.data.coverPhoto
-  }
-/>
+    <div className="pb-10">
 
-<ProfileAvatar
-  avatar={data.data.avatar}
-  name={data.data.name}
-/>
-
-<ProfileInfo
-  name={data.data.name}
-  username={data.data.username}
-  bio={data.data.bio}
-  location={data.data.location}
-  website={data.data.website}
-/>
-
-<ProfileStats
-  followers={
-    data.data.followersCount
-  }
-  following={
-    data.data.followingCount
-  }
-  posts={data.data.postsCount}
-/>
-
-<ProfileAction
+     <ProfileCover
+  coverPhoto={profile.coverPhoto}
   isMe={isMe}
-  isFollowing={
-    data.data.isFollowing
-  }
-    username={data.data.username}
+  username={profile.username}
 />
+
+      <ProfileAvatar
+  avatar={profile.avatar}
+  name={profile.name}
+  isMe={isMe}
+  username={profile.username}
+/>
+      <ProfileInfo
+        name={profile.name}
+        username={profile.username}
+        bio={profile.bio}
+        location={profile.location}
+        website={profile.website}
+      />
+
+      <ProfileStats
+        followers={profile.followersCount}
+        following={profile.followingCount}
+        posts={profile.postsCount}
+      />
+
+      <ProfileAction
+        isMe={isMe}
+        isFollowing={profile.isFollowing}
+        username={profile.username}
+        onEdit={() => setOpen(true)}
+      />
+
+      {open && (
+        <EditProfileModel
+          profile={profile}
+          onClose={() => setOpen(false)}
+        />
+      )}
+
     </div>
   );
 };
