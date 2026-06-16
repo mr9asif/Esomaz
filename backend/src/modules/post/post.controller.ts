@@ -17,10 +17,23 @@ export const createPost = async (
     }
 
     const { content } = req.body;
+    const files = req.files as {
+  image?: Express.Multer.File[];
+  video?: Express.Multer.File[];
+};
+console.log(files)
+
+const image =
+  files?.image?.[0];
+
+const video =
+  files?.video?.[0];
 
     const post = await createPostService(
-      userId,
-      content
+    userId,
+    content,
+    image,
+    video
     );
 
     return res.status(201).json({
