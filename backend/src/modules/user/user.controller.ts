@@ -208,3 +208,22 @@ export const getUserProfile = async (
   }
 };
 
+
+export const updateProfile = async (
+  req: Request,
+  res: Response
+) => {
+  const userId = req.user.id;
+
+  const result =
+    await UserService.updateProfile(
+      userId,
+      req.body
+    );
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    data: result,
+  });
+};

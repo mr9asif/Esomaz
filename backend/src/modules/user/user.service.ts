@@ -2,7 +2,6 @@ import { prisma } from "../../config/prisma.js";
 
 
 
-
 export const getMeService = async (userId:string) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -86,6 +85,30 @@ const getUserProfileService = async (
   };
 };
 
+const updateProfile = async (
+  userId: string,
+  payload: {
+    name?: string;
+    bio?: string;
+    location?: string;
+    website?: string;
+  }
+) => {
+  const data = Object.fromEntries(
+    Object.entries(payload).filter(
+      ([, value]) => value !== undefined
+    )
+  );
+
+  return prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data,
+  });
+};
+
 export const UserService = {
   getUserProfileService,
+  updateProfile
 };

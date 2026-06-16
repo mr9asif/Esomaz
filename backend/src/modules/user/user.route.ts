@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import protect from "../../middleware/protect.js";
 import { upload } from "../../middleware/upload.js";
-import { getMe, getUserProfile, updateAvatar, updateCoverPhoto } from "./user.controller.js";
+import { getMe, getUserProfile, updateAvatar, updateCoverPhoto, updateProfile } from "./user.controller.js";
 
 const router =Router();
 
@@ -25,6 +25,12 @@ router.patch(
   protect,
   upload.single("coverPhoto"),
   updateCoverPhoto
+);
+
+router.patch(
+  "/profile",
+  protect,
+  updateProfile
 );
 
 export default router;
