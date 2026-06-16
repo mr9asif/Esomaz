@@ -1,18 +1,20 @@
-import { useMe } from "@/features/auth/hooks/useMe";
+// import { useMe } from "@/features/auth/hooks/useMe";
+import CreatePost from "@/features/post/components/createPost/CreatePost";
+import Feed from "@/features/post/components/feed/Feed";
 import MainLayout from "@/layouts/MainLayout";
 
 const Home = () => {
-  const { data } = useMe();
+  // const { data } = useMe();
 
   return (
     <MainLayout>
-      <h1 className="text-2xl font-bold ">
-        Home Feed
-      </h1>
+     <div className="max-w-2xl mx-auto py-5 space-y-6">
 
-      <p>
-        Welcome {data?.data?.name}
-      </p>
+            <CreatePost />
+
+            <Feed />
+
+        </div>
     </MainLayout>
   );
 };
