@@ -14,7 +14,7 @@ export default function PostCard({
 
     return (
 
-        <div className="bg-white rounded-xl shadow border p-4">
+        <div className="bg-white shadow  p-4">
 
             <div className="flex items-center gap-3">
 

@@ -9,7 +9,7 @@ export default function Feed() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 border-none">
       {data?.map((post) => (
         <PostCard
           key={post.id}

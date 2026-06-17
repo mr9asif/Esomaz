@@ -38,7 +38,7 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="bg-white border-b px-3 sm:px-5 py-4">
+    <div className="bg-white  px-3 sm:px-5 py-4">
 
       <div className="flex gap-3">
 
