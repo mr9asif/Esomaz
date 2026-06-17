@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../../middleware/protect.js";
-import { createPostService, deletePostService, getPostByIdService, getPostsService } from "./post.service.js";
+import { createPostService, deletePostService, getPostByIdService, getPostsService, updatePostService } from "./post.service.js";
 
 export const createPost = async (
   req: AuthRequest,
@@ -129,4 +129,23 @@ export const deletePost = async (
       message: (error as Error).message,
     });
   }
+};
+
+// edit or update post
+
+export const updatePostController = async (req:Request, res:Response) => {
+  const userId = req.user.id;
+  const postId = req.params.id;
+  const payload = req.body;
+
+  const result = await updatePostService(
+    userId,
+    postId as string,
+    payload
+  );
+
+  res.json({
+    success: true,
+    data: result,
+  });
 };

@@ -165,3 +165,37 @@ export const deletePostService = async (
     },
   });
 };
+
+// edit or update post
+export const updatePostService = async (
+  userId: string,
+  postId: string,
+  payload: {
+    content: string;
+  }
+) => {
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  });
+
+  if (!post) {
+    throw new Error("Post not found");
+  }
+
+  if (post.authorId !== userId) {
+    throw new Error("Unauthorized");
+  }
+
+  return prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      content: payload.content,
+    },
+  });
+
+};
