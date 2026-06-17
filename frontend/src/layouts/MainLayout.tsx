@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import MobileBottomNav from "@/components/common/MobileButtomNav";
 import Navbar from "../components/common/navbar";
 
 type Props = {
@@ -16,6 +17,8 @@ const MainLayout = ({
       <main className="max-w-7xl mx-auto p-4">
         {children}
       </main>
+
+      <MobileBottomNav/>
     </div>
   );
 };
