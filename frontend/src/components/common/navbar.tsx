@@ -7,12 +7,11 @@ import {
   Home,
   LogOut,
   Menu,
-  MessageCircle,
   Search,
   Settings,
   User,
   Users,
-  X,
+  X
 } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -63,35 +62,7 @@ queryClient.setQueryData(["me"], null);
             >
               Esomaz
             </Link>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex gap-6">
-
-              <NavLink to="/" className="flex gap-2 items-center">
-                <Home size={20} />
-                Home
-              </NavLink>
-
-              <NavLink to="/explore" className="flex gap-2 items-center">
-                <Compass size={20} />
-                Explore
-              </NavLink>
-
-              <NavLink
-                to="/communities"
-                className="flex gap-2 items-center"
-              >
-                <Users size={20} />
-                Communities
-              </NavLink>
-
-            </div>
-
-          </div>
-
-          {/* Search */}
-
-          <div className="hidden lg:block relative w-80">
+              <div className="hidden lg:block relative w-80">
 
             <Search
               className="absolute left-3 top-3 text-gray-400"
@@ -105,11 +76,25 @@ queryClient.setQueryData(["me"], null);
 
           </div>
 
+            {/* Desktop Menu */}
+            <div className="hidden md:flex gap-6">
+
+             
+
+            
+            </div>
+
+          </div>
+
+          {/* Search */}
+
+        
+
           {/* Right */}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-8 cursor-pointer"> 
 
-            <MessageCircle size={22} />
+  
 
             <Bell size={22} />
 
