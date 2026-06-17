@@ -1,113 +1,160 @@
+import {
+    Bookmark,
+    Heart,
+    MessageCircle,
+    MoreHorizontal,
+} from "lucide-react";
+
+import { useAuth } from "@/provider/UseAuth";
+
+import { formatTime } from "@/features/post/utils/format.time";
 import type { Post } from "../../types/post.types";
+import PostMedia from "./PostMedia";
 
 interface Props {
-
-    post: Post;
-
+  post: Post;
 }
 
 export default function PostCard({
-
-    post,
-
+  post,
 }: Props) {
 
-    return (
+  const { user } = useAuth();
 
-        <div className="bg-white shadow  p-4">
+  return (
+    <article className="bg-white
+rounded-2xl
+border
+border-gray-200
+shadow-sm
+hover:shadow-md
+transition
+duration-200
+p-5">
 
-            <div className="flex items-center gap-3">
+      {/* Header */}
 
-                <img
+      <div className="flex justify-between">
 
-                    src={post.author.avatar}
+        <div className="flex gap-3">
 
-                    className="w-10 h-10 rounded-full"
+          <img
+            src={post.author.avatar}
+            className="w-11 h-11 rounded-full object-cover"
+          />
 
-                />
+          <div>
 
-                <div>
+            <div className="flex items-center gap-2 flex-wrap">
 
-                    <h3 className="font-semibold">
+              <h3 className="font-semibold">
 
-                        {post.author.name}
+                {post.author.name}
 
-                    </h3>
+              </h3>
 
-                    <p className="text-sm text-gray-500">
+              <span className="text-gray-500 text-sm">
 
-                        @{post.author.username}
+                @{post.author.username}
 
-                    </p>
+              </span>
 
-                </div>
+              <span className="text-gray-400">
+
+                ·
+
+              </span>
+
+              <span className="text-gray-400 text-sm">
+
+                {formatTime(post.createdAt)}
+
+              </span>
 
             </div>
 
-            {
-
-                post.content && (
-
-                    <p className="mt-4">
-
-                        {post.content}
-
-                    </p>
-
-                )
-
-            }
-
-            {
-
-                post.media.length > 0 && (
-
-                    <div className="mt-4 space-y-2">
-
-                        {
-
-                            post.media.map((media) => (
-
-                                media.type === "IMAGE"
-
-                                    ?
-
-                                    <img
-
-                                        key={media.id}
-
-                                        src={media.url}
-
-                                        className="rounded-lg w-full"
-
-                                    />
-
-                                    :
-
-                                    <video
-
-                                        key={media.id}
-
-                                        src={media.url}
-
-                                        controls
-
-                                        className="rounded-lg w-full"
-
-                                    />
-
-                            ))
-
-                        }
-
-                    </div>
-
-                )
-
-            }
+          </div>
 
         </div>
 
-    );
+        {user?.id !== post.author.id && (
 
+          <button className="text-blue-600 font-semibold text-sm">
+
+            Follow
+
+          </button>
+          
+
+        )}
+          <button className="p-2 rounded-full hover:bg-gray-100 transition">
+    <MoreHorizontal size={18} />
+  </button>
+
+      </div>
+
+      {/* Content */}
+
+      {post.content && (
+
+        <p className="mt-3 text-gray-800 whitespace-pre-wrap">
+
+          {post.content}
+
+        </p>
+
+      )}
+
+      {/* Media */}
+
+      <PostMedia media={post.media} />
+
+      {/* Stats */}
+
+      <div className="mt-4 flex justify-start gap-15 text-gray-500 text-sm">
+
+        <span>
+
+          ❤️ {post.reactions.length}
+
+        </span>
+         <span className="flex items-center gap-1">
+    <MessageCircle size={16} />
+    0
+  </span>
+
+      </div>
+
+      {/* Actions */}
+
+      <div className="mt-3 flex justify-around border-t pt-3">
+
+        <button className="flex gap-2 text-gray-600 hover:text-red-500">
+
+          <Heart size={20} />
+
+          Like
+
+        </button>
+
+        <button className="flex gap-2 text-gray-600 hover:text-blue-500">
+
+          <MessageCircle size={20} />
+
+          Comment
+
+        </button>
+
+        <button className="flex gap-2 text-gray-600 hover:text-yellow-500">
+
+          <Bookmark size={20} />
+
+          Save
+
+        </button>
+
+      </div>
+
+    </article>
+  );
 }

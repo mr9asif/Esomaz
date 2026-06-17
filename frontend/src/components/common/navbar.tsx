@@ -4,33 +4,38 @@ import { queryClient } from "@/lib/react_query";
 import { useAuth } from "@/provider/UseAuth";
 import {
   Bell,
+  Bookmark,
+  CircleHelp,
   LogOut,
   Search,
   Settings,
   User,
+  Users,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [profileOpen, setProfileOpen] = useState(false);
+const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
+const handleLogout = async () => {
+  try {
+    await logout();
 
-      queryClient.setQueryData(["me"], null);
-      setProfileOpen(false);
+    queryClient.setQueryData(["me"], null);
 
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    setDesktopMenuOpen(false);
+    setMobileDrawerOpen(false);
 
+    navigate("/");
+  } catch (error) {
+    console.error(error);
+  }
+};
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white border-b">
@@ -52,7 +57,7 @@ const Navbar = () => {
               <div className="relative">
 
                 <button
-                  onClick={() => setProfileOpen(!profileOpen)}
+                     onClick={() => setMobileDrawerOpen(true)}
                 >
                   <img
                     src={
@@ -68,15 +73,15 @@ const Navbar = () => {
 
 <div
   className={`fixed inset-0 z-50 lg:hidden ${
-    profileOpen ? "visible" : "invisible"
+   mobileDrawerOpen ? "visible" : "invisible"
   }`}
 >
   {/* Overlay */}
 
   <div
-    onClick={() => setProfileOpen(false)}
+    onClick={() => setMobileDrawerOpen(false)}
     className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
-      profileOpen ? "opacity-100" : "opacity-0"
+      mobileDrawerOpen ? "opacity-100" : "opacity-0"
     }`}
   />
 
@@ -86,7 +91,7 @@ const Navbar = () => {
     className={`absolute right-0 top-0 h-screen w-[75%] max-w-[320px] bg-white shadow-xl
     transition-transform duration-300 ease-in-out
     ${
-      profileOpen
+      mobileDrawerOpen
         ? "translate-x-0"
         : "translate-x-full"
     }`}
@@ -112,32 +117,60 @@ const Navbar = () => {
 
       <div className="mt-8 space-y-2">
 
-        <NavLink
-          to={`/profile/${user.username}`}
-          onClick={() => setProfileOpen(false)}
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100"
-        >
-          <User size={20} />
-          Profile
-        </NavLink>
+       <NavLink
+  to={`/profile/${user.username}`}
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setMobileDrawerOpen(false)}
+>
+  <User size={18} />
+  Profile
+</NavLink>
 
-        <NavLink
-          to="/settings"
-          onClick={() => setProfileOpen(false)}
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100"
-        >
-          <Settings size={20} />
-          Settings
-        </NavLink>
+<NavLink
+  to="/bookmarks"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setMobileDrawerOpen(false)}
+>
+  <Bookmark size={18} />
+  Bookmarks
+</NavLink>
 
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 p-3 rounded-lg text-red-500 hover:bg-red-50 w-full"
-        >
-          <LogOut size={20} />
-          Logout
-        </button>
+<NavLink
+  to="/communities"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setMobileDrawerOpen(false)}
+>
+  <Users size={18} />
+  Communities
+</NavLink>
 
+<NavLink
+  to="/settings"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setMobileDrawerOpen(false)}
+>
+  <Settings size={18} />
+  Settings
+</NavLink>
+
+<NavLink
+  to="/help"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setMobileDrawerOpen(false)}
+>
+  <CircleHelp size={18} />
+  Help Center
+</NavLink>
+
+<hr className="my-2" />
+
+<button
+  onClick={handleLogout}
+  className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+>
+  <LogOut size={18} />
+  Logout
+</button>
       </div>
 
     </div>
@@ -198,7 +231,7 @@ const Navbar = () => {
                 <div className="relative">
 
                <button
-  onClick={() => setProfileOpen(true)}
+    onClick={() => setDesktopMenuOpen(!desktopMenuOpen)}
 >
   <img
     src={
@@ -209,7 +242,7 @@ const Navbar = () => {
   />
 </button>
 
-                  {profileOpen && (
+                  {desktopMenuOpen  && (
                     <div className="absolute right-0 top-12 w-56 bg-white border rounded-xl shadow-lg overflow-hidden">
 
                       <div className="p-4 border-b">
@@ -224,31 +257,60 @@ const Navbar = () => {
 
                       </div>
 
-                      <NavLink
-                        to={`/profile/${user.username}`}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                        onClick={() => setProfileOpen(false)}
-                      >
-                        <User size={18} />
-                        Profile
-                      </NavLink>
+                     <NavLink
+  to={`/profile/${user.username}`}
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setDesktopMenuOpen(false)}
+>
+  <User size={18} />
+  Profile
+</NavLink>
 
-                      <NavLink
-                        to="/settings"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                        onClick={() => setProfileOpen(false)}
-                      >
-                        <Settings size={18} />
-                        Settings
-                      </NavLink>
+<NavLink
+  to="/bookmarks"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setDesktopMenuOpen(false)}
+>
+  <Bookmark size={18} />
+  Bookmarks
+</NavLink>
 
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
-                      >
-                        <LogOut size={18} />
-                        Logout
-                      </button>
+<NavLink
+  to="/communities"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setDesktopMenuOpen(false)}
+>
+  <Users size={18} />
+  Communities
+</NavLink>
+
+<NavLink
+  to="/settings"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setDesktopMenuOpen(false)}
+>
+  <Settings size={18} />
+  Settings
+</NavLink>
+
+<NavLink
+  to="/help"
+  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+  onClick={() => setDesktopMenuOpen(false)}
+>
+  <CircleHelp size={18} />
+  Help Center
+</NavLink>
+
+<hr className="my-2" />
+
+<button
+  onClick={handleLogout}
+  className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+>
+  <LogOut size={18} />
+  Logout
+</button>
 
                     </div>
                   )}

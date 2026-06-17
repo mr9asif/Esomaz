@@ -2,9 +2,9 @@ import { useAuth } from "@/provider/UseAuth";
 import {
     Bell,
     Home,
+    MessageCircle,
     Plus,
-    Search,
-    User,
+    Search
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -68,7 +68,7 @@ const MobileBottomNav = () => {
               : "text-gray-500"
           }
         >
-          <User size={24} />
+          <MessageCircle size={24} />
         </NavLink>
 
       </div>
