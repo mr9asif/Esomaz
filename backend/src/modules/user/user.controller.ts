@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../../config/prisma.js";
 import type { AuthRequest } from "../../middleware/protect.js";
 import uploadToCloudinary from "../../util/uploadToCloudinary.js";
-import { getMeService, UserService } from "./user.service.js";
+import { getAllUsersService, getMeService, UserService } from "./user.service.js";
 
 export const getMe = async (
   req: AuthRequest,
@@ -226,4 +226,23 @@ export const updateProfile = async (
     message: "Profile updated successfully",
     data: result,
   });
+};
+
+export const getAllUsersController = async (
+  req: Request,
+  res: Response
+) => {
+
+  const result = await getAllUsersService(
+    req.user.id
+  );
+
+  res.status(200).json({
+
+    success: true,
+
+    data: result,
+
+  });
+
 };

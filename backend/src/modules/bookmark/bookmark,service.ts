@@ -56,3 +56,43 @@ export const toggleBookmarkService = async (
   };
 
 };
+
+export const getMyBookmarksService = async (
+  userId: string
+) => {
+
+  return prisma.bookmark.findMany({
+
+    where: {
+      userId,
+    },
+
+    include: {
+
+      post: {
+
+        include: {
+
+          author: true,
+
+          media: true,
+
+          reactions: true,
+
+          comments: true,
+
+        },
+
+      },
+
+    },
+
+    orderBy: {
+
+      createdAt: "desc",
+
+    },
+
+  });
+
+};

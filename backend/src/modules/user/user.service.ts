@@ -108,7 +108,106 @@ const updateProfile = async (
   });
 };
 
+ export const getAllUsersService = async (
+  currentUserId: string
+) => {
+
+  const users = await prisma.user.findMany({
+
+    where: {
+
+      id: {
+
+        not: currentUserId,
+
+      },
+
+    },
+
+    select: {
+
+      id: true,
+
+      name: true,
+
+      username: true,
+
+      avatar: true,
+
+      bio: true,
+
+      isVerified: true,
+
+      createdAt: true,
+
+      _count: {
+
+        select: {
+
+          followers: true,
+
+          following: true,
+
+          posts: true,
+
+        },
+
+      },
+
+      followers: {
+
+        where: {
+
+          followerId: currentUserId,
+
+        },
+
+        select: {
+
+          id: true,
+
+        },
+
+      },
+
+    },
+
+    orderBy: {
+
+      createdAt: "desc",
+
+    },
+
+  });
+
+  return users.map((user) => ({
+
+    id: user.id,
+
+    name: user.name,
+
+    username: user.username,
+
+    avatar: user.avatar,
+
+    bio: user.bio,
+
+    isVerified: user.isVerified,
+
+    followersCount: user._count.followers,
+
+    followingCount: user._count.following,
+
+    postsCount: user._count.posts,
+
+    isFollowing: user.followers.length > 0,
+
+  }));
+
+};
+
 export const UserService = {
   getUserProfileService,
-  updateProfile
+  updateProfile,
+
 };

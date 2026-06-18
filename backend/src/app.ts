@@ -6,6 +6,7 @@ import { prisma } from './config/prisma.js';
 import authRouter from "./modules/auth/auth.routes.js";
 import bookmarkRoutes from "./modules/bookmark/bookmark.route.js";
 import commentRoutes from './modules/comments/comment.route.js';
+import followRoutes from "./modules/follow/follow.route.js";
 import postRouter from './modules/post/post.route.js';
 import ReactionRoutes from "./modules/reaction/reaction.route.js";
 import userRouter from './modules/user/user.route.js';
@@ -45,6 +46,7 @@ app.use('/api/post', postRouter)
 app.use("/api/reactions", ReactionRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/follows", followRoutes);
 
 
 export default app;

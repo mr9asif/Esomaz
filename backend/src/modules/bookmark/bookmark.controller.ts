@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { toggleBookmarkService } from "./bookmark,service.js";
+import { getMyBookmarksService, toggleBookmarkService } from "./bookmark,service.js";
 
 export const toggleBookmarkController = async (
   req: Request,
@@ -19,6 +19,22 @@ export const toggleBookmarkController = async (
     success: true,
     message: result.message,
     data: result.data,
+  });
+
+};
+
+export const getMyBookmarksController = async (
+  req: Request,
+  res: Response
+) => {
+
+  const result = await getMyBookmarksService(
+    req.user.id
+  );
+
+  res.json({
+    success: true,
+    data: result,
   });
 
 };
