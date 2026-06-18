@@ -4,6 +4,7 @@ import "dotenv/config";
 import express from 'express';
 import { prisma } from './config/prisma.js';
 import authRouter from "./modules/auth/auth.routes.js";
+import bookmarkRoutes from "./modules/bookmark/bookmark.route.js";
 import postRouter from './modules/post/post.route.js';
 import ReactionRoutes from "./modules/reaction/reaction.route.js";
 import userRouter from './modules/user/user.route.js';
@@ -41,6 +42,7 @@ app.use('/api/v1/auth', authRouter  )
 app.use('/api/user', userRouter)
 app.use('/api/post', postRouter)
 app.use("/api/reactions", ReactionRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
 
 export default app;
