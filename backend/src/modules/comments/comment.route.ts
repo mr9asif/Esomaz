@@ -4,6 +4,7 @@ import {
     createCommentController,
     deleteCommentController,
     getCommentsController,
+    replyCommentController,
     updateCommentController,
 } from "./comment.controller.js";
 
@@ -30,6 +31,12 @@ router.delete(
   "/:id",
   protect,
   deleteCommentController
+);
+
+router.post(
+  "/reply",
+  protect,
+  replyCommentController
 );
 
 export default router;

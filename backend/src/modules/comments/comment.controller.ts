@@ -4,6 +4,7 @@ import {
     createCommentService,
     deleteCommentService,
     getCommentsService,
+    replyCommentService,
     updateCommentService,
 } from "./comment.service.js";
 
@@ -13,6 +14,7 @@ export const createCommentController = async (
 ) => {
 
   const userId = req.user.id;
+
 
   const result = await createCommentService(
     userId,
@@ -73,6 +75,27 @@ export const deleteCommentController = async (
   res.json({
     success: true,
     message: "Comment deleted",
+  });
+
+};
+
+export const replyCommentController = async (
+  req: Request,
+  res: Response
+) => {
+
+  const userId = req.user.id;
+    console.log("b",req.body)
+    console.log(req.headers["content-type"]);
+
+  const result = await replyCommentService(
+    userId,
+    req.body
+  );
+
+  res.status(201).json({
+    success: true,
+    data: result,
   });
 
 };

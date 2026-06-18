@@ -183,3 +183,62 @@ export const deleteCommentService = async (
   });
 
 };
+
+export const replyCommentService = async (
+  userId: string,
+  payload: {
+    parentId: string;
+    content: string;
+  }
+) => {
+
+  const parent = await prisma.comment.findUnique({
+
+    where: {
+
+      id: payload.parentId,
+
+    },
+
+  });
+
+  if (!parent) {
+
+    throw new Error("Comment not found");
+
+  }
+
+  return prisma.comment.create({
+
+    data: {
+
+      content: payload.content,
+
+      userId,
+
+      postId: parent.postId,
+
+      parentId: parent.id,
+
+    },
+
+    include: {
+
+      user: {
+
+        select: {
+
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+
+        },
+
+      },
+
+    },
+
+  });
+
+};
