@@ -13,27 +13,29 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id String @id @default(uuid())
 
   name     String
   username String @unique
   email    String @unique
   password String
 
-  bio       String?
-  avatar    String?
+  bio        String?
+  avatar     String?
   coverPhoto String?
 
-  location  String?
-  website   String?
+  location String?
+  website  String?
 
   isVerified Boolean @default(false)
 
-  posts      Post[]
-  reactions  Reaction[]
+  posts     Post[]
+  reactions Reaction[]
+  comments  Comment[]
+  bookmarks Bookmark[]
 
-  followers  Follow[] @relation("Following")
-  following  Follow[] @relation("Follower")
+  followers Follow[] @relation("Following")
+  following Follow[] @relation("Follower")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,7 +47,7 @@ model Follow {
   followerId  String
   followingId String
 
-  follower User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
   following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -53,17 +55,19 @@ model Follow {
   @@unique([followerId, followingId])
 }
 
-
 model Post {
   id String @id @default(uuid())
 
   content String?
 
   authorId String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   media     PostMedia[]
   reactions Reaction[]
+
+  comments  Comment[]
+  bookmarks Bookmark[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,7 +91,7 @@ model Reaction {
 
   type ReactionType
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
@@ -100,9 +104,43 @@ enum MediaType {
 
 enum ReactionType {
   LIKE
-  LOVE
-  HAHA
-  WOW
-  SAD
-  ANGRY
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  content String
+
+  userId String
+  postId String
+
+  parentId String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  parent Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+
+  replies Comment[] @relation("CommentReplies")
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
+
+model Bookmark {
+  id String @id @default(uuid())
+
+  userId String
+
+  postId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
 }
