@@ -16,6 +16,7 @@ export interface Reaction {
     id?: string;
     userId?: string;
     type?: string;
+    postId:string;
 }
 
 export interface Post {
