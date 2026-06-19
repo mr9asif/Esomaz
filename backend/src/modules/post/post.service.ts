@@ -112,6 +112,11 @@ export const getPostsService = async () => {
       },
       media: true,
       reactions: true,
+       _count: {
+      select: {
+        comments: true,
+      },
+    },
     },
   });
 };

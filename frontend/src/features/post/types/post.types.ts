@@ -32,4 +32,28 @@ export interface Post {
     media: Media[];
 
     reactions: Reaction[];
+      _count: {
+    comments: number;
+  };
+}
+export interface CommentUser {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  userId: string;
+  postId: string;
+  parentId: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+
+  user: CommentUser;
+
+  replies: Comment[];
 }

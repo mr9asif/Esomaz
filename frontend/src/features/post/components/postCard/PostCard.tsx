@@ -9,7 +9,9 @@ import { formatTime } from "@/features/post/utils/format.time";
 import { useAuth } from "@/provider/UseAuth";
 import { useToggleReaction } from "../../hooks/useToggleReaction";
 
+import { useState } from "react";
 import type { Post } from "../../types/post.types";
+import CommentsSection from "../comment/CommentSection";
 import PostMedia from "./PostMedia";
 
 interface Props {
@@ -18,6 +20,7 @@ interface Props {
 
 export default function PostCard({ post }: Props) {
   const { user } = useAuth();
+  const [showComments, setShowComments] = useState(false);
 
   const {
     mutate: toggleReaction,
@@ -28,7 +31,7 @@ export default function PostCard({ post }: Props) {
   const liked = post.reactions.some(
     (reaction) => reaction.userId === user?.id
   );
-
+console.log("post", post)
   return (
     <article
       className="
@@ -119,8 +122,8 @@ export default function PostCard({ post }: Props) {
         </span>
 
         <span className="flex items-center gap-1">
-          <MessageCircle size={16} />
-          0
+          <MessageCircle size={16}  />
+        {post._count.comments}
         </span>
       </div>
 
@@ -155,20 +158,21 @@ export default function PostCard({ post }: Props) {
 
         {/* Comment */}
 
-        <button
-          className="
-          flex
-          items-center
-          gap-2
-          text-gray-600
-          hover:text-blue-500
-          transition
-          "
-        >
-          <MessageCircle size={20} />
+      <button
+  onClick={() => setShowComments(!showComments)}
+  className="
+    flex
+    items-center
+    gap-2
+    text-gray-600
+    hover:text-blue-500
+    transition
+  "
+>
+  <MessageCircle size={20} />
+  Comment
+</button>
 
-          Comment
-        </button>
 
         {/* Bookmark */}
 
@@ -187,6 +191,9 @@ export default function PostCard({ post }: Props) {
           Save
         </button>
       </div>
+      {showComments && (
+   <CommentsSection postId={post.id} />
+)}
     </article>
   );
 }
