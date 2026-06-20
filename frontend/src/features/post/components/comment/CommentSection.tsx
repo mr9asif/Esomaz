@@ -2,6 +2,7 @@ import { useAuth } from "@/provider/UseAuth";
 import { useState } from "react";
 import { useComments } from "../../hooks/useComment";
 import { useCreateComment } from "../../hooks/useCreateComment";
+import { useCreateReply } from "../../hooks/useCreateReply";
 
 interface Props {
   postId: string;
@@ -11,7 +12,17 @@ export default function CommentSection({ postId }: Props) {
   const { user } = useAuth();
   const [content, setContent] = useState("");
   const [visibleComments, setVisibleComments] = useState(3);
+const [replyTo, setReplyTo] = useState<string | null>(null);
+const [visibleReplies, setVisibleReplies] = useState<
+  Record<string, number>
+>({});
 
+
+const [replyContent, setReplyContent] = useState("");
+const {
+  mutate: createReply,
+  isPending: replyPending,
+} = useCreateReply();
 const {
   mutate: createComment,
   isPending,
@@ -186,17 +197,182 @@ console.log(postId, content)
 
             </div>
 
-            <div className="flex gap-5 text-xs text-gray-500 mt-2 ml-3">
+       <div className="flex gap-5 text-xs text-gray-500 mt-2 ml-3">
 
-              <button className="font-medium hover:text-blue-600">
-                Reply
-              </button>
+  <button
+ onClick={() => {
+  console.log("Comment ID:", comment.id);
 
-              <span>
-                Just now
-              </span>
+  setReplyTo((prev) => {
+    console.log("Previous:", prev);
+    return prev === comment.id ? null : comment.id;
+  });
+}}
+  className="font-medium hover:text-blue-600"
+>
+  Reply
+</button>
 
-            </div>
+  <span>Just now</span>
+
+</div>
+
+{/* Reply Input */}
+
+{replyTo === comment.id && (
+
+<div className="flex gap-3 mt-4 ml-10">
+
+  <img
+    src={user?.avatar}
+    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+  />
+
+  <div className="flex-1">
+
+    <textarea
+      rows={2}
+      value={replyContent}
+      onChange={(e) =>
+        setReplyContent(e.target.value)
+      }
+      placeholder={`Reply to ${comment.user.name}...`}
+      className="
+        w-full
+        resize-none
+        rounded-xl
+        border
+        border-gray-200
+        bg-gray-50
+        p-3
+        outline-none
+        focus:border-blue-500
+      "
+    />
+
+    <div className="flex justify-end gap-2 mt-2">
+
+      <button
+        onClick={() => {
+          setReplyTo(null);
+          setReplyContent("");
+        }}
+        className="px-3 py-2 rounded-lg hover:bg-gray-100"
+      >
+        Cancel
+      </button>
+
+      <button
+        disabled={replyPending}
+        onClick={() => {
+
+          if (!replyContent.trim()) return;
+
+          createReply({
+            parentId: comment.id,
+            content: replyContent,
+          });
+
+          setReplyContent("");
+          setReplyTo(null);
+
+        }}
+        className="
+          bg-blue-600
+          text-white
+          px-4
+          py-2
+          rounded-lg
+          disabled:opacity-50
+        "
+      >
+        Reply
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+)}
+
+{replyTo === comment.id && (
+
+<div className="flex gap-3 mt-4 ml-10">
+
+  ...
+  Reply Form
+  ...
+
+</div>
+
+)}
+
+{/* ---------- ADD HERE ---------- */}
+
+{comment.replies.length > 0 && (
+
+<div className="ml-10 mt-4 space-y-3">
+
+  {comment.replies
+   .slice(0, replyCount)
+  .map((reply) => (
+
+    <div
+      key={reply.id}
+      className="flex gap-2"
+    >
+
+      <img
+        src={reply.user.avatar}
+        className="w-8 h-8 rounded-full object-cover"
+      />
+
+      <div className="flex-1">
+
+        <div className="bg-gray-100 rounded-xl px-3 py-2">
+
+          <p className="font-semibold text-xs">
+            {reply.user.name}
+          </p>
+
+          <p className="text-sm">
+            {reply.content}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
+
+)}
+
+{comment.replies.length > replyCount && (
+
+<button
+  onClick={() =>
+    setVisibleReplies(prev => ({
+      ...prev,
+      [comment.id]:
+        (prev[comment.id] ?? 3) + 3,
+    }))
+  }
+  className="ml-10 text-sm text-blue-600"
+>
+  View more replies
+</button>
+
+)}
+
+{/* ---------- END ---------- */}
+
+            
 
           </div>
 

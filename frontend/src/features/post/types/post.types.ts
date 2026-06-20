@@ -57,3 +57,12 @@ export interface Comment {
 
   replies: Comment[];
 }
+
+export interface Reply {
+    id:string;
+    content:string;
+    user:{
+        avatar:string;
+        name:string;
+    }
+}
