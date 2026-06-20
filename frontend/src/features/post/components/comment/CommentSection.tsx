@@ -10,6 +10,7 @@ interface Props {
 export default function CommentSection({ postId }: Props) {
   const { user } = useAuth();
   const [content, setContent] = useState("");
+  const [visibleComments, setVisibleComments] = useState(3);
 
 const {
   mutate: createComment,
@@ -144,81 +145,92 @@ console.log(postId, content)
 
       {/* Comments */}
 
-      {!isLoading && comments.length > 0 && (
+    {!isLoading && comments.length > 0 && (
 
-        <div className="space-y-5">
+  <div className="space-y-4">
 
-          {comments.map((comment) => (
+    {comments
+      .slice(0, visibleComments)
+      .map((comment) => (
+
+        <div
+          key={comment.id}
+          className="flex gap-3"
+        >
+
+          <img
+            src={comment.user.avatar}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+
+          <div className="flex-1">
 
             <div
-              key={comment.id}
-              className="flex gap-3"
+              className="
+                bg-gray-50
+                border
+                border-gray-100
+                rounded-2xl
+                px-4
+                py-3
+              "
             >
 
-              <img
-                src={comment.user.avatar}
-                className="w-10 h-10 rounded-full object-cover"
-              />
+              <p className="font-semibold text-sm">
+                {comment.user.name}
+              </p>
 
-              <div className="flex-1">
-
-                <div
-                  className="
-                    bg-gray-100
-                    rounded-2xl
-                    px-4
-                    py-3
-                  "
-                >
-
-                  <p className="font-semibold text-sm">
-
-                    {comment.user.name}
-
-                  </p>
-
-                  <p className="text-sm mt-1">
-
-                    {comment.content}
-
-                  </p>
-
-                </div>
-
-                <div
-                  className="
-                    flex
-                    gap-4
-                    text-xs
-                    text-gray-500
-                    mt-2
-                    ml-2
-                  "
-                >
-
-                  <button className="hover:text-blue-600">
-
-                    Reply
-
-                  </button>
-
-                  <span>
-
-                    Just now
-
-                  </span>
-
-                </div>
-
-              </div>
+              <p className="text-sm mt-1">
+                {comment.content}
+              </p>
 
             </div>
 
-          ))}
+            <div className="flex gap-5 text-xs text-gray-500 mt-2 ml-3">
+
+              <button className="font-medium hover:text-blue-600">
+                Reply
+              </button>
+
+              <span>
+                Just now
+              </span>
+
+            </div>
+
+          </div>
 
         </div>
 
-      )}
+      ))}
+
+    {/* View More Button */}
+
+    {comments.length > visibleComments && (
+
+      <div className="flex justify-center pt-2">
+
+        <button
+          onClick={() =>
+            setVisibleComments((prev) => prev + 5)
+          }
+          className="
+            text-sm
+            font-medium
+            text-blue-600
+            hover:underline
+          "
+        >
+          View {comments.length - visibleComments} more comments
+        </button>
+
+      </div>
+
+    )}
+
+  </div>
+
+)}
 
     </div>
   );
