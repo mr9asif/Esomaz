@@ -13,9 +13,6 @@ export default function CommentSection({ postId }: Props) {
   const [content, setContent] = useState("");
   const [visibleComments, setVisibleComments] = useState(3);
 const [replyTo, setReplyTo] = useState<string | null>(null);
-const [visibleReplies, setVisibleReplies] = useState<
-  Record<string, number>
->({});
 
 
 const [replyContent, setReplyContent] = useState("");
@@ -32,6 +29,7 @@ const {
     data: comments = [],
     isLoading,
   } = useComments(postId);
+
 
   return (
     <div className="mt-5 border-t border-gray-200 pt-4 animate-in fade-in duration-300">
@@ -315,9 +313,7 @@ console.log(postId, content)
 
 <div className="ml-10 mt-4 space-y-3">
 
-  {comment.replies
-   .slice(0, replyCount)
-  .map((reply) => (
+  {comment.replies.map((reply) => (
 
     <div
       key={reply.id}
@@ -350,23 +346,6 @@ console.log(postId, content)
   ))}
 
 </div>
-
-)}
-
-{comment.replies.length > replyCount && (
-
-<button
-  onClick={() =>
-    setVisibleReplies(prev => ({
-      ...prev,
-      [comment.id]:
-        (prev[comment.id] ?? 3) + 3,
-    }))
-  }
-  className="ml-10 text-sm text-blue-600"
->
-  View more replies
-</button>
 
 )}
 

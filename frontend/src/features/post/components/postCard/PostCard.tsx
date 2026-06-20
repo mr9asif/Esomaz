@@ -10,6 +10,8 @@ import { useAuth } from "@/provider/UseAuth";
 import { useToggleReaction } from "../../hooks/useToggleReaction";
 
 import { useState } from "react";
+
+import { useToggleBookmark } from "../../hooks/useCreateBookmark";
 import type { Post } from "../../types/post.types";
 import CommentsSection from "../comment/CommentSection";
 import PostMedia from "./PostMedia";
@@ -21,6 +23,8 @@ interface Props {
 export default function PostCard({ post }: Props) {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
+  const { mutate: bookmark } =
+  useToggleBookmark();
 
   const {
     mutate: toggleReaction,
@@ -177,6 +181,7 @@ console.log("post", post)
         {/* Bookmark */}
 
         <button
+        onClick={() => bookmark(post.id)}
           className="
           flex
           items-center
