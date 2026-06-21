@@ -6,32 +6,39 @@ import {
     Mail,
     User
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const menus = [
-    {
-        name: "Home",
-        icon: Home,
-    },
-    {
-        name: "Explore",
-        icon: Compass,
-    },
-    {
-        name: "Notifications",
-        icon: Bell,
-    },
-    {
-        name: "Messages",
-        icon: Mail,
-    },
-    {
-        name: "Bookmarks",
-        icon: Bookmark,
-    },
-    {
-        name: "Profile",
-        icon: User,
-    },
+  {
+    name: "Home",
+    path: "/",
+    icon: Home,
+  },
+  {
+    name: "Explore",
+    path: "/explore",
+    icon: Compass,
+  },
+  {
+    name: "Notifications",
+    path: "/notifications",
+    icon: Bell,
+  },
+  {
+    name: "Messages",
+    path: "/messages",
+    icon: Mail,
+  },
+  {
+    name: "Bookmarks",
+    path: "/bookmarks",
+    icon: Bookmark,
+  },
+  {
+    name: "Profile",
+    path: "/profile",
+    icon: User,
+  },
 ];
 
 const LeftSidebar = () => {
@@ -46,26 +53,39 @@ const LeftSidebar = () => {
 
                 <div className="space-y-2">
 
-                    {menus.map((item) => {
+              {menus.map((item) => {
+  const Icon = item.icon;
 
-                        const Icon = item.icon;
+  return (
+    <NavLink
+      key={item.name}
+      to={item.path}
+      className={({ isActive }) =>
+        `
+          w-full
+          flex
+          items-center
+          gap-4
+          px-4
+          py-3
+          rounded-full
+          transition
+          ${
+            isActive
+              ? "bg-gray-100 font-semibold"
+              : "hover:bg-gray-100"
+          }
+        `
+      }
+    >
+      <Icon size={24} />
 
-                        return (
-                            <button
-                                key={item.name}
-                                className="w-full flex items-center gap-4 px-4 py-3 rounded-full hover:bg-gray-100 transition"
-                            >
-
-                                <Icon size={24} />
-
-                                <span className="text-lg">
-                                    {item.name}
-                                </span>
-
-                            </button>
-                        );
-
-                    })}
+      <span className="text-lg">
+        {item.name}
+      </span>
+    </NavLink>
+  );
+})}
 
                 </div>
 

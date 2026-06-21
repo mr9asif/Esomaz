@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
+import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import ProfilePage from "../features/profile/Profile";
 import ProtectedRoute from "./ProtectedRoutes";
 
@@ -12,6 +13,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/bookmarks" element={<Bookmarks/>}></Route>
 
       <Route
         path="/profile"

@@ -133,7 +133,7 @@ const bookmarked = post.isBookmarked;
 
         <span className="flex items-center gap-1">
           <MessageCircle size={16}  />
-        {post._count.comments}
+       {post._count?.comments}
         </span>
       </div>
 

@@ -69,21 +69,28 @@ export const getMyBookmarksService = async (
 
     include: {
 
-      post: {
-
-        include: {
-
-          author: true,
-
-          media: true,
-
-          reactions: true,
-
-          comments: true,
-
-        },
-
+     post: {
+  include: {
+    author: {
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        avatar: true,
       },
+    },
+
+    media: true,
+
+    reactions: true,
+
+    _count: {
+      select: {
+        comments: true,
+      },
+    },
+  },
+},
 
     },
 

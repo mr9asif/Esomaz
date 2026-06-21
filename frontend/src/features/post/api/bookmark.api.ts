@@ -1,4 +1,5 @@
 import axios from "@/lib/axios";
+import type { Post } from "../types/post.types";
 
 export const createBookmark = async (
   postId: string
@@ -10,10 +11,15 @@ export const createBookmark = async (
   return data.data;
 };
 
-export const getBookmarks = async () => {
+export const getBookmarks = async (): Promise<Post[]> => {
+  interface BookmarkResponse {
+  post: Post;
+}
   const { data } = await axios.get(
     "/bookmarks/me"
   );
 
-  return data.data;
+  return data.data.map(
+    (bookmark: BookmarkResponse) => bookmark.post
+  );
 };
