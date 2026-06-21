@@ -21,7 +21,7 @@ router.post(
   ]),
   createPost
 );
-router.get("/", getPosts);
+router.get("/", protect, getPosts);
 
 router.get("/:id", getPostById);
 

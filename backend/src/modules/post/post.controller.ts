@@ -51,11 +51,12 @@ const video =
 };
 
 export const getPosts = async (
-  req: Request,
+  req: AuthRequest, 
   res: Response
 ) => {
   try {
-    const posts = await getPostsService();
+    const posts = await getPostsService(  req.user!.id);
+    console.log(req.user)
 
     return res.status(200).json({
       success: true,

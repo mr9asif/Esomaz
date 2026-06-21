@@ -12,7 +12,7 @@ export const createBookmark = async (
 
 export const getBookmarks = async () => {
   const { data } = await axios.get(
-    "/bookmarks"
+    "/bookmarks/me"
   );
 
   return data.data;

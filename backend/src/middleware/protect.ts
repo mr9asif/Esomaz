@@ -15,6 +15,7 @@ export interface AuthRequest extends Request {
   next: NextFunction
 ) => {
   try {
+    console.log("User",req.user)
     let token: string | undefined;
 
     // 1. Check Authorization Header

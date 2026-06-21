@@ -96,8 +96,10 @@ if (images && images.length > 0) {
   });
 };
 
-export const getPostsService = async () => {
-  return prisma.post.findMany({
+export const getPostsService = async (
+  userId: string
+) => {
+  const posts = await prisma.post.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -110,17 +112,33 @@ export const getPostsService = async () => {
           avatar: true,
         },
       },
+
       media: true,
+
       reactions: true,
-       _count: {
-      select: {
-        comments: true,
+
+      bookmarks: {
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+        },
+      },
+
+      _count: {
+        select: {
+          comments: true,
+        },
       },
     },
-    },
   });
-};
 
+  return posts.map((post) => ({
+    ...post,
+    isBookmarked: post.bookmarks.length > 0,
+  }));
+};
 
 export const getPostByIdService = async (
   postId: string

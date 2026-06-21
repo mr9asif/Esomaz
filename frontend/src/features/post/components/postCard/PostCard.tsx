@@ -23,8 +23,14 @@ interface Props {
 export default function PostCard({ post }: Props) {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
-  const { mutate: bookmark } =
+  // const { mutate: bookmark } =
+  // useToggleBookmark();
+  const { mutate: toggleBookmarkMutation } =
   useToggleBookmark();
+
+const handleBookmark = () => {
+  toggleBookmarkMutation(post.id);
+};
 
   const {
     mutate: toggleReaction,
@@ -181,7 +187,7 @@ console.log("post", post)
         {/* Bookmark */}
 
         <button
-        onClick={() => bookmark(post.id)}
+        onClick={handleBookmark}
           className="
           flex
           items-center
