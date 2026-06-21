@@ -32,6 +32,7 @@ export interface Post {
     media: Media[];
 
     reactions: Reaction[];
+      isBookmarked: boolean;
       _count: {
     comments: number;
   };

@@ -31,7 +31,7 @@ export default function PostCard({ post }: Props) {
 const handleBookmark = () => {
   toggleBookmarkMutation(post.id);
 };
-
+ 
   const {
     mutate: toggleReaction,
     isPending,
@@ -41,7 +41,7 @@ const handleBookmark = () => {
   const liked = post.reactions.some(
     (reaction) => reaction.userId === user?.id
   );
-console.log("post", post)
+const bookmarked = post.isBookmarked;
   return (
     <article
       className="
@@ -188,16 +188,19 @@ console.log("post", post)
 
         <button
         onClick={handleBookmark}
-          className="
-          flex
-          items-center
-          gap-2
-          text-gray-600
-          hover:text-yellow-500
-          transition
-          "
+           className={`
+    flex
+    items-center
+    gap-2
+    transition
+    ${
+      bookmarked
+        ? "text-red-500"
+        : "text-gray-600 hover:text-red-500"
+    }
+  `}
         >
-          <Bookmark size={20} />
+          <Bookmark size={20}  fill={bookmarked ? "currentColor" : "none"}/>
 
           Save
         </button>
