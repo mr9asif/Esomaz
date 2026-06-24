@@ -110,6 +110,14 @@ export const getPostsService = async (
           name: true,
           username: true,
           avatar: true,
+              followers: {
+      where: {
+        followerId: userId,
+      },
+      select: {
+        id: true,
+      },
+    },
         },
       },
 
@@ -136,26 +144,41 @@ export const getPostsService = async (
 
   return posts.map((post) => ({
     ...post,
+      author: {
+    ...post.author,
+    isFollowing:
+      post.author.followers.length > 0,
+  },
     isBookmarked: post.bookmarks.length > 0,
   }));
 };
 
 export const getPostByIdService = async (
-  postId: string
+  postId: string,
+   userId: string
 ) => {
   return prisma.post.findUnique({
     where: {
       id: postId,
     },
     include: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          avatar: true,
-        },
+   author: {
+  select: {
+    id: true,
+    name: true,
+    username: true,
+    avatar: true,
+
+    followers: {
+      where: {
+        followerId: userId,
       },
+      select: {
+        id: true,
+      },
+    },
+  },
+},
       media: true,
       reactions: true,
     },

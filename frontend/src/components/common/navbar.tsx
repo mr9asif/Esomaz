@@ -62,7 +62,7 @@ const handleLogout = async () => {
 
           {/* ================= MOBILE ================= */}
 
-          <div className="flex lg:hidden items-center justify-between w-full">
+          <div className="flex gap-6 lg:hidden items-center justify-between w-full">
 
             <Link
               to="/"

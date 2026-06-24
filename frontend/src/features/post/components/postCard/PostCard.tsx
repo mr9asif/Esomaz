@@ -11,6 +11,7 @@ import { useToggleReaction } from "../../hooks/useToggleReaction";
 
 import { useState } from "react";
 
+import { useToggleFollow } from "@/features/follow/hooks/useToggleFollow";
 import { useToggleBookmark } from "../../hooks/useCreateBookmark";
 import type { Post } from "../../types/post.types";
 import CommentsSection from "../comment/CommentSection";
@@ -20,6 +21,8 @@ interface Props {
   post: Post;
 }
 
+
+
 export default function PostCard({ post }: Props) {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
@@ -27,6 +30,10 @@ export default function PostCard({ post }: Props) {
   // useToggleBookmark();
   const { mutate: toggleBookmarkMutation } =
   useToggleBookmark();
+const { mutate: toggleFollow } =
+useToggleFollow();
+
+// const { user } = useAuth();
 
 const handleBookmark = () => {
   toggleBookmarkMutation(post.id);
@@ -87,15 +94,20 @@ const bookmarked = post.isBookmarked;
 
         <div className="flex items-center gap-3">
           {user?.id !== post.author.id && (
-            <button
-              className="
-              text-blue-600
-              font-semibold
-              text-sm
-              hover:text-blue-700
-              "
+           
+           <button
+              onClick={() =>
+      toggleFollow(post.author.id)
+    }
+    className={`rounded-full px-3 py-1 text-xs font-medium ${
+      post.author.isFollowing
+        ? "bg-gray-200 text-gray-700"
+        : "bg-blue-500 text-white"
+    }`}
             >
-              Follow
+              {post.author.isFollowing
+      ? "Following"
+      : "Follow"}
             </button>
           )}
 
