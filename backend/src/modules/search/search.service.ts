@@ -174,3 +174,42 @@ export const searchService = async (
   };
 
 };
+
+
+export const getPostByIdService = async (
+  postId: string
+) => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+
+    include: {
+     author: {
+  select: {
+    id: true,
+    username: true,
+    name: true,
+    avatar: true,
+  },
+},
+
+      media: true,
+
+      reactions: {
+        select: {
+          id: true,
+          userId: true,
+        },
+      },
+
+      comments: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  return post;
+};
