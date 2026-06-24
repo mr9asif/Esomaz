@@ -70,6 +70,7 @@ const handleLogout = async () => {
             >
               Esomaz
             </Link>
+            <SearchDropdown></SearchDropdown>
 
             {user ? (
               <div   ref={desktopMenuRef} className="relative">

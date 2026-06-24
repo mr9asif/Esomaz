@@ -1,7 +1,7 @@
 export interface SearchUser {
   id: string;
   username: string;
-  profilePicture?: string;
+  avatar?: string;
 }
 
 export interface SearchPost {

@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
+import PostDetails from "@/features/post/components/createPost/PostDetails";
 import ProfilePage from "../features/profile/Profile";
 import ProtectedRoute from "./ProtectedRoutes";
 
@@ -24,6 +25,10 @@ export default function AppRoutes() {
         }
       />
 
+<Route
+  path="/post/:id"
+  element={<PostDetails />}
+/>
       <Route
         path="/login"
         element={<Login />}
