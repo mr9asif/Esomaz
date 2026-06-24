@@ -171,3 +171,48 @@ export const getFollowingService = async (
       post.bookmarks.length > 0,
   }));
 };
+
+
+
+// get top 3 follwing user 
+export const getWhoToFollowService = async (
+  currentUserId: string
+) => {
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        not: currentUserId,
+      },
+
+      followers: {
+        none: {
+          followerId: currentUserId,
+        },
+      },
+    },
+
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      avatar: true,
+      isVerified: true,
+
+      _count: {
+        select: {
+          followers: true,
+        },
+      },
+    },
+
+    orderBy: {
+      followers: {
+        _count: "desc",
+      },
+    },
+
+    take: 3,
+  });
+
+  return users;
+};

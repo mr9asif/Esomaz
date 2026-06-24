@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import {
   getFollowersService,
   getFollowingService,
+  getWhoToFollowService,
   toggleFollowService,
 } from "./follow.service.js";
 
@@ -54,3 +55,18 @@ export const getFollowingController = async (
 
 };
 
+// get 3 top follwoing id
+export const getWhoToFollow = async (
+  req: Request,
+  res: Response
+) => {
+  const users =
+    await getWhoToFollowService(
+      req.user.id
+    );
+
+  res.status(200).json({
+    success: true,
+    data: users,
+  });
+};
