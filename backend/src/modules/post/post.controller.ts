@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../../middleware/protect.js";
-import { createPostService, deletePostService, getPostByIdService, getPostsService, updatePostService } from "./post.service.js";
+import { createPostService, deletePostService, getPostByIdService, getPostsService, getTrendingPostsService, updatePostService } from "./post.service.js";
 
 export const createPost = async (
   req: AuthRequest,
@@ -78,7 +78,7 @@ export const getPostById = async (
 ) => {
   try {
     const  id  = req.params.id;
-    const post = await getPostByIdService(id as string);
+    const post = await getPostByIdService(id as string,   req.user.id);
 
     if (!post) {
       return res.status(404).json({
@@ -150,3 +150,21 @@ export const updatePostController = async (req:Request, res:Response) => {
     data: result,
   });
 };
+
+
+// trending posts
+export const getTrendingPosts =
+  async (
+    req: Request,
+    res: Response
+  ) => {
+
+    const posts =
+      await getTrendingPostsService();
+
+    res.status(200).json({
+      success: true,
+      data: posts,
+    });
+
+  };

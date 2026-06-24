@@ -157,7 +157,7 @@ export const getPostByIdService = async (
   postId: string,
    userId: string
 ) => {
-  return prisma.post.findUnique({
+const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
@@ -183,6 +183,20 @@ export const getPostByIdService = async (
       reactions: true,
     },
   });
+
+  if (!post) {
+  return null;
+}
+
+return {
+  ...post,
+
+  author: {
+    ...post.author,
+    isFollowing:
+      post.author.followers.length > 0,
+  },
+};
 };
 
 
@@ -245,3 +259,50 @@ export const updatePostService = async (
   });
 
 };
+
+
+// trend oost
+export const getTrendingPostsService =
+  async () => {
+
+    const posts =
+      await prisma.post.findMany({
+
+        include: {
+
+          author: {
+            select: {
+              id: true,
+              username: true,
+              name: true,
+              avatar: true,
+            },
+          },
+
+          _count: {
+            select: {
+              reactions: true,
+              comments: true,
+            },
+          },
+
+        },
+
+      });
+
+    const trendingPosts = posts
+      .map((post) => ({
+        ...post,
+
+        score:
+          post._count.reactions +
+          post._count.comments,
+      }))
+      .sort(
+        (a, b) =>
+          b.score - a.score
+      )
+      .slice(0, 4);
+
+    return trendingPosts;
+  };
