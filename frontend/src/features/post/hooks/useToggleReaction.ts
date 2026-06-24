@@ -14,6 +14,9 @@ export const useToggleReaction = () => {
       queryClient.invalidateQueries({
         queryKey: ["post"],
       });
+      queryClient.invalidateQueries({
+  queryKey: ["suggestions"],
+});
     },
   });
 };
