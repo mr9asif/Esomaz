@@ -27,7 +27,18 @@ export interface Post {
     createdAt: string;
     updatedAt: string;
 
-    author: Author;
+    author: {
+  id: string;
+  name: string;
+  username: string;
+  avatar?: string;
+
+  isFollowing: boolean;
+  _count?: {
+  reactions: number;
+  comments: number;
+};
+};
 
     media: Media[];
 
