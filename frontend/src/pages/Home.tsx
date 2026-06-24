@@ -3,8 +3,15 @@ import RightSidebar from "@/components/sidebar/RightSidebar";
 import CreatePost from "@/features/post/components/createPost/CreatePost";
 import Feed from "@/features/post/components/feed/Feed";
 import MainLayout from "@/layouts/MainLayout";
+import { useState } from "react";
 
 const Home = () => {
+    const [tab, setTab] = useState<
+  "forYou" | "following"
+>("forYou");
+
+console.log("props tab =", tab);
+
     return (
         <MainLayout>
             <div className="max-w-[1800px] mx-auto flex ">
@@ -19,23 +26,34 @@ const Home = () => {
 
                     <div className="sticky top-0 bg-white/90 backdrop-blur-md z-20 border-b">
 
-                        <div className="flex">
+                      <div className="flex">
+  <button
+    onClick={() => setTab("forYou")}
+    className={`flex-1 py-4 font-semibold transition ${
+      tab === "forYou"
+        ? "border-b-2 border-black text-black"
+        : "text-gray-500"
+    }`}
+  >
+    For You
+  </button>
 
-                            <button className="flex-1 py-4 font-semibold border-b-2 border-black">
-                                For You
-                            </button>
-
-                            <button className="flex-1 py-4 text-gray-500 hover:bg-gray-100 transition">
-                                Following
-                            </button>
-
-                        </div>
+  <button
+    onClick={() => setTab("following")}
+    className={`flex-1 py-4 font-semibold transition ${
+      tab === "following"
+        ? "border-b-2 border-black text-black"
+        : "text-gray-500"
+    }`}
+  >
+    Following
+  </button>
+</div>
 
                     </div>
 
                     <CreatePost />
-
-                    <Feed />
+                  <Feed tab={tab} />
 
                 </main>
 

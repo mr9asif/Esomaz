@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import SearchDropdown from "../ui/SearchDropDown";
+import SearchDropdown from "../ui/SearchDropdown";
 
 const Navbar = () => {
 const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);

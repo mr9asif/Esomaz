@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import {
-    getFollowersService,
-    getFollowingService,
-    toggleFollowService,
+  getFollowersService,
+  getFollowingService,
+  toggleFollowService,
 } from "./follow.service.js";
 
 export const toggleFollowController = async (
@@ -53,3 +53,4 @@ export const getFollowingController = async (
   });
 
 };
+

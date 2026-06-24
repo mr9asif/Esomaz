@@ -103,37 +103,71 @@ export const getFollowersService = async (
 export const getFollowingService = async (
   userId: string
 ) => {
-
-  return prisma.follow.findMany({
-
+  const posts = await prisma.post.findMany({
     where: {
-      followerId: userId,
+      author: {
+        followers: {
+          some: {
+            followerId: userId,
+          },
+        },
+      },
+    },
+
+    orderBy: {
+      createdAt: "desc",
     },
 
     include: {
-
-      following: {
-
+      author: {
         select: {
-
           id: true,
           name: true,
           username: true,
           avatar: true,
-          isVerified: true,
 
+          followers: {
+            where: {
+              followerId: userId,
+            },
+            select: {
+              id: true,
+            },
+          },
         },
-
       },
 
+      media: true,
+
+      reactions: true,
+
+      bookmarks: {
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+        },
+      },
+
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
-
-    orderBy: {
-
-      createdAt: "desc",
-
-    },
-
   });
 
+  return posts.map((post) => ({
+    ...post,
+
+    author: {
+      ...post.author,
+      isFollowing:
+        post.author.followers.length > 0,
+    },
+
+    isBookmarked:
+      post.bookmarks.length > 0,
+  }));
 };
