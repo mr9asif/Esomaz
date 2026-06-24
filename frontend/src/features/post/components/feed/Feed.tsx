@@ -9,13 +9,14 @@ export default function Feed() {
   }
 
   return (
-    <div className="space-y-5 border-none">
+    <div className="space-y-5 border-none pb-32">
       {data?.map((post) => (
         <PostCard
           key={post.id}
           post={post}
         />
       ))}
+      
     </div>
   );
 }

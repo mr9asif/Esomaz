@@ -7,20 +7,38 @@ import {
   Bookmark,
   CircleHelp,
   LogOut,
-  Search,
   Settings,
   User,
-  Users,
+  Users
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import SearchDropdown from "../ui/SearchDropDown";
 
 const Navbar = () => {
 const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
 const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+const desktopMenuRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      desktopMenuRef.current &&
+      !desktopMenuRef.current.contains(event.target as Node)
+    ) {
+      setDesktopMenuOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
 const handleLogout = async () => {
   try {
@@ -54,7 +72,7 @@ const handleLogout = async () => {
             </Link>
 
             {user ? (
-              <div className="relative">
+              <div   ref={desktopMenuRef} className="relative">
 
                 <button
                      onClick={() => setMobileDrawerOpen(true)}
@@ -204,7 +222,7 @@ const handleLogout = async () => {
                 Esomaz
               </Link>
 
-              <div className="relative w-80">
+              {/* <div className="relative w-80">
 
                 <Search
                   className="absolute left-3 top-3 text-gray-400"
@@ -216,7 +234,8 @@ const handleLogout = async () => {
                   className="w-full bg-gray-100 rounded-full py-2 pl-10 pr-4 outline-none"
                 />
 
-              </div>
+              </div> */}
+              <SearchDropdown></SearchDropdown>
 
             </div>
 

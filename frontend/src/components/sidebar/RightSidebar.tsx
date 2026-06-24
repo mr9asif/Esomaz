@@ -2,10 +2,7 @@ const RightSidebar = () => {
     return (
         <aside className="hidden xl:block w-[350px] h-screen sticky top-0 overflow-y-auto p-5">
 
-            <input
-                placeholder="Search"
-                className="w-full border rounded-full px-5 py-3 outline-none"
-            />
+           
 
             <div className="mt-6 rounded-2xl bg-gray-100 p-5">
 

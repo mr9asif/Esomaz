@@ -1,10 +1,10 @@
 import { useAuth } from "@/provider/UseAuth";
 import {
-    Bell,
-    Home,
-    MessageCircle,
-    Plus,
-    Search
+  Bell,
+  Home,
+  MessageCircle,
+  Plus,
+  Search
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 

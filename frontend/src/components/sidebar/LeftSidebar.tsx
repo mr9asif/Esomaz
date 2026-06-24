@@ -30,7 +30,7 @@ const menus = [
     icon: Mail,
   },
   {
-    name: "Bookmarks",
+    name: "Saved Posts",
     path: "/bookmarks",
     icon: Bookmark,
   },
