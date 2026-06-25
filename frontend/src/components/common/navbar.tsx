@@ -18,7 +18,11 @@ import SearchDropdown from "../ui/SearchDropdown";
 const Navbar = () => {
 const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
 const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-const desktopMenuRef = useRef<HTMLDivElement>(null);
+const desktopMenuRef =
+  useRef<HTMLDivElement>(null);
+
+const mobileDrawerRef =
+  useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -73,7 +77,7 @@ const handleLogout = async () => {
             <SearchDropdown></SearchDropdown>
 
             {user ? (
-              <div   ref={desktopMenuRef} className="relative">
+              <div   ref={mobileDrawerRef} className="relative">
 
                 <button
                      onClick={() => setMobileDrawerOpen(true)}
@@ -248,7 +252,7 @@ const handleLogout = async () => {
               />
 
               {user ? (
-                <div className="relative">
+                <div   ref={desktopMenuRef} className="relative">
 
                <button
     onClick={() => setDesktopMenuOpen(!desktopMenuOpen)}

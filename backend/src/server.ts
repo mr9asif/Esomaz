@@ -1,12 +1,21 @@
-import { type Request, type Response } from 'express';
-import app, { startServer } from './app.js';
+import type { Request, Response } from "express";
+import { createServer } from "http";
 
+import app, { startServer } from "./app.js";
+import { initializeSocket } from "./socket/index.js";
 
-app.get("/", (req:Request, res:Response)=>{
-    res.send("server in working...")
-})
+const httpServer = createServer(app);
 
-app.listen(3000, ()=>{
-    startServer();
-    console.log("server running on port 3000")
-})
+initializeSocket(httpServer);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Server is working...");
+});
+
+const PORT = 3000;
+
+httpServer.listen(PORT, async () => {
+  await startServer();
+
+  console.log(`🚀 Server running on port ${PORT}`);
+});
