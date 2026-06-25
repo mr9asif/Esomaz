@@ -5,6 +5,7 @@ import express from 'express';
 import { prisma } from './config/prisma.js';
 import authRouter from "./modules/auth/auth.routes.js";
 import bookmarkRoutes from "./modules/bookmark/bookmark.route.js";
+import chatRoutes from "./modules/chat/chat.route.js";
 import commentRoutes from './modules/comments/comment.route.js';
 import followRoutes from "./modules/follow/follow.route.js";
 import postRouter from './modules/post/post.route.js';
@@ -49,6 +50,7 @@ app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/follows", followRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/chat", chatRoutes);
 
 
 export default app;
