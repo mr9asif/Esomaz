@@ -34,6 +34,12 @@ model User {
   comments  Comment[]
   bookmarks Bookmark[]
 
+  // ===== Chat =====
+  conversationParticipants ConversationParticipant[]
+  sentMessages             Message[]
+  notificationsReceived    Notification[]            @relation("NotificationReceiver")
+  notificationsSent        Notification[]            @relation("NotificationSender")
+
   followers Follow[] @relation("Following")
   following Follow[] @relation("Follower")
 
@@ -66,8 +72,9 @@ model Post {
   media     PostMedia[]
   reactions Reaction[]
 
-  comments  Comment[]
-  bookmarks Bookmark[]
+  comments      Comment[]
+  bookmarks     Bookmark[]
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -122,7 +129,8 @@ model Comment {
 
   parent Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
 
-  replies Comment[] @relation("CommentReplies")
+  replies       Comment[]      @relation("CommentReplies")
+  notifications Notification[]
 
   createdAt DateTime @default(now())
 
@@ -143,4 +151,149 @@ model Bookmark {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId])
+}
+
+enum ConversationType {
+  DIRECT
+  GROUP
+}
+
+enum MessageType {
+  TEXT
+  SYSTEM
+}
+
+enum AttachmentType {
+  IMAGE
+  VIDEO
+  FILE
+  AUDIO
+}
+
+enum NotificationType {
+  FOLLOW
+  LIKE
+  COMMENT
+  REPLY
+  MESSAGE
+}
+
+model Conversation {
+  id String @id @default(uuid())
+
+  type ConversationType @default(DIRECT)
+
+  name  String?
+  image String?
+
+  participants ConversationParticipant[]
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ConversationParticipant {
+  id String @id @default(uuid())
+
+  conversationId String
+  userId         String
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  joinedAt   DateTime  @default(now())
+  lastReadAt DateTime?
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id String @id @default(uuid())
+
+  conversationId String
+
+  senderId String
+
+  type MessageType @default(TEXT)
+
+  content String?
+
+  replyToId String?
+
+  seenAt DateTime?
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  replyTo Message? @relation("ReplyMessage", fields: [replyToId], references: [id])
+
+  replies Message[] @relation("ReplyMessage")
+
+  attachments MessageAttachment[]
+
+  notifications Notification[]
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+model MessageAttachment {
+  id String @id @default(uuid())
+
+  messageId String
+
+  url String
+
+  type AttachmentType
+
+  fileName String?
+
+  fileSize BigInt?
+
+  mimeType String?
+
+  duration Int?
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  receiverId String
+  senderId   String
+
+  type NotificationType
+
+  postId    String?
+  commentId String?
+  messageId String?
+
+  isRead Boolean @default(false)
+
+  receiver User @relation("NotificationReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  sender User @relation("NotificationSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  comment Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  message Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([receiverId])
+  @@index([isRead])
 }
