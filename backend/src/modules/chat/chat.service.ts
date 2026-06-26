@@ -1,13 +1,13 @@
 import { AppError } from "../../util/AppError.js";
 import { chatRepository } from "./chat.repository.js";
 import type {
-    CreateDirectConversationPayload,
-    DeleteMessagePayload,
-    EditMessagePayload,
-    GetConversationPayload,
-    GetUserConversationsPayload,
-    MarkMessageSeenPayload,
-    SendMessagePayload,
+  CreateDirectConversationPayload,
+  DeleteMessagePayload,
+  EditMessagePayload,
+  GetConversationPayload,
+  GetUserConversationsPayload,
+  MarkMessageSeenPayload,
+  SendMessagePayload,
 } from "./chat.type.js";
 
 export class ChatService {
@@ -122,7 +122,14 @@ export class ChatService {
       }
     }
 
-    return chatRepository.createMessage(payload);
+    const message =
+  await chatRepository.createMessage(payload);
+
+await chatRepository.touchConversation(
+  payload.conversationId
+);
+
+return message;
   }
 
   /**

@@ -1,28 +1,40 @@
 import type { Server } from "socket.io";
-import { socketStore } from "./socketStore.js";
 import type { AuthenticatedSocket } from "./types.js";
+
+import { registerChatEvents } from "../modules/chat/chat.socket.js";
+import { socketStore } from "./socketStore.js";
 
 export const registerSocketEvents = (
   io: Server,
   socket: AuthenticatedSocket
 ) => {
+
   if (!socket.user) return;
 
-  socketStore.addUser(socket.user.id, socket);
-
-  console.log(
-    `✅ ${socket.user.username} connected (${socket.id})`
+  socketStore.addUser(
+    socket.user.id,
+    socket
   );
 
-  console.log("🟢 Online Users:", socketStore.getOnlineUsers());
+  console.log(
+    `🟢 ${socket.user.username} connected`
+  );
 
-  socket.on("disconnect", () => {
-    socketStore.removeUser(socket.user!.id);
+  registerChatEvents(io, socket);
 
-    console.log(
-      `❌ ${socket.user?.username} disconnected`
-    );
+  socket.on(
+    "disconnect",
+    () => {
 
-    console.log("🟠 Online Users:", socketStore.getOnlineUsers());
-  });
+      socketStore.removeUser(
+        socket.user!.id
+      );
+
+      console.log(
+        `🔴 ${socket.user?.username} disconnected`
+      );
+
+    }
+  );
+
 };
