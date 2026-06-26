@@ -50,6 +50,7 @@ const registerUser = async (
 
   const token = generateToken({
     id: user.id,
+      username: user.username,
     email: user.email,
   });
 
@@ -100,6 +101,7 @@ const loginUser = async (
 
   const token = generateToken({
     id: user.id,
+      username: user.username,
     email: user.email,
   });
 
