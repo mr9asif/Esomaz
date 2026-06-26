@@ -7,6 +7,7 @@ import Register from "../pages/Register";
 
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
+import ChatPage from "@/pages/ChatPage";
 import ProfilePage from "../features/profile/Profile";
 import ProtectedRoute from "./ProtectedRoutes";
 
@@ -24,6 +25,12 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="/messages" element={<ChatPage />} />
+<Route
+  path="/messages/:conversationId"
+  element={<ChatPage />}
+/>
 
 <Route
   path="/post/:id"
