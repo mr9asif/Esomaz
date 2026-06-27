@@ -1,6 +1,14 @@
 import { prisma } from "../../config/prisma.js";
 
 export class ChatRepository {
+
+   constructor() {
+    console.log("🔥 ChatRepository created");
+  }
+
+  hello() {
+    return "hello";
+  }
   /**
    * Find existing DIRECT conversation between two users
    */
@@ -327,6 +335,19 @@ export class ChatRepository {
       },
     });
   }
+/**
+ * Update conversation timestamp
+ */
+async touchConversation(conversationId: string) {
+  return prisma.conversation.update({
+    where: {
+      id: conversationId,
+    },
+    data: {
+      updatedAt: new Date(),
+    },
+  });
+}
 }
 
 export const chatRepository = new ChatRepository();

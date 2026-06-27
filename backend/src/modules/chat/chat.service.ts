@@ -125,6 +125,11 @@ export class ChatService {
     const message =
   await chatRepository.createMessage(payload);
 
+  console.log("Repository methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(chatRepository)));
+console.log("touchConversation:", typeof chatRepository.touchConversation);
+
+console.log("hello:", typeof chatRepository.hello);
+console.log("hello call:", chatRepository.hello?.());
 await chatRepository.touchConversation(
   payload.conversationId
 );

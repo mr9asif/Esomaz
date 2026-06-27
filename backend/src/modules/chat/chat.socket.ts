@@ -42,41 +42,50 @@ export const registerChatEvents = (
   /**
  * Send Message
  */
-socket.on(
-  "chat:send",
-  async (payload) => {
-    try {
-      const message =
-        await chatService.sendMessage({
-          conversationId:
-            payload.conversationId,
+socket.on("chat:send", async (payload) => {
+  console.log("2️⃣ Backend received", payload);
 
-          senderId:
-            socket.user!.id,
+  try {
+    const message = await chatService.sendMessage({
+      conversationId: payload.conversationId,
+      senderId: socket.user!.id,
+      content: payload.content,
+      replyToId: payload.replyToId,
+    });
 
-          content:
-            payload.content,
+    console.log("📤 Emitting chat:receive", message);
 
-          replyToId:
-            payload.replyToId,
-        });
+    const sockets = await io
+      .in(payload.conversationId)
+      .fetchSockets();
 
-      io.to(payload.conversationId).emit(
-        "chat:receive",
-        message
-      );
-    } catch (error) {
-      socket.emit(
-        "chat:error",
-        {
-          message:
-            error instanceof Error
-              ? error.message
-              : "Failed to send message",
-        }
-      );
-    }
+    console.log("========== ROOM ==========");
+    console.log("Room:", payload.conversationId);
+    console.log("Socket count:", sockets.length);
+    console.log(
+      sockets.map((socket) => ({
+        id: socket.id,
+      }))
+    );
+    console.log("==========================");
+
+    // ⭐⭐⭐ YOU REMOVED THIS ⭐⭐⭐
+    io.to(payload.conversationId).emit(
+      "chat:receive",
+      message
+    );
+    console.log("✅ chat:receive emitted");
+
+  } catch (error) {
+    console.error("❌ chat:send error", error);
+
+    socket.emit("chat:error", {
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to send message",
+    });
   }
-);
+});
 
 };
