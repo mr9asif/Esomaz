@@ -1,7 +1,7 @@
+import { useSocket } from "@/socket/useSocket";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useConversation } from "../hooks/useConversation";
 
 import { useAuth } from "@/provider/UseAuth";
@@ -16,6 +16,46 @@ const ChatHeader = () => {
     useConversation(conversationId!);
 
   const { user } = useAuth();
+  const { socket } = useSocket();
+
+const [typingUser, setTypingUser] =
+  useState<string | null>(null);
+
+  useEffect(() => {
+  const handleTyping = ({
+    username,
+  }: {
+    username: string;
+  }) => {
+    setTypingUser(username);
+  };
+
+  const handleStopTyping = () => {
+    setTypingUser(null);
+  };
+
+  socket.on(
+    "chat:typing",
+    handleTyping
+  );
+
+  socket.on(
+    "chat:stopTyping",
+    handleStopTyping
+  );
+
+  return () => {
+    socket.off(
+      "chat:typing",
+      handleTyping
+    );
+
+    socket.off(
+      "chat:stopTyping",
+      handleStopTyping
+    );
+  };
+}, [socket]);
 
   if (!conversation) return null;
 
@@ -54,11 +94,11 @@ const ChatHeader = () => {
 
         </h2>
 
-        <p className="text-sm text-gray-500">
-
-          @{receiver.user.username}
-
-        </p>
+      <p className="text-sm text-gray-500">
+  {typingUser
+    ? "✍️ Typing..."
+    : `@${receiver.user.username}`}
+</p>
 
       </div>
 
