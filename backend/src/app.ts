@@ -8,6 +8,7 @@ import bookmarkRoutes from "./modules/bookmark/bookmark.route.js";
 import chatRoutes from "./modules/chat/chat.route.js";
 import commentRoutes from './modules/comments/comment.route.js';
 import followRoutes from "./modules/follow/follow.route.js";
+import notificationRoutes from "./modules/notification/notification.route.js";
 import postRouter from './modules/post/post.route.js';
 import ReactionRoutes from "./modules/reaction/reaction.route.js";
 import searchRoutes from "./modules/search/search.route.js";
@@ -51,6 +52,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/follows", followRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 
 export default app;
