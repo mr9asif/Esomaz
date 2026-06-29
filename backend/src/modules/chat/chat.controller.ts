@@ -127,13 +127,15 @@ export const sendMessage = async (
   res: Response
 ) => {
   try {
-    const message =
-      await chatService.sendMessage({
-        conversationId: req.body.conversationId,
-        senderId: req.user!.id,
-        content: req.body.content,
-        replyToId: req.body.replyToId,
-      });
+   const message =
+  await chatService.sendMessage({
+    conversationId: req.body.conversationId,
+    senderId: req.user!.id,
+    content: req.body.content,
+    replyToId: req.body.replyToId,
+
+    
+  });
 
     return res.status(201).json({
       success: true,

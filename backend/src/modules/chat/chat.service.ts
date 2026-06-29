@@ -6,8 +6,7 @@ import type {
   EditMessagePayload,
   GetConversationPayload,
   GetUserConversationsPayload,
-  MarkMessageSeenPayload,
-  SendMessagePayload,
+  SendMessagePayload
 } from "./chat.type.js";
 
 export class ChatService {
@@ -226,35 +225,7 @@ return message;
     );
   }
 
-  /**
-   * Seen
-   */
-  async markSeen(
-    payload: MarkMessageSeenPayload
-  ) {
-    const participant =
-      await chatRepository.isParticipant(
-        payload.conversationId,
-        payload.userId
-      );
-
-    if (!participant) {
-   throw new AppError(
-    "Unauthorized",
-    401
-)
-    }
-
-    const result =
-  await chatRepository.markConversationSeen(
-    payload.conversationId,
-    payload.userId
-  );
-
-console.log("Seen Result:", result);
-
-return result;
-  }
+  
 }
 
 export const chatService =

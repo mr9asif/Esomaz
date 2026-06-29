@@ -34,3 +34,12 @@ export interface MarkMessageSeenPayload {
   conversationId: string;
   userId: string;
 }
+
+export interface UploadedAttachment {
+  url: string;
+  type: "IMAGE" | "VIDEO";
+  fileName: string;
+  fileSize: bigint;
+  mimeType: string;
+  duration?: number;
+}
