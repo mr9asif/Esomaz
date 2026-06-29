@@ -3,14 +3,14 @@ import { Router } from "express";
 import protect from "../../middleware/protect.js";
 
 import {
-    createDirectConversation,
-    deleteMessage,
-    editMessage,
-    getConversation,
-    getMessages,
-    getUserConversations,
-    markSeen,
-    sendMessage,
+  createDirectConversation,
+  deleteMessage,
+  editMessage,
+  getConversation,
+  getMessages,
+  getUserConversations,
+
+  sendMessage,
 } from "./chat.controller.js";
 
 const router = Router();
@@ -72,11 +72,11 @@ router.delete(
   deleteMessage
 );
 
-// Seen
-router.patch(
-  "/conversation/:id/seen",
-  protect,
-  markSeen
-);
+// // Seen
+// router.patch(
+//   "/conversation/:id/seen",
+//   protect,
+//   markSeen
+// );
 
 export default router;

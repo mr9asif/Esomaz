@@ -241,7 +241,7 @@ export class ChatRepository {
     return prisma.message.findMany({
       where: {
         conversationId,
-        deletedAt: null,
+        
       },
 
       include: {
@@ -321,6 +321,7 @@ async deleteMessage(messageId: string) {
 
     data: {
       deletedAt: new Date(),
+      content: "🚫 This message was deleted."
     },
 
     include: {
@@ -347,9 +348,9 @@ async touchConversation(conversationId: string) {
     where: {
       id: conversationId,
     },
-    data: {
+   data: {
       updatedAt: new Date(),
-    },
+}
   });
 }
 }

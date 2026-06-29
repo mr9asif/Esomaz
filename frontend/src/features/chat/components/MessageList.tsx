@@ -125,6 +125,42 @@ useEffect(() => {
     );
   };
 }, [conversationId, socket]);
+
+// delete message 
+useEffect(() => {
+  const handleDeleted = (
+    deletedMessage: Message
+  ) => {
+    if (
+      deletedMessage.conversationId !==
+      conversationId
+    ) {
+      return;
+    }
+
+    queryClient.setQueryData<Message[]>(
+      ["messages", conversationId],
+      (old = []) =>
+        old.map((message) =>
+          message.id === deletedMessage.id
+            ? deletedMessage
+            : message
+        )
+    );
+  };
+
+  socket.on(
+    "chat:deleted",
+    handleDeleted
+  );
+
+  return () => {
+    socket.off(
+      "chat:deleted",
+      handleDeleted
+    );
+  };
+}, [conversationId, socket]);
     
 
   if (isLoading) {

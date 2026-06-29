@@ -2,8 +2,9 @@ import type { Message } from "../types/chat.types";
 
 import { useAuth } from "@/provider/UseAuth";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import Swal from "sweetalert2";
+import { useDeleteMessage } from "../hooks/useDeleteMessage";
 import { useEditMessage } from "../hooks/useEditMessage";
-
 
 import { useState } from "react";
 import { formatMessageTime } from "../utils/formateMessageTime";
@@ -25,16 +26,14 @@ const [content, setContent] = useState(
 
 const { mutate: editMessage, isPending } =
   useEditMessage();
+  const {
+  mutate: deleteMessage,
+  isPending: isDeleting,
+} = useDeleteMessage();
 
   const isMine =
     message.sender.id === user?.id;
-    console.log(isMine)
-    console.log(message);
-    console.log({
-  id: message.id,
-  createdAt: message.createdAt,
-  updatedAt: message.updatedAt,
-});
+  const isDeleted = !!message.deletedAt;
 
 
 
@@ -46,8 +45,8 @@ const { mutate: editMessage, isPending } =
   >
     <div className="relative max-w-sm">
 
-      {isMine && (
-        <div className="absolute -right-10 top-2 z-10">
+     {isMine && !isDeleted && (
+  <div className="absolute -right-10 top-2 z-10">
           <button
             onClick={() =>
               setOpenMenu((prev) => !prev)
@@ -71,20 +70,31 @@ setContent(message.content ?? "");
                 <Pencil size={16} />
                 Edit
               </button>
+<button
+  disabled={isDeleting}
+  onClick={async () => {
+    setOpenMenu(false);
 
-              <button
-                onClick={() => {
-                  setOpenMenu(false);
-                  console.log(
-                    "Delete",
-                    message.id
-                  );
-                }}
-                className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50"
-              >
-                <Trash2 size={16} />
-                Delete
-              </button>
+    const result = await Swal.fire({
+      title: "Delete message?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
+    deleteMessage(message.id);
+  }}
+  className="flex w-full items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50"
+>
+  <Trash2 size={16} />
+  {isDeleting ? "Deleting..." : "Delete"}
+</button>
 
             </div>
           )}
@@ -98,7 +108,11 @@ setContent(message.content ?? "");
       : "bg-gray-100 text-black"
   }`}
 >
-  {isEditing ? (
+  {isDeleted ? (
+  <span className="italic text-gray-400">
+      {message.content}
+  </span>
+) :isEditing ? (
     <div className="space-y-2">
       <input
         autoFocus
@@ -185,7 +199,8 @@ setContent(message.content ?? "");
       >
   {formatMessageTime(message.createdAt)}
 
-        {message.updatedAt &&
+  {!isDeleted &&
+ message.updatedAt &&
  message.updatedAt !== message.createdAt && (
   <span className="ml-1 italic">
     • Edited

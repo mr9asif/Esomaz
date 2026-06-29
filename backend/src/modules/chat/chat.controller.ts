@@ -195,14 +195,21 @@ export const deleteMessage = async (
   res: Response
 ) => {
   try {
-    await chatService.deleteMessage({
-      messageId: req.params.id as string,
-      userId: req.user!.id,
-    });
+    const message =
+      await chatService.deleteMessage({
+        messageId: req.params.id as string,
+        userId: req.user!.id,
+      });
+
+    // Realtime update
+    getIO()
+      .to(message.conversationId)
+      .emit("chat:deleted", message);
 
     return res.status(200).json({
       success: true,
       message: "Message deleted successfully.",
+      data: message,
     });
   } catch (error) {
     return res.status(400).json({
@@ -214,4 +221,3 @@ export const deleteMessage = async (
     });
   }
 };
-
