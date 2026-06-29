@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import type { SearchUser } from "../types/chat.types";
+
+import { useCreateDirectConversation } from "../hooks/useCreateDirectConversation";
 
 interface Props {
   users: SearchUser[];
@@ -6,8 +9,31 @@ interface Props {
 }
 
 const SearchResults = ({
-  users,
+  users, onClose,
 }: Props) => {
+const navigate = useNavigate();
+
+const { mutateAsync } =
+  useCreateDirectConversation();
+
+  const handleOpenChat = async (
+  receiverId: string
+) => {
+  try {
+    const conversation =
+      await mutateAsync(receiverId);
+
+    onClose();
+
+    navigate(
+      `/messages/${conversation.id}`
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
   return (
    <div className="absolute inset-0 z-50 overflow-y-auto bg-white shadow-lg">
 
@@ -17,10 +43,13 @@ const SearchResults = ({
         </div>
       ) : (
         users.map((user) => (
-          <button
-            key={user.id}
-            className="flex w-full items-center gap-3 border-b p-4 text-left transition hover:bg-muted"
-          >
+        <button
+  key={user.id}
+  onClick={() =>
+    handleOpenChat(user.id)
+  }
+  className="flex w-full items-center gap-3 border-b p-4 text-left transition hover:bg-muted"
+>
             <img
               src={
                 user.avatar ||

@@ -10,7 +10,7 @@ const SearchInput = ({
   onChange,
 }: Props) => {
   return (
-    <div className="relative">
+    <div className="relative flex justify-center items-center gap-1">
       <Search
         size={18}
         className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
