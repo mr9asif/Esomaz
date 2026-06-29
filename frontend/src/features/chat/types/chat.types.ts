@@ -57,3 +57,11 @@ export interface Conversation {
 
   messages: Message[];
 }
+
+export interface SearchUser {
+  id: string;
+  name: string;
+  username: string;
+  avatar?: string | null;
+  bio?: string | null;
+}
