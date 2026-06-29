@@ -1,5 +1,6 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../../middleware/protect.js";
+import { getIO } from "../../socket/index.js";
 import { chatService } from "./chat.service.js";
 
 /**
@@ -165,6 +166,11 @@ export const editMessage = async (
         content: req.body.content,
       });
 
+    // Broadcast to everyone in the conversation
+    getIO()
+      .to(message.conversationId)
+      .emit("chat:edited", message);
+
     return res.status(200).json({
       success: true,
       message: "Message updated successfully.",
@@ -209,30 +215,3 @@ export const deleteMessage = async (
   }
 };
 
-/**
- * Mark conversation as seen
- */
-export const markSeen = async (
-  req: AuthRequest,
-  res: Response
-) => {
-  try {
-    await chatService.markSeen({
-      conversationId: req.params.id as string,
-      userId: req.user!.id,
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Conversation marked as seen.",
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Something went wrong",
-    });
-  }
-};

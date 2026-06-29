@@ -338,29 +338,7 @@ async deleteMessage(messageId: string) {
     },
   });
 }
-  /**
-   * Seen Conversation
-   */
-  async markConversationSeen(
-    conversationId: string,
-    userId: string
-  ) {
-    return prisma.message.updateMany({
-      where: {
-        conversationId,
-
-        senderId: {
-          not: userId,
-        },
-
-        seenAt: null,
-      },
-
-      data: {
-        seenAt: new Date(),
-      },
-    });
-  }
+  
 /**
  * Update conversation timestamp
  */

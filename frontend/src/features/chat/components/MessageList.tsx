@@ -19,12 +19,66 @@ const MessageList = () => {
     const { socket } = useSocket();
 
     useEffect(() => {
+  if (!conversationId) return;
+
+  if (!data?.length) return;
+
+  socket.emit(
+    "chat:seen",
+    conversationId
+  );
+}, [conversationId, data, socket]);
+
+useEffect(() => {
+  const handleSeen = ({
+    conversationId: updatedConversationId,
+  }: {
+    conversationId: string;
+  }) => {
+    if (
+      updatedConversationId !==
+      conversationId
+    ) {
+      return;
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: [
+        "messages",
+        conversationId,
+      ],
+    });
+  };
+
+  socket.on(
+    "chat:seen",
+    handleSeen
+  );
+
+  return () => {
+    socket.off(
+      "chat:seen",
+      handleSeen
+    );
+  };
+}, [conversationId, socket]);
+
+ useEffect(() => {
   const handleReceive = (message: Message) => {
-    if (message.conversationId !== conversationId) return;
+    console.log("📩 Received socket message:", message);
+
+    if (message.conversationId !== conversationId) {
+      console.log("❌ Wrong conversation");
+      return;
+    }
 
     queryClient.setQueryData<Message[]>(
       ["messages", conversationId],
-      (old = []) => [...old, message]
+      (old = []) => {
+        console.log("Old Cache:", old);
+
+        return [...old, message];
+      }
     );
   };
 
@@ -32,6 +86,43 @@ const MessageList = () => {
 
   return () => {
     socket.off("chat:receive", handleReceive);
+  };
+}, [conversationId, socket]);
+
+// edit message 
+useEffect(() => {
+  const handleEdited = (
+    updatedMessage: Message
+  ) => {
+    if (
+      updatedMessage.conversationId !==
+      conversationId
+    ) {
+      return;
+    }
+
+    queryClient.setQueryData<Message[]>(
+      ["messages", conversationId],
+      (old = []) => {
+        return old.map((message) =>
+          message.id === updatedMessage.id
+            ? updatedMessage
+            : message
+        );
+      }
+    );
+  };
+
+  socket.on(
+    "chat:edited",
+    handleEdited
+  );
+
+  return () => {
+    socket.off(
+      "chat:edited",
+      handleEdited
+    );
   };
 }, [conversationId, socket]);
     

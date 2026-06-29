@@ -2,9 +2,11 @@ import type { Message } from "../types/chat.types";
 
 import { useAuth } from "@/provider/UseAuth";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { useEditMessage } from "../hooks/useEditMessage";
 
 
 import { useState } from "react";
+import { formatMessageTime } from "../utils/formateMessageTime";
 interface Props {
   message: Message;
   //   onEdit: (messageId: string, content: string) => void;
@@ -15,12 +17,26 @@ const MessageBubble = ({
   message,
 }: Props) => {
   const { user } = useAuth();
-  const [openMenu, setOpenMenu] = useState(false);
+const [openMenu, setOpenMenu] = useState(false);
+const [isEditing, setIsEditing] = useState(false);
+const [content, setContent] = useState(
+  message.content ?? ""
+);
+
+const { mutate: editMessage, isPending } =
+  useEditMessage();
 
   const isMine =
     message.sender.id === user?.id;
     console.log(isMine)
     console.log(message);
+    console.log({
+  id: message.id,
+  createdAt: message.createdAt,
+  updatedAt: message.updatedAt,
+});
+
+
 
   return (
   <div
@@ -45,13 +61,11 @@ const MessageBubble = ({
             <div className="absolute right-8 top-0 mt-2 w-36 rounded-xl z-50 border bg-white shadow-xl overflow-hidden">
 
               <button
-                onClick={() => {
-                  setOpenMenu(false);
-                  console.log(
-                    "Edit",
-                    message.id
-                  );
-                }}
+              onClick={() => {
+  setOpenMenu(false);
+setContent(message.content ?? "");
+  setIsEditing(true);
+}}
                 className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-100"
               >
                 <Pencil size={16} />
@@ -78,14 +92,89 @@ const MessageBubble = ({
       )}
 
       <div
-        className={`rounded-2xl px-4 py-2 break-words ${
-          isMine
-            ? "bg-blue-500 text-white"
-            : "bg-gray-100 text-black"
-        }`}
-      >
-        {message.content}
+  className={`rounded-2xl px-4 py-2 ${
+    isMine
+      ? "bg-blue-500 text-white"
+      : "bg-gray-100 text-black"
+  }`}
+>
+  {isEditing ? (
+    <div className="space-y-2">
+      <input
+        autoFocus
+        value={content}
+        onChange={(e) =>
+          setContent(e.target.value)
+        }
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            setIsEditing(false);
+       setContent(message.content ?? "");
+          }
+
+          if (e.key === "Enter") {
+            if (
+              !content.trim() ||
+              content === message.content
+            ) {
+              setIsEditing(false);
+              return;
+            }
+
+            editMessage(
+              {
+                messageId: message.id,
+                content,
+              },
+              {
+                onSuccess: () => {
+                  setIsEditing(false);
+                },
+              }
+            );
+          }
+        }}
+        className="w-full rounded border bg-white px-2 py-1 text-black outline-none"
+      />
+
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={() => {
+            setIsEditing(false);
+          setContent(message.content ?? "");
+          }}
+          className="text-xs"
+        >
+          Cancel
+        </button>
+
+        <button
+          disabled={isPending}
+          onClick={() => {
+            editMessage(
+              {
+                messageId: message.id,
+                content,
+              },
+              {
+                onSuccess: () => {
+                  setIsEditing(false);
+                },
+              }
+            );
+          }}
+          className="rounded bg-white px-2 py-1 text-xs text-blue-600"
+        >
+          {isPending
+            ? "Saving..."
+            : "Save"}
+        </button>
       </div>
+    </div>
+  ) : (
+    message.content
+  )}
+</div>
 
       <div
         className={`mt-1 text-xs text-gray-500 ${
@@ -94,19 +183,17 @@ const MessageBubble = ({
             : "text-left"
         }`}
       >
-        {new Date(
-          message.createdAt
-        ).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+  {formatMessageTime(message.createdAt)}
+
+        {message.updatedAt &&
+ message.updatedAt !== message.createdAt && (
+  <span className="ml-1 italic">
+    • Edited
+  </span>
+)}
       </div>
 
-      {isMine && message.seenAt && (
-        <div className="text-xs text-right text-blue-500">
-          Seen
-        </div>
-      )}
+    
     </div>
   </div>
 );

@@ -4,7 +4,7 @@ import type { AuthenticatedSocket } from "../../socket/types.js";
 import {
   registerDeleteEvent,
   registerEditEvent,
-  registerSeenEvent,
+
   registerSendEvent,
   registerTypingEvent,
 } from "./events/index.event.js";
@@ -36,7 +36,7 @@ export const registerChatEvents = (
   });
 
   registerSendEvent(io, socket);
-  registerSeenEvent(io, socket);
+
   registerTypingEvent(io, socket);
 
   registerEditEvent(io, socket);
