@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import protect from "../../middleware/protect.js";
 
+import { upload } from "../../middleware/upload.js";
 import {
   createDirectConversation,
   deleteMessage,
@@ -12,6 +13,7 @@ import {
 
   sendMessage,
 } from "./chat.controller.js";
+import { uploadAttachments } from "./upload.controller.js";
 
 const router = Router();
 
@@ -44,12 +46,24 @@ router.get(
  * Messages
  */
 
+/**
+ * Upload Chat Attachments
+ */
+router.post(
+  "/upload",
+  protect,
+  upload.array("files", 10),
+  uploadAttachments
+);
+
 // Get Messages
 router.get(
   "/conversation/:id/messages",
   protect,
   getMessages
 );
+
+
 
 // Send Message
 router.post(

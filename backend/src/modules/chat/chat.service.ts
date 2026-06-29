@@ -99,14 +99,15 @@ export class ChatService {
 )
     }
 
-    if (
-      !payload.content &&
-      !payload.replyToId
-    ) {
-      throw new Error(
-        "Message cannot be empty."
-      );
-    }
+  const hasContent =
+  payload.content?.trim().length;
+
+const hasAttachments =
+  (payload.attachments?.length ?? 0) > 0;
+
+if (!hasContent && !hasAttachments) {
+  throw new Error("Message cannot be empty.");
+}
 
     if (payload.replyToId) {
       const reply =
@@ -124,11 +125,7 @@ export class ChatService {
     const message =
   await chatRepository.createMessage(payload);
 
-  console.log("Repository methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(chatRepository)));
-console.log("touchConversation:", typeof chatRepository.touchConversation);
 
-console.log("hello:", typeof chatRepository.hello);
-console.log("hello call:", chatRepository.hello?.());
 await chatRepository.touchConversation(
   payload.conversationId
 );

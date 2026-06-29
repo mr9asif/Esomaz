@@ -15,8 +15,11 @@ export interface GetUserConversationsPayload {
 export interface SendMessagePayload {
   conversationId: string;
   senderId: string;
-  content?: string;
-  replyToId?: string;
+   content?:string
+
+    replyToId?:string
+
+    attachments?: UploadedAttachment[]
 }
 
 export interface EditMessagePayload {
@@ -39,7 +42,7 @@ export interface UploadedAttachment {
   url: string;
   type: "IMAGE" | "VIDEO";
   fileName: string;
-  fileSize: bigint;
+  fileSize: number;
   mimeType: string;
   duration?: number;
 }

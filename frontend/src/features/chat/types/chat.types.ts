@@ -15,7 +15,7 @@ export interface ConversationParticipant {
   user: ChatUser;
 }
 
-export interface MessageAttachment {
+export interface UploadedAttachment {
   id: string;
   url: string;
   type: "IMAGE" | "VIDEO" | "FILE" | "AUDIO";
@@ -39,7 +39,7 @@ export interface Message {
 
   sender: ChatUser;
 
-  attachments: MessageAttachment[];
+  attachments: UploadedAttachment[];
 
   replyTo: Message | null;
 }

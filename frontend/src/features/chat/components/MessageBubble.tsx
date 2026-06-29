@@ -32,7 +32,7 @@ const { mutate: editMessage, isPending } =
 } = useDeleteMessage();
 
   const isMine =
-    message.sender.id === user?.id;
+    message?.sender?.id === user?.id;
   const isDeleted = !!message.deletedAt;
 
 
@@ -186,8 +186,42 @@ setContent(message.content ?? "");
       </div>
     </div>
   ) : (
-    message.content
-  )}
+  <div className="space-y-2">
+
+    {message.attachments?.length > 0 && (
+      <div className="space-y-2">
+        {message.attachments.map(
+          (attachment) => (
+            <div key={attachment.id}>
+              {attachment.type ===
+              "IMAGE" ? (
+                <img
+                  src={attachment.url}
+                  alt=""
+                  className="max-w-xs rounded-xl"
+                />
+              ) : (
+                <video
+                  controls
+                  className="max-w-xs rounded-xl"
+                >
+                  <source
+                    src={attachment.url}
+                  />
+                </video>
+              )}
+            </div>
+          )
+        )}
+      </div>
+    )}
+
+    {message.content && (
+      <p>{message.content}</p>
+    )}
+
+  </div>
+)}
 </div>
 
       <div

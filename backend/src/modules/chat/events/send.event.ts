@@ -23,6 +23,8 @@ export const registerSendEvent = (
 
             replyToId:
               payload.replyToId,
+            attachments:
+              payload.attachments ?? []
           });
 
         io.to(

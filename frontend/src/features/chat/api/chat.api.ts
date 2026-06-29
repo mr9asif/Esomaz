@@ -1,4 +1,5 @@
 import axios from "@/lib/axios";
+import type { UploadedAttachment } from "../types/chat.types";
 
 /* ---------------- Conversation ---------------- */
 
@@ -96,6 +97,29 @@ export const markSeen = async (
 ) => {
   const { data } = await axios.patch(
     `/chat/conversation/${conversationId}/seen`
+  );
+
+  return data.data;
+};
+
+
+export const uploadAttachments = async (
+  files: File[]
+): Promise<UploadedAttachment[]> => {
+  const formData = new FormData();
+
+  files.forEach((file) => {
+    formData.append("files", file);
+  });
+
+  const { data } = await axios.post(
+    "/chat/upload",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
 
   return data.data;

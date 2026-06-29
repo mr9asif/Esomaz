@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import type { UploadedAttachment } from "./chat.type.js";
 
 export class ChatRepository {
 
@@ -148,11 +149,12 @@ export class ChatRepository {
     });
   }
 
-  /**
-   * Get all conversations
-   */
-  async getUserConversations(userId: string) {
-    return prisma.conversation.findMany({
+ /**
+ * Get all conversations
+ */
+async getUserConversations(userId: string) {
+  const conversations =
+    await prisma.conversation.findMany({
       where: {
         participants: {
           some: {
@@ -204,66 +206,145 @@ export class ChatRepository {
         updatedAt: "desc",
       },
     });
-  }
+
+  return conversations.map((conversation) => ({
+    ...conversation,
+
+    messages: conversation.messages.map(
+      (message) => ({
+        ...message,
+
+        attachments:
+          message.attachments.map(
+            (attachment) => ({
+              ...attachment,
+
+              fileSize:
+                attachment.fileSize != null
+                  ? Number(
+                      attachment.fileSize
+                    )
+                  : null,
+            })
+          ),
+      })
+    ),
+  }));
+}
 
   /**
-   * Create message
-   */
-  async createMessage(data: {
-    conversationId: string;
-    senderId: string;
-    content?: string;
-    replyToId?: string;
-  }) {
-    return prisma.message.create({
-      data,
+ * Create message
+ */
+async createMessage(data: {
+  conversationId: string;
+  senderId: string;
+  content?: string;
+  replyToId?: string;
+  attachments?: UploadedAttachment[];
+}) {
+  const message = await prisma.message.create({
+    data: {
+      conversationId: data.conversationId,
 
-      include: {
-        sender: {
-          select: {
-            id: true,
-            username: true,
-            avatar: true,
-          },
+      senderId: data.senderId,
+
+      content: data.content ?? null,
+
+      replyToId: data.replyToId ?? null,
+
+      ...(data.attachments?.length
+        ? {
+            attachments: {
+              create: data.attachments.map(
+                (attachment) => ({
+                  ...attachment,
+
+                  fileSize:
+                    attachment.fileSize != null
+                      ? BigInt(
+                          attachment.fileSize
+                        )
+                      : null,
+                })
+              ),
+            },
+          }
+        : {}),
+    },
+
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          avatar: true,
         },
-
-        attachments: true,
-
-        replyTo: true,
       },
-    });
-  }
 
+      attachments: true,
+
+      replyTo: true,
+    },
+  });
+
+  return {
+    ...message,
+
+    attachments: message.attachments.map(
+      (attachment) => ({
+        ...attachment,
+
+        fileSize:
+          attachment.fileSize != null
+            ? Number(attachment.fileSize)
+            : null,
+      })
+    ),
+  };
+}
   /**
-   * Get Messages
-   */
-  async getMessages(conversationId: string) {
-    return prisma.message.findMany({
-      where: {
-        conversationId,
-        
-      },
+ * Get Messages
+ */
+async getMessages(conversationId: string) {
+  const messages = await prisma.message.findMany({
+    where: {
+      conversationId,
+    },
 
-      include: {
-        sender: {
-          select: {
-            id: true,
-            username: true,
-            avatar: true,
-          },
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          avatar: true,
         },
-
-        attachments: true,
-
-        replyTo: true,
       },
 
-      orderBy: {
-        createdAt: "asc",
-      },
-    });
-  }
+      attachments: true,
 
+      replyTo: true,
+    },
+
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  return messages.map((message) => ({
+    ...message,
+
+    attachments: message.attachments.map(
+      (attachment) => ({
+        ...attachment,
+
+        fileSize:
+          attachment.fileSize != null
+            ? Number(attachment.fileSize)
+            : null,
+      })
+    ),
+  }));
+}
   /**
    * Get Message
    */
