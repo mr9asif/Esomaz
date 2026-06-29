@@ -165,37 +165,38 @@ return message;
   /**
    * Edit Message
    */
-  async editMessage(
-    payload: EditMessagePayload
-  ) {
-    const message =
-      await chatRepository.getMessage(
-        payload.messageId
-      );
+ async editMessage(
+  payload: EditMessagePayload
+) {
+  const existingMessage =
+    await chatRepository.getMessage(
+      payload.messageId
+    );
 
-    if (!message) {
-      throw new Error(
-        "Message not found."
-      );
-    }
+  if (!existingMessage) {
+    throw new Error("Message not found.");
+  }
 
-    if (
-      message.senderId !== payload.userId
-    ) {
-      throw new Error("Unauthorized");
-    }
+  if (existingMessage.senderId !== payload.userId) {
+    throw new Error("Unauthorized");
+  }
 
-    if (message.deletedAt) {
-      throw new Error(
-        "Message already deleted."
-      );
-    }
+  if (existingMessage.deletedAt) {
+    throw new Error("Message already deleted.");
+  }
 
-    return chatRepository.editMessage(
+  const updatedMessage =
+    await chatRepository.editMessage(
       payload.messageId,
       payload.content
     );
-  }
+
+  await chatRepository.touchConversation(
+    updatedMessage.conversationId
+  );
+
+  return updatedMessage;
+}
 
   /**
    * Delete Message
@@ -244,10 +245,15 @@ return message;
 )
     }
 
-    return chatRepository.markConversationSeen(
-      payload.conversationId,
-      payload.userId
-    );
+    const result =
+  await chatRepository.markConversationSeen(
+    payload.conversationId,
+    payload.userId
+  );
+
+console.log("Seen Result:", result);
+
+return result;
   }
 }
 

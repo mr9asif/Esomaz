@@ -280,38 +280,64 @@ export class ChatRepository {
   }
 
   /**
-   * Edit Message
-   */
-  async editMessage(
-    messageId: string,
-    content: string
-  ) {
-    return prisma.message.update({
-      where: {
-        id: messageId,
+ * Edit Message
+ */
+async editMessage(
+  messageId: string,
+  content: string
+) {
+  return prisma.message.update({
+    where: {
+      id: messageId,
+    },
+
+    data: {
+      content,
+    },
+
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          avatar: true,
+        },
       },
 
-      data: {
-        content,
-      },
-    });
-  }
+      attachments: true,
 
-  /**
-   * Soft Delete
-   */
-  async deleteMessage(messageId: string) {
-    return prisma.message.update({
-      where: {
-        id: messageId,
+      replyTo: true,
+    },
+  });
+}
+ /**
+ * Soft Delete
+ */
+async deleteMessage(messageId: string) {
+  return prisma.message.update({
+    where: {
+      id: messageId,
+    },
+
+    data: {
+      deletedAt: new Date(),
+    },
+
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          avatar: true,
+        },
       },
 
-      data: {
-        deletedAt: new Date(),
-      },
-    });
-  }
+      attachments: true,
 
+      replyTo: true,
+    },
+  });
+}
   /**
    * Seen Conversation
    */
