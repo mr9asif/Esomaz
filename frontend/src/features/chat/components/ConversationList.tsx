@@ -39,7 +39,7 @@ const navigate = useNavigate();
       <ArrowLeft size={20} />
     </button>
         <h1 className="text-2xl font-bold">
-          Messages
+          Chats
         </h1>
 
         <SearchInput

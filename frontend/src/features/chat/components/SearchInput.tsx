@@ -24,7 +24,7 @@ const SearchInput = ({
         }
         placeholder="Search people..."
         className="
-          w-full
+          w-[200px]
           rounded-lg
           border
           border-gray-300

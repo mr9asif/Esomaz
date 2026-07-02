@@ -83,7 +83,7 @@ const MobileBottomNav = () => {
         </NavLink>
 
         <NavLink
-          to={`/profile/${user?.username}`}
+          to={`/messages`}
           className={({ isActive }) =>
             isActive
               ? "text-blue-600"
