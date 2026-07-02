@@ -1,4 +1,6 @@
+
 import { useAuth } from "@/provider/UseAuth";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
   Home,
@@ -6,10 +8,29 @@ import {
   Plus,
   Search
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const MobileBottomNav = () => {
   const { user } = useAuth();
+    const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
+
+  const handleHomeClick = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["posts"], // Change this if your query key is different
+      });
+    } else {
+      navigate("/");
+    }
+  };
+
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t-gray-400 shadow-sm">
@@ -23,6 +44,7 @@ const MobileBottomNav = () => {
               ? "text-blue-600"
               : "text-gray-500"
           }
+          onClick={handleHomeClick}
         >
           <Home size={25} />
         </NavLink>
