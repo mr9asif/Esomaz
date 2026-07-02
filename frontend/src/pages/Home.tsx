@@ -16,10 +16,10 @@ console.log("props tab =", tab);
         <MainLayout>
             <div className="max-w-[1800px] mx-auto flex ">
 
-              <div className="">
+              
                   {/* Left Sidebar */}
                 <LeftSidebar />
-              </div>
+              
 
                 {/* Center */}
                 <main className="flex-1 max-w-[950px]  border-x border-gray-200 min-h-screen">
@@ -58,9 +58,9 @@ console.log("props tab =", tab);
                 </main>
 
                
-             <div className="">
+           
                      <RightSidebar />
-             </div>
+             
 
             </div>
         </MainLayout>

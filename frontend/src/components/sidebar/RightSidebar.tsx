@@ -17,7 +17,7 @@ const RightSidebar = () => {
   useTrendingPosts();
 
   return (
-    <aside className="hidden xl:block w-[350px] h-screen sticky top-0 overflow-y-auto p-5">
+    <aside className="hidden xl:block w-[350px] h-[calc(100vh-64px)] sticky top-20 overflow-y-auto p-5">
 <div className="mt-6 rounded-2xl bg-gray-100 p-5">
 
   <h2 className="font-bold text-xl mb-4">

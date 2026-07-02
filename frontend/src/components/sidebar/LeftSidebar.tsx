@@ -1,10 +1,10 @@
 import {
-    Bell,
-    Bookmark,
-    Compass,
-    Home,
-    Mail,
-    User
+  Bell,
+  Bookmark,
+  Compass,
+  Home,
+  Mail,
+  User
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -36,20 +36,18 @@ const menus = [
   },
   {
     name: "Profile",
-    path: "/profile",
+    path: `/profile`,
     icon: User,
   },
 ];
 
 const LeftSidebar = () => {
     return (
-        <aside className="hidden lg:flex w-72 h-screen sticky top-0 flex-col justify-between p-4 ">
+   <aside className="hidden lg:flex w-72 h-[calc(100vh-64px)] sticky top-20 flex-col justify-between p-4 overflow-hidden">
 
             <div>
 
-                <h1 className="text-3xl font-bold mb-8">
-                    Esomaz
-                </h1>
+            
 
                 <div className="space-y-2">
 
@@ -99,26 +97,7 @@ const LeftSidebar = () => {
 
             <div className="rounded-full p-3 hover:bg-gray-100 cursor-pointer">
 
-                <div className="flex items-center gap-3">
-
-                    <img
-                        src="https://i.pravatar.cc/100"
-                        className="w-12 h-12 rounded-full"
-                    />
-
-                    <div>
-
-                        <h3 className="font-semibold">
-                            Reja
-                        </h3>
-
-                        <p className="text-gray-500 text-sm">
-                            @reja
-                        </p>
-
-                    </div>
-
-                </div>
+              
 
             </div>
 
