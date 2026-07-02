@@ -74,7 +74,9 @@ const handleLogout = async () => {
             >
               Esomaz
             </Link>
-            <SearchDropdown></SearchDropdown>
+            <div className="hidden lg:block">
+              <SearchDropdown></SearchDropdown>
+            </div>
 
             {user ? (
               <div   ref={mobileDrawerRef} className="relative">

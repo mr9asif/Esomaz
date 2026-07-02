@@ -8,6 +8,7 @@ import Register from "../pages/Register";
 import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
+import SearchPage from "@/features/search/components/SearchPage";
 import ChatPage from "@/pages/ChatPage";
 import ProfilePage from "../features/profile/Profile";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -40,6 +41,11 @@ export default function AppRoutes() {
 <Route
   path="/post/:id"
   element={<PostDetails />}
+/>
+
+<Route 
+ path="/search"
+ element={<SearchPage></SearchPage>}
 />
       <Route
         path="/login"

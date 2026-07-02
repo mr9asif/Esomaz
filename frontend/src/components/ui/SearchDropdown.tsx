@@ -1,16 +1,22 @@
 import type {
-    SearchPost,
-    SearchUser,
+  SearchPost,
+  SearchUser,
 } from "@/features/search/search.type";
 import { Loader2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSearch } from "../../features/search/hooks/useSearch";
+  interface SearchDropdownProps {
+  mode?: "dropdown" | "page";
+}
 
-const SearchDropdown = () => {
+const SearchDropdown = ({
+  mode = "dropdown",
+}: SearchDropdownProps) => {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("all");
   const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading } = useSearch(
     query,
@@ -30,8 +36,35 @@ const SearchDropdown = () => {
     }
   };
 
+  useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target as Node)
+    ) {
+      clearSearch();
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
+}, []);
+
   return (
-    <div className="relative w-full max-w-md">
+ <div
+ ref={wrapperRef}
+  className={`${
+    mode === "page"
+      ? "w-full"
+      : "relative w-full max-w-md"
+  }`}
+>
       <input
         ref={inputRef}
         type="text"
@@ -42,13 +75,29 @@ const SearchDropdown = () => {
           setOpen(true);
           setQuery(e.target.value);
         }}
-        className="w-32 md:w-full rounded-lg border px-2 md:px-4 py-1.5 md:py-2 text-sm outline-none"
+       className={`rounded-lg border px-4 py-2 text-sm outline-none ${
+  mode === "page"
+    ? "w-full max-w-xl mx-auto block"
+    : "w-[220px]"
+}`}
       />
 
       {open && query && (
-        <div className="absolute top-12 z-50 w-full rounded-xl border bg-white shadow-lg">
+       <div
+  className={`${
+    mode === "page"
+      ? "mt-6 w-full rounded-xl border bg-white"
+      : "absolute top-12 z-50 w-full rounded-xl border bg-white shadow-lg"
+  }`}
+>
           
-          <div className="flex gap-2 border-b p-2">
+    <div
+  className={`flex gap-2 border-b p-2 ${
+    mode === "page"
+      ? "sticky top-0 bg-white z-10"
+      : ""
+  }`}
+>
             {["all", "users", "post"].map(
               (item) => (
                 <button
@@ -75,7 +124,13 @@ const SearchDropdown = () => {
           )}
 
           {!isLoading && (
-            <div className="max-h-96 overflow-y-auto">
+           <div
+  className={`overflow-y-auto ${
+    mode === "page"
+      ? "max-h-[calc(100vh-180px)]"
+      : "max-h-96"
+  }`}
+>
               
               {data?.users?.map(
                 (user: SearchUser) => (
