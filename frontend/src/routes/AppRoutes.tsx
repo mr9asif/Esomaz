@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
+import CommunityPage from "@/features/Communites/components/CommunityPage";
 import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
@@ -73,13 +74,22 @@ export default function AppRoutes() {
 />
 
 <Route 
-   path="/setting"
+   path="/settings"
    element={
     <ProtectedRoute>
 
        <SettingPage/>
     </ProtectedRoute>
    }
+/>
+
+<Route 
+  path="/communities"
+  element={
+    <ProtectedRoute>
+      <CommunityPage/>
+    </ProtectedRoute>
+  }
 />
     </Routes>
   );

@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
   Bookmark,
+  Group,
   Home,
   Mail,
   Settings,
@@ -19,6 +20,11 @@ const menus = [
     name: "Home",
     path: "/",
     icon: Home,
+  },
+  {
+ name:"Communities",
+ path:"/communities",
+ icon:Group
   },
 
   {
@@ -43,7 +49,7 @@ const menus = [
   },
     {
     name: "Settings",
-    path: "/setting",
+    path: "/settings",
     icon: Settings,
   }
 ];
