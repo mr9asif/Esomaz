@@ -1,4 +1,6 @@
 import { prisma } from "../../config/prisma.js";
+import { NotificationType } from "../../generated/prisma/index.js";
+import notificationService from "../notification/notification.service.js";
 
 export const toggleFollowService = async (
   followerId: string,
@@ -47,18 +49,25 @@ export const toggleFollowService = async (
 
   }
 
-  // Follow
-  await prisma.follow.create({
-    data: {
-      followerId,
-      followingId,
-    },
-  });
+ // Follow
+await prisma.follow.create({
+  data: {
+    followerId,
+    followingId,
+  },
+});
 
-  return {
-    following: true,
-    message: "Followed successfully",
-  };
+// Create notification
+await notificationService.createNotification({
+  receiverId: followingId,
+  senderId: followerId,
+  type: NotificationType.FOLLOW,
+});
+
+return {
+  following: true,
+  message: "Followed successfully",
+};
 
 };
 

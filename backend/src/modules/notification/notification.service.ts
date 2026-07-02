@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { socketStore } from "../../socket/socketStore.js";
 import type { CreateNotificationInput } from "./notification.types.js";
 
 class NotificationService {
@@ -18,18 +19,21 @@ class NotificationService {
             isVerified: true,
           },
         },
+
         post: {
           select: {
             id: true,
             content: true,
           },
         },
+
         comment: {
           select: {
             id: true,
             content: true,
           },
         },
+
         message: {
           select: {
             id: true,
@@ -37,9 +41,11 @@ class NotificationService {
           },
         },
       },
+
       orderBy: {
         createdAt: "desc",
       },
+
       take: 30,
     });
   }
@@ -85,7 +91,7 @@ class NotificationService {
       return null;
     }
 
-    return prisma.notification.create({
+    const notification = await prisma.notification.create({
       data: {
         receiverId: input.receiverId,
         senderId: input.senderId,
@@ -106,8 +112,38 @@ class NotificationService {
             isVerified: true,
           },
         },
+
+        post: {
+          select: {
+            id: true,
+            content: true,
+          },
+        },
+
+        comment: {
+          select: {
+            id: true,
+            content: true,
+          },
+        },
+
+        message: {
+          select: {
+            id: true,
+            content: true,
+          },
+        },
       },
     });
+
+    // Send realtime notification if receiver is online
+    const socket = socketStore.getUser(input.receiverId);
+
+    if (socket) {
+      socket.emit("notification:new", notification);
+    }
+
+    return notification;
   }
 
   // Clear all read notifications

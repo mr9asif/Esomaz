@@ -12,11 +12,11 @@ router.get(
   notificationController.getUnreadCount
 );
 
-router.patch(
-  "/read-all",
-  protect,
-  notificationController.markAllAsRead
-);
+// router.patch(
+//   "/read-all",
+//   protect,
+//   notificationController.markAllAsRead
+// );
 
 router.patch(
   "/:id/read",
@@ -24,10 +24,10 @@ router.patch(
   notificationController.markAsRead
 );
 
-router.delete(
-  "/:id",
-  protect,
-  notificationController.deleteNotification
-);
+// router.delete(
+//   "/:id",
+//   protect,
+//   notificationController.deleteNotification
+// );
 
 export default router;

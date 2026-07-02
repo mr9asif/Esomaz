@@ -1,4 +1,6 @@
 import { prisma } from "../../config/prisma.js";
+import { NotificationType } from "../../generated/prisma/index.js";
+import notificationService from "../notification/notification.service.js";
 
 export const createCommentService = async (
   userId: string,
@@ -18,22 +20,24 @@ export const createCommentService = async (
   if (!post) {
     throw new Error("Post not found");
   }
+const comment = await prisma.comment.create({
+  data: {
+    content: payload.content,
+    userId,
+    postId: payload.postId,
+    parentId: payload.parentId ?? null,
+  },
+});
 
-  return prisma.comment.create({
+await notificationService.createNotification({
+  receiverId: post.authorId,
+  senderId: userId,
+  type: NotificationType.COMMENT,
+  postId: post.id,
+  commentId: comment.id,
+});
 
-    data: {
-
-      content: payload.content,
-
-      userId,
-
-      postId: payload.postId,
-
-      parentId: payload.parentId ?? null,
-
-    },
-
-  });
+return comment;
 
 };
 
@@ -207,8 +211,7 @@ export const replyCommentService = async (
     throw new Error("Comment not found");
 
   }
-
-  return prisma.comment.create({
+const reply = await prisma.comment.create({
 
     data: {
 
@@ -240,5 +243,15 @@ export const replyCommentService = async (
     },
 
   });
+
+  await notificationService.createNotification({
+    receiverId: parent.userId,
+    senderId: userId,
+    type: NotificationType.REPLY,
+    postId: parent.postId,
+    commentId: reply.id,
+
+  });
+  return reply;
 
 };
