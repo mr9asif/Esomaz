@@ -1,5 +1,4 @@
 
-import { useAuth } from "@/provider/UseAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
@@ -11,7 +10,7 @@ import {
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const MobileBottomNav = () => {
-  const { user } = useAuth();
+  
     const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();

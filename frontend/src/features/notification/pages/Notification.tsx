@@ -38,7 +38,7 @@ const Notifications = () => {
         break;
     }
   };
-
+console.log("notify")
   if (isLoading) {
     return (
       <div className="mx-auto max-w-2xl p-6">
@@ -63,7 +63,7 @@ const Notifications = () => {
 </div>
 
       {notifications.length === 0 ? (
-        <div className="p-10 text-center text-gray-500">
+        <div className="p-10 text-center text-red-500">
           No notifications yet.
         </div>
       ) : (

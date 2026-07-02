@@ -9,6 +9,7 @@ import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
 import SearchPage from "@/features/search/components/SearchPage";
+import SettingPage from "@/features/Setting/components/SettingPage";
 import ChatPage from "@/pages/ChatPage";
 import ProfilePage from "../features/profile/Profile";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -16,8 +17,12 @@ import ProtectedRoute from "./ProtectedRoutes";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/bookmarks" element={<Bookmarks/>}></Route>
+      <Route path="/" element={
+        <ProtectedRoute> <Home /></ProtectedRoute>
+       } />
+      <Route path="/bookmarks" element={  <ProtectedRoute>
+            <Bookmarks></Bookmarks>
+          </ProtectedRoute>}></Route>
 
       <Route
         path="/profile"
@@ -32,20 +37,26 @@ export default function AppRoutes() {
   element={<Notifications />}
 />
 
-      <Route path="/messages" element={<ChatPage />} />
+      <Route path="/messages" element={   <ProtectedRoute>
+    <ChatPage />
+    </ProtectedRoute>} />
 <Route
   path="/messages/:conversationId"
-  element={<ChatPage />}
+  element={
+   <ProtectedRoute>
+    <ChatPage />
+    </ProtectedRoute>
+  }
 />
 
 <Route
   path="/post/:id"
-  element={<PostDetails />}
+  element={<ProtectedRoute><PostDetails /></ProtectedRoute>}
 />
 
 <Route 
  path="/search"
- element={<SearchPage></SearchPage>}
+ element={<ProtectedRoute><SearchPage /></ProtectedRoute>}
 />
       <Route
         path="/login"
@@ -58,7 +69,17 @@ export default function AppRoutes() {
       />
       <Route
   path="/profile/:username"
-  element={<ProfilePage />}
+  element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}
+/>
+
+<Route 
+   path="/setting"
+   element={
+    <ProtectedRoute>
+
+       <SettingPage/>
+    </ProtectedRoute>
+   }
 />
     </Routes>
   );

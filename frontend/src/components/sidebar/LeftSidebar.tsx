@@ -1,11 +1,12 @@
+import { useAuth } from "@/provider/UseAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
   Bookmark,
-  Compass,
   Home,
   Mail,
-  User,
+  Settings,
+  User
 } from "lucide-react";
 import {
   NavLink,
@@ -19,11 +20,7 @@ const menus = [
     path: "/",
     icon: Home,
   },
-  {
-    name: "Explore",
-    path: "/explore",
-    icon: Compass,
-  },
+
   {
     name: "Notifications",
     path: "/notifications",
@@ -44,21 +41,34 @@ const menus = [
     path: "/profile",
     icon: User,
   },
+    {
+    name: "Settings",
+    path: "/setting",
+    icon: Settings,
+  }
 ];
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
+  const {user}=useAuth();
 
- const handleHomeClick = () => {
-  console.log("ScrollY:", window.scrollY);
+  const handleHomeClick = () => {
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
+    if (location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["posts"], // Change this if your query key is different
+      });
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <aside className="hidden lg:flex w-72 h-[calc(100vh-64px)] sticky top-20 flex-col justify-between p-4 overflow-hidden">
@@ -85,20 +95,24 @@ const LeftSidebar = () => {
             }
 
             return (
-              <NavLink
-                key={item.name}
-                to={item.path}
-                className={({ isActive }) =>
-                  `w-full flex items-center gap-4 px-4 py-3 rounded-full transition ${
-                    isActive
-                      ? "bg-gray-100 font-semibold"
-                      : "hover:bg-gray-100"
-                  }`
-                }
-              >
-                <Icon size={24} />
-                <span className="text-lg">{item.name}</span>
-              </NavLink>
+          <NavLink
+  key={item.name}
+  to={
+    item.name === "Profile"
+      ? `/profile/${user?.username}`
+      : item.path
+  }
+  className={({ isActive }) =>
+    `w-full flex items-center gap-4 px-4 py-3 rounded-full transition ${
+      isActive
+        ? "bg-gray-100 font-semibold"
+        : "hover:bg-gray-100"
+    }`
+  }
+>
+  <Icon size={24} />
+  <span className="text-lg">{item.name}</span>
+</NavLink>
             );
           })}
         </div>
