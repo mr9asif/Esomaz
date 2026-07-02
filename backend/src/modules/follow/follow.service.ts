@@ -57,6 +57,7 @@ await prisma.follow.create({
   },
 });
 
+console.log("🚀 Creating follow notification...");
 // Create notification
 await notificationService.createNotification({
   receiverId: followingId,

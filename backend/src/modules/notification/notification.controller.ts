@@ -5,6 +5,7 @@ class NotificationController {
   // Get latest notifications
   async getNotifications(req: Request, res: Response) {
     const notifications = await notificationService.getNotifications(req.user.id);
+    console.log("controller notification", notifications)
 
     return res.status(200).json({
       success: true,

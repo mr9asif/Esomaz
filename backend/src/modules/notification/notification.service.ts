@@ -5,6 +5,7 @@ import type { CreateNotificationInput } from "./notification.types.js";
 class NotificationService {
   // Get latest notifications
   async getNotifications(userId: string) {
+      console.log("Searching receiver:", userId);
     return prisma.notification.findMany({
       where: {
         receiverId: userId,
@@ -135,7 +136,7 @@ class NotificationService {
         },
       },
     });
-
+console.log(notification)
     // Send realtime notification if receiver is online
     const socket = socketStore.getUser(input.receiverId);
 

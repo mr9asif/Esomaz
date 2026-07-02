@@ -1,9 +1,9 @@
 
 import { logout } from "@/features/auth/api/auth.api";
+import NotificationBell from "@/features/notification/components/NotificationBell";
 import { queryClient } from "@/lib/react_query";
 import { useAuth } from "@/provider/UseAuth";
 import {
-  Bell,
   Bookmark,
   CircleHelp,
   LogOut,
@@ -246,10 +246,7 @@ const handleLogout = async () => {
 
             <div className="flex items-center gap-6">
 
-              <Bell
-                size={22}
-                className="cursor-pointer"
-              />
+              <NotificationBell />
 
               {user ? (
                 <div   ref={desktopMenuRef} className="relative">

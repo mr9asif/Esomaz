@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
+import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
 import ChatPage from "@/pages/ChatPage";
@@ -25,6 +26,10 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+  path="/notifications"
+  element={<Notifications />}
+/>
 
       <Route path="/messages" element={<ChatPage />} />
 <Route
