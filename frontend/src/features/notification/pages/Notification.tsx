@@ -4,6 +4,8 @@ import NotificationItem from "@/features/notification/components/NotificationIte
 import { useMarkAsRead } from "@/features/notification/hooks/useMarkAsRead";
 import { useNotifications } from "@/features/notification/hooks/useNotification";
 import type { Notification } from "@/features/notification/types/notification.types";
+import { ArrowLeft } from "lucide-react";
+
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -47,11 +49,18 @@ const Notifications = () => {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="border-b p-5">
-        <h1 className="text-2xl font-bold">
-          Notifications
-        </h1>
-      </div>
+    <div className="sticky top-16 z-10 flex items-center gap-3 border-b bg-white px-4 py-4">
+  <button
+    onClick={() => navigate("/")}
+    className="rounded-full p-2 transition hover:bg-gray-100 "
+  >
+    <ArrowLeft size={22} />
+  </button>
+
+  <h1 className="text-xl font-bold">
+    Notifications
+  </h1>
+</div>
 
       {notifications.length === 0 ? (
         <div className="p-10 text-center text-gray-500">
