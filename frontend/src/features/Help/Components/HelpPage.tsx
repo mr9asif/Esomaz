@@ -1,4 +1,12 @@
-import { Bug, Construction, FileText, LifeBuoy, Mail, ShieldCheck } from "lucide-react";
+import {
+    Bug,
+    Construction,
+    FileText,
+    LifeBuoy,
+    Mail,
+    ShieldCheck
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const upcomingFeatures = [
   {
@@ -34,9 +42,18 @@ const upcomingFeatures = [
 ];
 
 const HelpPage = () => {
+    const navigate = useNavigate();
   return (
     
       <div className="mx-auto max-w-5xl px-4 py-10">
+        <div className="mb-6">
+   <button
+          onClick={() => navigate("/")}
+          className="mt-8 rounded-full bg-black px-6 py-3 text-white transition hover:opacity-90"
+        >
+          Back to Home
+        </button>
+</div>
         {/* Hero */}
         <div className="rounded-2xl border bg-card p-8 text-center shadow-sm">
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
