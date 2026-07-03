@@ -7,6 +7,7 @@ import { useSocket } from "@/socket/useSocket";
 import { useEffect } from "react";
 import type { Message } from "../types/chat.types";
 import MessageBubble from "./MessageBubble";
+import MessageSkeleton from "./MessageSkeleton";
 
 
 
@@ -167,7 +168,7 @@ useEffect(() => {
     return (
       <div className="p-5">
 
-        Loading...
+       <MessageSkeleton/>
 
       </div>
     );
