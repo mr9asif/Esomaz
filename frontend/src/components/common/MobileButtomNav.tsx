@@ -61,7 +61,8 @@ const MobileBottomNav = () => {
 
         {/* Create */}
 
-        <button
+       <NavLink to="/post">
+         <button
           className="absolute left-1/2 -translate-x-1/2 -top-6
           w-14 h-14 rounded-full bg-blue-600
           text-white flex items-center justify-center
@@ -69,6 +70,7 @@ const MobileBottomNav = () => {
         >
           <Plus size={28} />
         </button>
+       </NavLink>
 
         <NavLink
           to="/notifications"

@@ -10,6 +10,7 @@ import HelpPage from "@/features/Help/Components/HelpPage";
 import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
+import Post from "@/features/post/components/feed/Post";
 import SearchPage from "@/features/search/components/SearchPage";
 import SettingPage from "@/features/Setting/components/SettingPage";
 import ChatPage from "@/pages/ChatPage";
@@ -98,6 +99,16 @@ export default function AppRoutes() {
   element={
     <ProtectedRoute><HelpPage/></ProtectedRoute>
   }
+/>
+
+<Route 
+ path="/post"
+ element={
+ <ProtectedRoute>
+  <Post></Post>
+ </ProtectedRoute>
+
+ }
 />
     </Routes>
   );

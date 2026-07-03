@@ -129,9 +129,11 @@ const LeftSidebar = () => {
           })}
         </div>
 
-        <button className="mt-8 w-full rounded-full bg-black text-white py-3 font-semibold hover:opacity-90">
+      <NavLink to='/post'>
+          <button className="mt-8 w-full rounded-full bg-black text-white py-3 font-semibold hover:opacity-90">
           Post
         </button>
+      </NavLink>
       </div>
 
       <div className="rounded-full p-3 hover:bg-gray-100 cursor-pointer">
