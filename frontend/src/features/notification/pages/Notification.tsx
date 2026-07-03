@@ -5,6 +5,7 @@ import { useMarkAsRead } from "@/features/notification/hooks/useMarkAsRead";
 import { useNotifications } from "@/features/notification/hooks/useNotification";
 import type { Notification } from "@/features/notification/types/notification.types";
 import MainLayout from "@/layouts/MainLayout";
+import NotificationSkeleton from "../components/NotificationSkeleton";
 
 
 const Notifications = () => {
@@ -42,7 +43,7 @@ console.log("notify")
   if (isLoading) {
     return (
       <div className="mx-auto max-w-2xl p-6">
-        Loading notifications...
+        <NotificationSkeleton/>
       </div>
     );
   }

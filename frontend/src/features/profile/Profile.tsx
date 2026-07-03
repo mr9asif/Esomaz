@@ -10,6 +10,7 @@ import ProfileCover from "@/components/profile/ProfileCover";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import ProfileStats from "@/components/profile/ProfileStates";
 
+import MainLayout from "@/layouts/MainLayout";
 import { useProfile } from "./useProfile";
 
 const ProfilePage = () => {
@@ -35,6 +36,7 @@ const ProfilePage = () => {
   const isMe = user?.id === profile.id;
 
   return (
+    <MainLayout>
     <div className="pb-10">
 
      <ProfileCover
@@ -78,6 +80,7 @@ const ProfilePage = () => {
       )}
 
     </div>
+    </MainLayout>
   );
 };
 
