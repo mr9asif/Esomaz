@@ -185,7 +185,7 @@ useEffect(() => {
 
 
 return (
-  <div className="flex-1 overflow-y-auto p-5 space-y-3">
+  <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 space-y-3">
     {data?.map((message: Message) => (
       <MessageBubble
         key={message.id}

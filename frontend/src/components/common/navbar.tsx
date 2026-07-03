@@ -157,7 +157,7 @@ const handleLogout = async () => {
   onClick={() => setMobileDrawerOpen(false)}
 >
   <Bookmark size={18} />
-  Bookmarks
+  Saved Posts
 </NavLink>
 
 <NavLink
@@ -295,7 +295,7 @@ const handleLogout = async () => {
   onClick={() => setDesktopMenuOpen(false)}
 >
   <Bookmark size={18} />
-  Bookmarks
+  Saved Posts
 </NavLink>
 
 <NavLink

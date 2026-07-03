@@ -43,7 +43,7 @@ const { mutate: editMessage, isPending } =
       isMine ? "justify-end" : "justify-start"
     }`}
   >
-    <div className="relative max-w-sm">
+<div className="relative max-w-[80%] md:max-w-sm">
 
      {isMine && !isDeleted && (
   <div className="absolute -right-10 top-2 z-10">
@@ -198,12 +198,12 @@ setContent(message.content ?? "");
                 <img
                   src={attachment.url}
                   alt=""
-                  className="max-w-xs rounded-xl"
+                 className="max-w-full rounded-xl"
                 />
               ) : (
                 <video
                   controls
-                  className="max-w-xs rounded-xl"
+                 className="max-w-full rounded-xl"
                 >
                   <source
                     src={attachment.url}
