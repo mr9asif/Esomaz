@@ -4,7 +4,7 @@ import { useMessages } from "../hooks/useMessage";
 
 import { queryClient } from "@/lib/react_query";
 import { useSocket } from "@/socket/useSocket";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Message } from "../types/chat.types";
 import MessageBubble from "./MessageBubble";
 import MessageSkeleton from "./MessageSkeleton";
@@ -14,6 +14,8 @@ import MessageSkeleton from "./MessageSkeleton";
 
 const MessageList = () => {
   const { conversationId } = useParams();
+  const bottomRef = useRef<HTMLDivElement>(null);
+
 
   const { data, isLoading } =
     useMessages(conversationId!);
@@ -164,6 +166,12 @@ useEffect(() => {
 }, [conversationId, socket]);
     
 
+useEffect(() => {
+  bottomRef.current?.scrollIntoView({
+    behavior: "smooth",
+  });
+}, [data]);
+
   if (isLoading) {
     return (
       <div className="p-5">
@@ -174,18 +182,20 @@ useEffect(() => {
     );
   }
 
-  return (
-    <div className="flex-1 overflow-y-auto p-5 space-y-3">
 
-      {data?.map((message:Message) => (
-        <MessageBubble
-          key={message.id}
-          message={message}
-        />
-      ))}
 
-    </div>
-  );
+return (
+  <div className="flex-1 overflow-y-auto p-5 space-y-3">
+    {data?.map((message: Message) => (
+      <MessageBubble
+        key={message.id}
+        message={message}
+      />
+    ))}
+
+    <div ref={bottomRef} />
+  </div>
+);
 };
 
 export default MessageList;
