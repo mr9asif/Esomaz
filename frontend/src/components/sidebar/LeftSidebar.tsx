@@ -4,6 +4,7 @@ import {
   Bell,
   Bookmark,
   Group,
+  HelpCircle,
   Home,
   Mail,
   Settings,
@@ -51,6 +52,11 @@ const menus = [
     name: "Settings",
     path: "/settings",
     icon: Settings,
+  },
+  {
+    name:"Help & Support",
+    path:"/help&support",
+    icon:HelpCircle
   }
 ];
 

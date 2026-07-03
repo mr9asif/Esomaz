@@ -179,12 +179,12 @@ const handleLogout = async () => {
 </NavLink>
 
 <NavLink
-  to="/help"
+  to="/help&support"
   className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
   onClick={() => setMobileDrawerOpen(false)}
 >
   <CircleHelp size={18} />
-  Help Center
+  Help & Support
 </NavLink>
 
 <hr className="my-2" />
@@ -317,12 +317,12 @@ const handleLogout = async () => {
 </NavLink>
 
 <NavLink
-  to="/help"
+   to="/help&support"
   className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
   onClick={() => setDesktopMenuOpen(false)}
 >
   <CircleHelp size={18} />
-  Help Center
+  Help & Support
 </NavLink>
 
 <hr className="my-2" />

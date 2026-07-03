@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 
 import CommunityPage from "@/features/Communites/components/CommunityPage";
+import HelpPage from "@/features/Help/Components/HelpPage";
 import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
 import PostDetails from "@/features/post/components/createPost/PostDetails";
@@ -89,6 +90,13 @@ export default function AppRoutes() {
     <ProtectedRoute>
       <CommunityPage/>
     </ProtectedRoute>
+  }
+/>
+
+ <Route  
+  path="/help&support"
+  element={
+    <ProtectedRoute><HelpPage/></ProtectedRoute>
   }
 />
     </Routes>
