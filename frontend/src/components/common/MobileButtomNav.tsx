@@ -2,9 +2,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
+  Compass,
   Home,
   MessageCircle,
-  Plus,
   Search
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -58,19 +58,20 @@ const MobileBottomNav = () => {
         >
           <Search size={24} />
         </NavLink>
+        <NavLink
+          to="/explore"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600"
+              : "text-gray-500"
+          }
+        >
+          <Compass size={24} />
+        </NavLink>
 
         {/* Create */}
 
-       <NavLink to="/post">
-         <button
-          className="absolute left-1/2 -translate-x-1/2 -top-6
-          w-14 h-14 rounded-full bg-blue-600
-          text-white flex items-center justify-center
-          shadow-lg"
-        >
-          <Plus size={28} />
-        </button>
-       </NavLink>
+      
 
         <NavLink
           to="/notifications"

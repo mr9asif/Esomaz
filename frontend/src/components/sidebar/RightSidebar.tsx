@@ -6,7 +6,13 @@ import type { Post } from "@/features/post/types/post.types";
 import { Heart, MessageCircle } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-const RightSidebar = () => {
+interface RightSidebarProps {
+  mobile?: boolean;
+}
+
+const RightSidebar = ({
+  mobile = false,
+}: RightSidebarProps) => {
   const { data: suggestions, isLoading } =
     useSuggestions();
 
@@ -17,7 +23,13 @@ const RightSidebar = () => {
   useTrendingPosts();
 
   return (
-    <aside className="hidden xl:block w-[350px] h-[calc(100vh-64px)] sticky top-20 overflow-y-auto p-5">
+    <aside
+  className={
+    mobile
+      ? "w-full px-4 py-4"
+      : "hidden xl:block w-[350px] h-[calc(100vh-64px)] sticky top-20 overflow-y-auto p-5"
+  }
+>
 <div className="mt-6 rounded-2xl bg-gray-100 p-5">
 
   <h2 className="font-bold text-xl mb-4">

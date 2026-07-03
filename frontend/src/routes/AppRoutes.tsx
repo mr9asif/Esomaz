@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 
 import CommunityPage from "@/features/Communites/components/CommunityPage";
+import ExplorePage from "@/features/Explore/ExplorePage";
 import HelpPage from "@/features/Help/Components/HelpPage";
 import Notifications from "@/features/notification/pages/Notification";
 import Bookmarks from "@/features/post/components/Bookmark/Bookmark";
@@ -109,6 +110,16 @@ export default function AppRoutes() {
  </ProtectedRoute>
 
  }
+/>
+
+<Route 
+  path="/explore"
+  element={
+    <ProtectedRoute>
+
+      <ExplorePage/>
+    </ProtectedRoute>
+  }
 />
     </Routes>
   );

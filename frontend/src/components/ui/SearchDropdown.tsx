@@ -2,9 +2,9 @@ import type {
   SearchPost,
   SearchUser,
 } from "@/features/search/search.type";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSearch } from "../../features/search/hooks/useSearch";
   interface SearchDropdownProps {
   mode?: "dropdown" | "page";
@@ -23,7 +23,7 @@ const SearchDropdown = ({
     type
   );
 
-  const navigate = useNavigate();
+
   const inputRef =
     useRef<HTMLInputElement>(null);
 
@@ -68,19 +68,7 @@ const SearchDropdown = ({
         : "relative w-full max-w-md"
     }`}
   >
-    {mode === "page" && (
-      <div className="mb-4 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="rounded-full p-2 transition hover:bg-gray-100"
-          aria-label="Go Back"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-
-        <h1 className="text-lg font-semibold">Search</h1>
-      </div>
-    )}
+   
 
 
 
