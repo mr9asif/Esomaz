@@ -1,7 +1,7 @@
 
+import NotificationBell from "@/features/notification/components/NotificationBell";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  Bell,
   Compass,
   Home,
   MessageCircle,
@@ -81,7 +81,7 @@ const MobileBottomNav = () => {
               : "text-gray-500"
           }
         >
-          <Bell size={24} />
+          <NotificationBell></NotificationBell>
         </NavLink>
 
         <NavLink

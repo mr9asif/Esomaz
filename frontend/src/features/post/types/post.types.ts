@@ -34,9 +34,9 @@ export interface Post {
   avatar?: string;
 
   isFollowing: boolean;
-  _count?: {
-  reactions: number;
+_count: {
   comments: number;
+  reactions: number;
 };
 };
 
@@ -46,6 +46,7 @@ export interface Post {
       isBookmarked: boolean;
       _count: {
     comments: number;
+      reactions: number;
   };
 }
 export interface CommentUser {

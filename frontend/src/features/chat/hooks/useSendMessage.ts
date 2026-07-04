@@ -8,7 +8,7 @@ export const useSendMessage =
       mutationFn: sendMessage,
 
       onSuccess: (
-        data,
+        
         variables
       ) => {
         queryClient.invalidateQueries({

@@ -6,12 +6,12 @@ import type { AuthenticatedSocket } from "./types.js";
 let io: Server;
 
 export const initializeSocket = (server: any) => {
-  io = new Server(server, {
-    cors: {
-      origin: "http://localhost:5173",
-      credentials: true,
-    },
-  });
+io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  },
+});
 
   io.use(socketAuth);
 
