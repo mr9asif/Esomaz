@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import SearchInput from "../components/SearchInput";
 import SearchResults from "../components/SearchResults";
 import ConversationItem from "./ConversationItem";
+import MessageListSkeleton from "./MessageListSkeleton";
 
 const ConversationList = () => {
   const [search, setSearch] = useState("");
@@ -22,7 +23,7 @@ const navigate = useNavigate();
   if (isLoading) {
     return (
       <div className="p-5">
-        Loading...
+        <MessageListSkeleton></MessageListSkeleton>
       </div>
     );
   }

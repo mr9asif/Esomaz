@@ -146,7 +146,7 @@ const LoginForm = () => {
     </p>
   )}
 </div>
-<button
+{/* <button
   type="button"
  className="w-full border py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition "
 >
@@ -157,7 +157,7 @@ const LoginForm = () => {
   />
 
   Continue with Google
-</button>
+</button> */}
 <div className="flex items-center gap-3">
   <div className="h-px flex-1 bg-gray-200" />
 

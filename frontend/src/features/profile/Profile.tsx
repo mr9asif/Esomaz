@@ -11,6 +11,7 @@ import ProfileInfo from "@/components/profile/ProfileInfo";
 import ProfileStats from "@/components/profile/ProfileStates";
 
 import MainLayout from "@/layouts/MainLayout";
+import { Loader } from "lucide-react";
 import { useCreateDirectConversation } from "../chat/hooks/useCreateDirectConversation";
 import { useProfile } from "./useProfile";
 
@@ -32,11 +33,11 @@ const {
   const profile = data?.data;
 
   if (isLoading || !profile) {
-    return (
-      <div className="flex justify-center py-20">
-        Loading...
-      </div>
-    );
+     return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Loader className="h-8 w-8 animate-spin" />
+    </div>
+  );
   }
 
   const isMe = user?.id === profile.id;

@@ -2,6 +2,7 @@ import { useAuth } from "@/provider/UseAuth";
 import PostCard from "../../components/postCard/PostCard";
 import { useFollowingPosts } from "../../hooks/useFollowingPosts";
 import { usePosts } from "../../hooks/usePosts";
+import FeedSkeleton from "./FeedSkeleton";
 
 interface FeedProps {
   tab: "forYou" | "following";
@@ -31,7 +32,7 @@ console.log(
 );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    <FeedSkeleton></FeedSkeleton>
   }
 
   return (

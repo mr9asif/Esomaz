@@ -2,6 +2,7 @@
 
 import { getMe } from "@/features/auth/api/auth.api";
 import { useQuery } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
 import { AuthContext } from "../contexts/AuthContext";
 import type { User } from "../types/user.types";
 
@@ -16,6 +17,13 @@ export const AuthProvider = ({
     retry: false,
     
   });
+if (isLoading) {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Loader className="h-8 w-8 animate-spin" />
+    </div>
+  );
+}
 
   return (
     <AuthContext.Provider

@@ -1,3 +1,4 @@
+import { Loader } from "lucide-react";
 import { useBookmarks } from "../../hooks/useBookmark";
 import PostCard from "../postCard/PostCard";
 
@@ -9,7 +10,11 @@ const BookmarksFeed = () => {
   if (isLoading) {
     return (
       <div className="p-6">
-        Loading bookmarks...
+         return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Loader className="h-8 w-8 animate-spin" />
+    </div>
+  );
       </div>
     );
   }
