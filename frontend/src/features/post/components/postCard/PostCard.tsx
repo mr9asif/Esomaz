@@ -1,13 +1,12 @@
+import { formatTime } from "@/features/post/utils/format.time";
+import { useAuth } from "@/provider/UseAuth";
 import {
   Bookmark,
   Heart,
-  MessageCircle,
-  MoreHorizontal,
+  MessageCircle
 } from "lucide-react";
-
-import { formatTime } from "@/features/post/utils/format.time";
-import { useAuth } from "@/provider/UseAuth";
 import { useToggleReaction } from "../../hooks/useToggleReaction";
+import PostMenu from "../feed/PostMenu";
 
 import { useState } from "react";
 
@@ -92,36 +91,33 @@ const bookmarked = post.isBookmarked;
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {user?.id !== post.author.id && (
-           
-           <button
-              onClick={() =>
-      toggleFollow(post.author.id)
-    }
-    className={`rounded-full px-3 py-1 text-xs font-medium ${
-      post.author.isFollowing
-        ? "bg-gray-200 text-gray-700"
-        : "bg-blue-500 text-white"
-    }`}
-            >
-              {post.author.isFollowing
-      ? "Following"
-      : "Follow"}
-            </button>
-          )}
-
-          <button
-            className="
-            p-2
-            rounded-full
-            hover:bg-gray-100
-            transition
-            "
-          >
-            <MoreHorizontal size={18} />
-          </button>
-        </div>
+     <div className="flex items-center gap-3">
+  {user?.id === post.author.id ? (
+    <PostMenu
+      onEdit={() => {
+        console.log("Edit Post");
+      }}
+      onDelete={() => {
+        console.log("Delete Post");
+      }}
+    />
+  ) : (
+    <button
+      onClick={() =>
+        toggleFollow(post.author.id)
+      }
+      className={`rounded-full px-3 py-1 text-xs font-medium ${
+        post.author.isFollowing
+          ? "bg-gray-200 text-gray-700"
+          : "bg-blue-500 text-white"
+      }`}
+    >
+      {post.author.isFollowing
+        ? "Following"
+        : "Follow"}
+    </button>
+  )}
+</div>
       </div>
 
       {/* Content */}
