@@ -10,11 +10,14 @@ import PostMenu from "../feed/PostMenu";
 
 import { useState } from "react";
 
+import ConfirmDialog from "@/components/common/ConfirmDialogue";
 import { useToggleFollow } from "@/features/follow/hooks/useToggleFollow";
 import { useToggleBookmark } from "../../hooks/useCreateBookmark";
+import { useDeletePost } from "../../hooks/useDeletePost";
 import type { Post } from "../../types/post.types";
 import CommentsSection from "../comment/CommentSection";
 import PostMedia from "./PostMedia";
+
 
 interface Props {
   post: Post;
@@ -25,8 +28,13 @@ interface Props {
 export default function PostCard({ post }: Props) {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
-  // const { mutate: bookmark } =
-  // useToggleBookmark();
+  const [showDeleteDialog, setShowDeleteDialog] =
+  useState(false);
+const {
+  mutate: deletePost,
+  isPending: isDeleting,
+} = useDeletePost();
+
   const { mutate: toggleBookmarkMutation } =
   useToggleBookmark();
 const { mutate: toggleFollow } =
@@ -37,6 +45,21 @@ useToggleFollow();
 const handleBookmark = () => {
   toggleBookmarkMutation(post.id);
 };
+
+const handleDelete = () => {
+  console.log("Delete clicked:", post.id);
+
+  deletePost(post.id, {
+    onSuccess: () => {
+      console.log("Mutation Success");
+      setShowDeleteDialog(false);
+    },
+
+    onError: (error) => {
+      console.error("Mutation Error:", error);
+    },
+  });
+};;
  
   const {
     mutate: toggleReaction,
@@ -93,14 +116,14 @@ const bookmarked = post.isBookmarked;
 
      <div className="flex items-center gap-3">
   {user?.id === post.author.id ? (
-    <PostMenu
-      onEdit={() => {
-        console.log("Edit Post");
-      }}
-      onDelete={() => {
-        console.log("Delete Post");
-      }}
-    />
+  <PostMenu
+  onEdit={() => {
+    console.log("Edit Post");
+  }}
+  onDelete={() => {
+    setShowDeleteDialog(true);
+  }}
+/>
   ) : (
     <button
       onClick={() =>
@@ -216,6 +239,16 @@ const bookmarked = post.isBookmarked;
       {showComments && (
    <CommentsSection postId={post.id} />
 )}
+<ConfirmDialog
+  open={showDeleteDialog}
+  title="Delete Post"
+  description="Are you sure you want to delete this post? This action cannot be undone."
+  confirmText="Delete"
+  loading={isDeleting}
+  onClose={() => setShowDeleteDialog(false)}
+  onConfirm={handleDelete}
+/>
     </article>
+    
   );
 }

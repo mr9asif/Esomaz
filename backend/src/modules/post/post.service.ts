@@ -240,7 +240,11 @@ export const updatePostService = async (
       id: postId,
     },
   });
+const content = payload.content.trim();
 
+if (!content) {
+  throw new Error("Content cannot be empty");
+}
   if (!post) {
     throw new Error("Post not found");
   }

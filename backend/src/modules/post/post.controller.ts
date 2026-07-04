@@ -23,6 +23,7 @@ export const createPost = async (
 };
 console.log("files", files)
 
+
 const images =
   files?.images;
 
@@ -133,24 +134,50 @@ export const deletePost = async (
 };
 
 // edit or update post
+// Edit / Update Post
 
-export const updatePostController = async (req:Request, res:Response) => {
-  const userId = req.user.id;
-  const postId = req.params.id;
-  const payload = req.body;
+export const updatePostController = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const userId = req.user?.id;
 
-  const result = await updatePostService(
-    userId,
-    postId as string,
-    payload
-  );
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
 
-  res.json({
-    success: true,
-    data: result,
-  });
+   const postId = req.params.id as string;
+
+    if (!postId) {
+      return res.status(400).json({
+        success: false,
+        message: "Post ID is required",
+      });
+    }
+
+    const result = await updatePostService(
+      userId,
+      postId,
+      req.body
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: (error as Error).message,
+    });
+  }
 };
-
 
 // trending posts
 export const getTrendingPosts =
