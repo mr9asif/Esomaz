@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import notificationService from "./notification.service.js";
 
 class NotificationController {
@@ -12,6 +12,28 @@ class NotificationController {
       data: notifications,
     });
   }
+
+  markAllAsRead = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user.id;
+
+    await notificationService.markAllAsRead(
+      userId
+    );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "All notifications marked as read.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
   // Get unread notification count
   async getUnreadCount(req: Request, res: Response) {

@@ -147,6 +147,22 @@ console.log(notification)
     return notification;
   }
 
+// Mark all notifications as read
+async markAllAsRead(userId: string) {
+  await prisma.notification.updateMany({
+    where: {
+      receiverId: userId,
+      isRead: false,
+    },
+    data: {
+      isRead: true,
+    },
+  });
+
+  return {
+    message: "All notifications marked as read.",
+  };
+}
   // Clear all read notifications
   async clearReadNotifications(userId: string) {
     await prisma.notification.deleteMany({

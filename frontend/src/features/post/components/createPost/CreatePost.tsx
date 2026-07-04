@@ -1,6 +1,5 @@
-
 import { useAuth } from "@/provider/UseAuth";
-import { ImagePlus, X } from "lucide-react";
+import { ImagePlus, Video, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useCreatePost } from "../../hooks/useCreatePost";
 
@@ -8,41 +7,108 @@ export default function CreatePost() {
   const { user } = useAuth();
 
   const [content, setContent] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [video, setVideo] = useState<File | null>(null);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   const { mutate, isPending } = useCreatePost();
 
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(e.target.files || []);
+
+    if (!files.length) return;
+
+    if (video) {
+      alert("You can't upload images and a video together.");
+      return;
+    }
+
+    const imageFiles = files.filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    const updated = [...images, ...imageFiles];
+
+    if (updated.length > 5) {
+      alert("Maximum 5 images allowed.");
+      return;
+    }
+
+    setImages(updated);
+
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
+    }
+  };
+
+  const handleVideoChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (images.length > 0) {
+      alert("You can't upload a video with images.");
+      return;
+    }
+
+    if (!file.type.startsWith("video/")) return;
+
+    setVideo(file);
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const removeVideo = () => {
+    setVideo(null);
+  };
+
   const handleSubmit = () => {
-    if (!content.trim() && !file) return;
+    if (!content.trim() && images.length === 0 && !video) return;
 
     const formData = new FormData();
 
     formData.append("content", content);
 
-    if (file) {
-      if (file.type.startsWith("image/")) {
-        formData.append("image", file);
-      } else if (file.type.startsWith("video/")) {
-        formData.append("video", file);
-      }
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    if (video) {
+      formData.append("video", video);
     }
 
     mutate(formData, {
       onSuccess: () => {
         setContent("");
-        setFile(null);
+        setImages([]);
+        setVideo(null);
+
+        if (imageInputRef.current) {
+          imageInputRef.current.value = "";
+        }
+
+        if (videoInputRef.current) {
+          videoInputRef.current.value = "";
+        }
       },
     });
   };
 
   return (
-    <div className="bg-white  px-3 sm:px-5 py-4">
-
+    <div className="bg-white px-3 sm:px-5 py-4">
       <div className="flex gap-3">
-
-        {/* Avatar */}
         <img
           src={user?.avatar || "/default-avatar.png"}
           alt="avatar"
@@ -50,8 +116,6 @@ export default function CreatePost() {
         />
 
         <div className="flex-1">
-
-          {/* Textarea */}
           <textarea
             value={content}
             rows={2}
@@ -69,63 +133,90 @@ export default function CreatePost() {
             "
           />
 
-          {/* Preview */}
-          {file && (
-            <div className="relative mt-3 rounded-2xl overflow-hidden border">
+          {/* Image Preview */}
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 gap-2 mt-3">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative rounded-xl overflow-hidden border"
+                >
+                  <button
+                    onClick={() => removeImage(index)}
+                    className="absolute top-2 right-2 z-10 bg-black/70 text-white rounded-full p-1"
+                  >
+                    <X size={16} />
+                  </button>
 
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt=""
+                    className="w-full h-48 object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Video Preview */}
+          {video && (
+            <div className="relative mt-3 rounded-xl overflow-hidden border">
               <button
-                onClick={() => setFile(null)}
+                onClick={removeVideo}
                 className="absolute top-2 right-2 z-10 bg-black/70 text-white rounded-full p-1"
               >
                 <X size={16} />
               </button>
 
-              {file.type.startsWith("image/") ? (
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="preview"
-                  className="w-full max-h-[250px] sm:max-h-[420px] object-cover"
-                />
-              ) : (
-                <video
-                  controls
-                  src={URL.createObjectURL(file)}
-                  className="w-full max-h-[250px] sm:max-h-[420px]"
-                />
-              )}
+              <video
+                controls
+                src={URL.createObjectURL(video)}
+                className="w-full max-h-[420px]"
+              />
             </div>
           )}
 
-          {/* Bottom Bar */}
           <div className="mt-3 pt-3 border-t flex items-center justify-between">
-
-            <div>
-
+            <div className="flex items-center gap-2">
               <button
-                onClick={() => inputRef.current?.click()}
+                onClick={() => imageInputRef.current?.click()}
                 className="p-2 rounded-full text-blue-500 hover:bg-blue-50 transition"
               >
                 <ImagePlus className="w-5 h-5" />
               </button>
 
+              <button
+                onClick={() => videoInputRef.current?.click()}
+                className="p-2 rounded-full text-blue-500 hover:bg-blue-50 transition"
+              >
+                <Video className="w-5 h-5" />
+              </button>
+
               <input
-                ref={inputRef}
+                ref={imageInputRef}
                 hidden
                 type="file"
-                accept="image/*,video/*"
-                onChange={(e) => {
-                  if (e.target.files?.[0]) {
-                    setFile(e.target.files[0]);
-                  }
-                }}
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
               />
 
+              <input
+                ref={videoInputRef}
+                hidden
+                type="file"
+                accept="video/*"
+                onChange={handleVideoChange}
+              />
             </div>
 
             <button
-              disabled={
-                isPending || (!content.trim() && !file)
-              }
+            disabled={
+  isPending ||
+  (!content.trim() &&
+    images.length === 0 &&
+    !video)
+}
               onClick={handleSubmit}
               className="
                 bg-blue-500
@@ -143,14 +234,9 @@ export default function CreatePost() {
             >
               {isPending ? "Posting..." : "Post"}
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
-
