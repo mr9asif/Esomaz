@@ -9,7 +9,7 @@ const AuthLayout = ({
 }: Props) => {
   return (
     <div className="min-h-screen bg-gray-50 flex  overflow-hidden">
-      <div className="hidden lg:flex flex-1 bg-blue-600 text-white items-center justify-center border">
+      <div className="hidden lg:flex flex-1 bg-black text-white items-center justify-center">
         <div className="max-w-md">
           <h1 className="text-5xl font-bold mb-4">
             Connect.
@@ -24,7 +24,7 @@ const AuthLayout = ({
           </h1>
 
           <p className="mt-8 text-lg text-blue-100">
-            Join our social platform and connect with people around the world.
+            Join our social platform eSomaz and connect with people around the world.
           </p>
         </div>
       </div>

@@ -4,9 +4,17 @@ export const formatTime = (date: string) => {
 
   const diff = now.getTime() - created.getTime();
 
-  const minute = 1000 * 60;
+  const second = 1000;
+  const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+
+  if (diff < minute) {
+    return "Just now";
+  }
 
   if (diff < hour) {
     return `${Math.floor(diff / minute)}m`;
@@ -16,9 +24,17 @@ export const formatTime = (date: string) => {
     return `${Math.floor(diff / hour)}h`;
   }
 
-  if (diff < day * 7) {
+  if (diff < week) {
     return `${Math.floor(diff / day)}d`;
   }
 
-  return created.toLocaleDateString();
+  if (diff < month) {
+    return `${Math.floor(diff / week)}w`;
+  }
+
+  if (diff < year) {
+    return `${Math.floor(diff / month)}mo`;
+  }
+
+  return `${Math.floor(diff / year)}y`;
 };

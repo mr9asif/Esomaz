@@ -171,7 +171,7 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        className="w-full bg-black text-white py-2 rounded-lg cursor-pointer hover:bg-gray-700 transition hover:text-gray-300"
       >
         {isPending
           ? "Logging in..."
@@ -181,7 +181,7 @@ const LoginForm = () => {
   Don't have an account?{" "}
   <Link
     to="/register"
-    className="text-blue-600 font-medium"
+    className="text-black font-medium"
   >
     Register
   </Link>

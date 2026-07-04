@@ -187,7 +187,7 @@ const bookmarked = post.isBookmarked;
 
       <div className="mt-4 flex items-center gap-8 text-sm text-gray-500">
         <span>
-          ❤️ {post.reactions.length}
+          🖤 {post.reactions.length}
         </span>
 
         <span className="flex items-center gap-1">
@@ -210,10 +210,11 @@ const bookmarked = post.isBookmarked;
             gap-2
             transition
             disabled:opacity-50
+            cursor-pointer
             ${
               liked
-                ? "text-red-500"
-                : "text-gray-600 hover:text-red-500"
+                ? "text-black"
+                : "text-gray-600 hover:text-gray-500"
             }
           `}
         >
@@ -236,6 +237,7 @@ const bookmarked = post.isBookmarked;
     text-gray-600
     hover:text-blue-500
     transition
+    cursor-pointer
   "
 >
   <MessageCircle size={20} />

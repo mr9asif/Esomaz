@@ -4,6 +4,7 @@ import type { JwtUserPayload } from "../modules/user/user.type.js";
 export const generateToken = (
   payload: {
     id: string;
+     username:string;
     email: string;
   }
 ) => {

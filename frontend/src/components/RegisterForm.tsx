@@ -133,7 +133,7 @@ const RegisterForm = () => {
               py-3
               pr-10
               outline-none
-              focus:border-blue-500
+              focus:border-black
               focus:ring-2
               focus:ring-blue-200
             "
@@ -172,12 +172,13 @@ const RegisterForm = () => {
         disabled={isPending}
         className="
           w-full
-          bg-blue-600
+          bg-black
           text-white
           py-3
           rounded-xl
-          hover:bg-blue-700
+          hover:bg-gray-700
           transition
+          cursor-pointer
         "
       >
         {isPending
@@ -189,7 +190,7 @@ const RegisterForm = () => {
         Already have an account?{" "}
         <Link
           to="/login"
-          className="text-blue-600 font-medium"
+          className="text-black font-medium"
         >
           Login
         </Link>

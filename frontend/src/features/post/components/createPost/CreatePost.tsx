@@ -180,14 +180,14 @@ export default function CreatePost() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => imageInputRef.current?.click()}
-                className="p-2 rounded-full text-blue-500 hover:bg-blue-50 transition"
+                className="p-2 rounded-full text-black hover:bg-blue-50 transition"
               >
                 <ImagePlus className="w-5 h-5" />
               </button>
 
               <button
                 onClick={() => videoInputRef.current?.click()}
-                className="p-2 rounded-full text-blue-500 hover:bg-blue-50 transition"
+                className="p-2 rounded-full text-black hover:bg-blue-50 transition"
               >
                 <Video className="w-5 h-5" />
               </button>
@@ -219,9 +219,9 @@ export default function CreatePost() {
 }
               onClick={handleSubmit}
               className="
-                bg-blue-500
-                hover:bg-blue-600
-                disabled:bg-blue-300
+                bg-black
+                hover:bg-gray-600
+                disabled:bg-gray-500
                 disabled:cursor-not-allowed
                 text-white
                 rounded-full

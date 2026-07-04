@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useComments } from "../../hooks/useComment";
 import { useCreateComment } from "../../hooks/useCreateComment";
 import { useCreateReply } from "../../hooks/useCreateReply";
+import { formatTime } from "../../utils/format.time";
 
 interface Props {
   postId: string;
@@ -82,10 +83,10 @@ console.log(postId, content)
   }}
   className="
     rounded-lg
-    bg-blue-600
+    bg-white
     px-2
     py-1
-    text-white
+    text-black
     disabled:opacity-50
   "
 >
@@ -207,12 +208,12 @@ console.log(postId, content)
     return prev === comment.id ? null : comment.id;
   });
 }}
-  className="font-medium hover:text-blue-600"
+  className="font-small hover:text-blue-600"
 >
   Reply
 </button>
 
-  <span>Just now</span>
+ <span>{formatTime(comment.createdAt)}</span>
 
 </div>
 
@@ -300,9 +301,7 @@ console.log(postId, content)
 
 <div className="flex gap-3 mt-4 ml-10">
 
-  ...
-  Reply Form
-  ...
+  
 
 </div>
 
