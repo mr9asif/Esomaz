@@ -13,14 +13,18 @@ type Props = {
   userId: string;
   username: string;
   onEdit?: () => void;
+    onMessage?: () => void;
 };
+
+
 
 const ProfileAction = ({
   isMe,
   isFollowing,
   userId,
   username,
-  onEdit
+  onEdit,
+  onMessage,
 }: Props) => {
   const { mutate: toggleFollow } = useToggleFollow();
   const handleShare = async () => {
@@ -76,20 +80,23 @@ const ProfileAction = ({
     console.log("Profile userId:", userId);
     toggleFollow(userId);
   }}
-  className={`flex items-center gap-2 px-5 py-2 rounded-xl transition ${
+  className={`flex items-center gap-2 px-5 py-2 rounded-xl transition cursor-pointer  ${
     isFollowing
-      ? "border hover:bg-gray-50"
-      : "bg-blue-600 text-white hover:bg-blue-700"
+      ? "border hover:bg-gray-100 "
+      : "bg-blue-600 text-white hover:bg-blue-700 hover:bg-blue-400"
   }`}
 >
   <UserPlus size={18} />
   {isFollowing ? "Following" : "Follow"}
 </button>
 
-      <button className="flex items-center gap-2 px-5 py-2 rounded-xl border hover:bg-gray-50 transition">
-        <MessageCircle size={18} />
-        Message
-      </button>
+     <button
+    onClick={onMessage}
+    className="flex items-center gap-2 px-5 py-2 rounded-xl border hover:bg-gray-50 transition cursor-pointer hover:bg-gray-200"
+>
+    <MessageCircle size={18}/>
+    Message
+</button>
     </div>
   );
 };

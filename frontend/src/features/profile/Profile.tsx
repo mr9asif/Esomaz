@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useAuth } from "@/provider/UseAuth";
 
@@ -11,10 +11,16 @@ import ProfileInfo from "@/components/profile/ProfileInfo";
 import ProfileStats from "@/components/profile/ProfileStates";
 
 import MainLayout from "@/layouts/MainLayout";
+import { useCreateDirectConversation } from "../chat/hooks/useCreateDirectConversation";
 import { useProfile } from "./useProfile";
 
 const ProfilePage = () => {
   const { username } = useParams();
+   const navigate = useNavigate();
+
+const {
+    mutate: createConversation
+} = useCreateDirectConversation();
 
   const { user } = useAuth();
 
@@ -34,8 +40,8 @@ const ProfilePage = () => {
   }
 
   const isMe = user?.id === profile.id;
-  console.log(isMe)
-  console.log("user id",profile.id)
+
+ 
 
   return (
     <MainLayout>
@@ -67,12 +73,19 @@ const ProfilePage = () => {
         posts={profile.postsCount}
       />
 
-      <ProfileAction
+<ProfileAction
   isMe={isMe}
   userId={profile.id}
   isFollowing={profile.isFollowing}
   username={profile.username}
   onEdit={() => setOpen(true)}
+  onMessage={() =>
+    createConversation(profile.id, {
+      onSuccess: (conversation) => {
+        navigate(`/messages/${conversation.id}`);
+      },
+    })
+  }
 />
 
       {open && (
