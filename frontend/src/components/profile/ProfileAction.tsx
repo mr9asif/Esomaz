@@ -1,3 +1,4 @@
+import { useToggleFollow } from "@/features/follow/hooks/useToggleFollow";
 import {
   MessageCircle,
   Pencil,
@@ -9,16 +10,19 @@ import toast from "react-hot-toast";
 type Props = {
   isMe: boolean;
   isFollowing?: boolean;
+  userId: string;
   username: string;
-    onEdit?: () => void;
+  onEdit?: () => void;
 };
 
 const ProfileAction = ({
   isMe,
   isFollowing,
+  userId,
   username,
   onEdit
 }: Props) => {
+  const { mutate: toggleFollow } = useToggleFollow();
   const handleShare = async () => {
     const url = `${window.location.origin}/profile/${username}`;
 
@@ -66,16 +70,21 @@ const ProfileAction = ({
 
   return (
     <div className="flex flex-wrap justify-center gap-3 mt-6">
-      <button
-        className={`flex items-center gap-2 px-5 py-2 rounded-xl transition ${
-          isFollowing
-            ? "border hover:bg-gray-50"
-            : "bg-blue-600 text-white hover:bg-blue-700"
-        }`}
-      >
-        <UserPlus size={18} />
-        {isFollowing ? "Following" : "Follow"}
-      </button>
+   <button
+ 
+   onClick={() => {
+    console.log("Profile userId:", userId);
+    toggleFollow(userId);
+  }}
+  className={`flex items-center gap-2 px-5 py-2 rounded-xl transition ${
+    isFollowing
+      ? "border hover:bg-gray-50"
+      : "bg-blue-600 text-white hover:bg-blue-700"
+  }`}
+>
+  <UserPlus size={18} />
+  {isFollowing ? "Following" : "Follow"}
+</button>
 
       <button className="flex items-center gap-2 px-5 py-2 rounded-xl border hover:bg-gray-50 transition">
         <MessageCircle size={18} />

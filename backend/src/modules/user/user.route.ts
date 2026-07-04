@@ -9,6 +9,7 @@ const router =Router();
 router.get('/me', protect, getMe)
 router.get(
   "/:username",
+  protect,
  getUserProfile
 );
 router.get("/test", (req, res) => {

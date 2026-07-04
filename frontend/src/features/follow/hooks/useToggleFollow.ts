@@ -21,6 +21,9 @@ export const useToggleFollow = () => {
            queryClient.invalidateQueries({
         queryKey: ["following-posts"],
       });
+      queryClient.invalidateQueries({
+  queryKey: ["profile"],
+});
     },
   });
 };

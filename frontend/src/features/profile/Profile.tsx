@@ -34,6 +34,8 @@ const ProfilePage = () => {
   }
 
   const isMe = user?.id === profile.id;
+  console.log(isMe)
+  console.log("user id",profile.id)
 
   return (
     <MainLayout>
@@ -66,11 +68,12 @@ const ProfilePage = () => {
       />
 
       <ProfileAction
-        isMe={isMe}
-        isFollowing={profile.isFollowing}
-        username={profile.username}
-        onEdit={() => setOpen(true)}
-      />
+  isMe={isMe}
+  userId={profile.id}
+  isFollowing={profile.isFollowing}
+  username={profile.username}
+  onEdit={() => setOpen(true)}
+/>
 
       {open && (
         <EditProfileModel

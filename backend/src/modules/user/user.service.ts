@@ -61,6 +61,21 @@ const getUserProfileService = async (
   }
 
   let isFollowing = false;
+  console.log("Current User ID:", currentUserId);
+console.log("Viewed Profile User ID:", user.id);
+
+if (currentUserId) {
+  const follow = await prisma.follow.findFirst({
+    where: {
+      followerId: currentUserId,
+      followingId: user.id,
+    },
+  });
+
+  console.log("Follow Record:", follow);
+
+  isFollowing = !!follow;
+}
 
   if (currentUserId) {
     const follow = await prisma.follow.findFirst({
