@@ -17,6 +17,9 @@ export const useDeletePost = () => {
       queryClient.invalidateQueries({
         queryKey: ["posts"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["trending-posts"],
+      });
     },
 
     onError: (error) => {

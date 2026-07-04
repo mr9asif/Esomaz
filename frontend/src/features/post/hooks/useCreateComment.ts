@@ -10,6 +10,18 @@ export const useCreateComment = () => {
       queryClient.invalidateQueries({
         queryKey: ["comments", variables.postId],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["post"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["trending-posts"],
+      });
     },
   });
 };

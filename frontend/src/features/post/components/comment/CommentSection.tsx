@@ -1,4 +1,5 @@
 import { useAuth } from "@/provider/UseAuth";
+import { Send } from "lucide-react";
 import { useState } from "react";
 import { useComments } from "../../hooks/useComment";
 import { useCreateComment } from "../../hooks/useCreateComment";
@@ -82,13 +83,13 @@ console.log(postId, content)
   className="
     rounded-lg
     bg-blue-600
-    px-4
-    py-2
+    px-2
+    py-1
     text-white
     disabled:opacity-50
   "
 >
-  Post
+  <Send></Send>
 </button>
 
           </div>

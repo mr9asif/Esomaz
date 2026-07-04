@@ -14,8 +14,10 @@ import ConfirmDialog from "@/components/common/ConfirmDialogue";
 import { useToggleFollow } from "@/features/follow/hooks/useToggleFollow";
 import { useToggleBookmark } from "../../hooks/useCreateBookmark";
 import { useDeletePost } from "../../hooks/useDeletePost";
+import { useUpdatePost } from "../../hooks/useUpdatePost";
 import type { Post } from "../../types/post.types";
 import CommentsSection from "../comment/CommentSection";
+import EditPostModal from "./EditPostModal";
 import PostMedia from "./PostMedia";
 
 
@@ -29,6 +31,8 @@ export default function PostCard({ post }: Props) {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] =
+  useState(false);
+  const [showEditDialog, setShowEditDialog] =
   useState(false);
 const {
   mutate: deletePost,
@@ -60,6 +64,25 @@ const handleDelete = () => {
     },
   });
 };;
+
+const {
+  mutate: updatePost,
+  isPending: isUpdating,
+} = useUpdatePost();
+
+const handleEdit = (content: string) => {
+  updatePost(
+    {
+      postId: post.id,
+      content,
+    },
+    {
+      onSuccess: () => {
+        setShowEditDialog(false);
+      },
+    }
+  );
+};
  
   const {
     mutate: toggleReaction,
@@ -118,7 +141,7 @@ const bookmarked = post.isBookmarked;
   {user?.id === post.author.id ? (
   <PostMenu
   onEdit={() => {
-    console.log("Edit Post");
+    setShowEditDialog(true);
   }}
   onDelete={() => {
     setShowDeleteDialog(true);
@@ -247,6 +270,13 @@ const bookmarked = post.isBookmarked;
   loading={isDeleting}
   onClose={() => setShowDeleteDialog(false)}
   onConfirm={handleDelete}
+/>
+<EditPostModal
+  open={showEditDialog}
+  initialContent={post.content ?? ""}
+  loading={isUpdating}
+  onClose={() => setShowEditDialog(false)}
+  onSave={handleEdit}
 />
     </article>
     
