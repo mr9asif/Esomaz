@@ -12,6 +12,7 @@ import { useState } from "react";
 
 import ConfirmDialog from "@/components/common/ConfirmDialogue";
 import { useToggleFollow } from "@/features/follow/hooks/useToggleFollow";
+import { Link } from "react-router-dom";
 import { useToggleBookmark } from "../../hooks/useCreateBookmark";
 import { useDeletePost } from "../../hooks/useDeletePost";
 import { useUpdatePost } from "../../hooks/useUpdatePost";
@@ -112,17 +113,21 @@ const bookmarked = post.isBookmarked;
 
       <div className="flex justify-between items-start">
         <div className="flex gap-3">
+       <Link to={`/profile/${post.author.username}`}>
           <img
             src={post.author.avatar}
             className="w-11 h-11 rounded-full object-cover"
             alt={post.author.name}
           />
+         </Link>
 
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-semibold">
+              <Link to={`/profile/${post.author.username}`}>
+             
+              <h3 className="font-semibold cursor-pointer">
                 {post.author.name}
-              </h3>
+              </h3></Link>
 
               <span className="text-gray-500 text-sm">
                 @{post.author.username}
