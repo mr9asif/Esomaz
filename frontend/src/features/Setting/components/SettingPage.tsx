@@ -8,7 +8,7 @@ const SettingPage = () => {
     <div className="mx-auto max-w-2xl">
       <div className="sticky top-16 z-10 flex items-center gap-3 border-b bg-white px-4 py-4">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
           className="rounded-full p-2 transition hover:bg-gray-100 lg:hidden"
         >
           <ArrowLeft size={22} />
@@ -35,7 +35,7 @@ const SettingPage = () => {
         </p>
 
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
           className="mt-8 rounded-full bg-black px-6 py-3 text-white transition hover:opacity-90"
         >
           Back to Home

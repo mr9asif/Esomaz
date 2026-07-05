@@ -53,7 +53,7 @@ const handleLogout = async () => {
     setDesktopMenuOpen(false);
     setMobileDrawerOpen(false);
 
-    navigate("/");
+    navigate("/home");
   } catch (error) {
     console.error(error);
   }
@@ -69,7 +69,7 @@ const handleLogout = async () => {
           <div className="flex gap-6 lg:hidden items-center justify-between w-full">
 
             <Link
-              to="/"
+              to="/home"
               className="text-2xl font-bold text-black"
             >
               eSomaz
@@ -223,7 +223,7 @@ const handleLogout = async () => {
             <div className="flex items-center gap-8">
 
               <Link
-                to="/"
+                to="/home"
                 className="text-2xl font-bold text-black"
               >
                 eSomaz

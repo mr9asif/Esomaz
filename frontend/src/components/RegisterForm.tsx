@@ -69,7 +69,7 @@ const RegisterForm = () => {
   return (
     <>
     <Link
-  to="/"
+  to="/home"
   className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition mb-6"
 >
   <ArrowLeft size={18} />

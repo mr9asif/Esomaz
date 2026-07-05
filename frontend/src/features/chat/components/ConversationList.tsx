@@ -34,7 +34,7 @@ const navigate = useNavigate();
       <div className="border-b p-5 flex gap-2 border-amber-500 justify-between items-center space-y-4">
        
     <button
-      onClick={() => navigate("/")}
+      onClick={() => navigate("/home")}
       className="rounded-full p-2 transition hover:bg-gray-100"
     >
       <ArrowLeft size={20} />

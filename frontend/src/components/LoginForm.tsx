@@ -37,7 +37,7 @@ const LoginForm = () => {
       zodResolver(loginSchema),
   });
   if (user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
 }
 
   const onSubmit = (
@@ -53,7 +53,7 @@ const LoginForm = () => {
           queryKey: ["me"],
         });
 
-        navigate("/");
+        navigate("/home");
       },
 
       onError: () => {

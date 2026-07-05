@@ -78,7 +78,7 @@ const LeftSidebar = () => {
         queryKey: ["posts"], // Change this if your query key is different
       });
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 

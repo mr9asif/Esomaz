@@ -21,8 +21,9 @@ import ProtectedRoute from "./ProtectedRoutes";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={
-        <Home />
+      <Route path="/home" element={
+        <ProtectedRoute>  <Home /></ProtectedRoute>
+      
        } />
       <Route path="/bookmarks" element={  <ProtectedRoute>
             <Bookmarks></Bookmarks>
@@ -65,7 +66,7 @@ export default function AppRoutes() {
       <Route
         path="/login"
         element={<Login />}
-      />
+      /> 
 
       <Route
         path="/register"
