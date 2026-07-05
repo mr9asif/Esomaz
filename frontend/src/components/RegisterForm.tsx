@@ -48,7 +48,7 @@ const RegisterForm = () => {
           "Registration successful"
         );
 
-        navigate("/login");
+        navigate("/");
       },
 
    onError: (error) => {

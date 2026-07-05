@@ -37,7 +37,7 @@ const MobileBottomNav = () => {
       <div className="relative h-16 flex items-center justify-around">
 
         <NavLink
-          to="/"
+          to="/home"
           className={({ isActive }) =>
             isActive
               ? "text-blue-600"

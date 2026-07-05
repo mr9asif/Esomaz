@@ -19,7 +19,7 @@ const ProtectedRoute = ({
   }
 
   if (isError || !data?.data) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

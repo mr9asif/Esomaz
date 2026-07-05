@@ -64,7 +64,7 @@ export default function AppRoutes() {
  element={<ProtectedRoute><SearchPage /></ProtectedRoute>}
 />
       <Route
-        path="/login"
+        path="/"
         element={<Login />}
       /> 
 

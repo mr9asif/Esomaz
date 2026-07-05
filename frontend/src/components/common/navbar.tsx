@@ -53,7 +53,7 @@ const handleLogout = async () => {
     setDesktopMenuOpen(false);
     setMobileDrawerOpen(false);
 
-    navigate("/home");
+    navigate("/");
   } catch (error) {
     console.error(error);
   }
@@ -343,7 +343,7 @@ const handleLogout = async () => {
                 <div className="flex items-center gap-3">
 
                   <NavLink
-                    to="/login"
+                    to="/"
                     className="px-4 py-2 text-sm font-medium"
                   >
                     Login
