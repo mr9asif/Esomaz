@@ -5,4 +5,12 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export const getMe = async () => {
+  console.log("Base URL:", import.meta.env.VITE_API_URL);
+
+  const response = await api.get("/user/me");
+
+  return response.data;
+};
+
 export default api;
