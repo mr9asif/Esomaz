@@ -3,6 +3,7 @@ import PostCard from "../../components/postCard/PostCard";
 import { useFollowingPosts } from "../../hooks/useFollowingPosts";
 
 import { usePosts } from "../../hooks/usePosts";
+import type { Post } from "../../types/post.types";
 import FeedSkeleton from "./FeedSkeleton";
 
 interface FeedProps {
@@ -19,21 +20,24 @@ export default function Feed({
 
   const followingQuery =
     useFollowingPosts(user?.id || "");
+const currentQuery =
+  tab === "forYou"
+    ? forYouQuery
+    : followingQuery;
 
-  const { data, isLoading } =
-    tab === "forYou"
-      ? forYouQuery
-      : followingQuery;
+const data = currentQuery.data ?? [];
+const isLoading = currentQuery.isLoading;
 
-    console.log("d",data)
-
-  if (isLoading) {
-    <FeedSkeleton></FeedSkeleton>
-  }
+if (isLoading) {
+  return <FeedSkeleton />;
+}
+if (isLoading) {
+  return <FeedSkeleton />;
+}
 
   return (
     <div className="space-y-5 border-none pb-32">
-      {data?.map((post) => (
+      {data?.map((post:Post) => (
         <PostCard
           key={post.id}
           post={post}

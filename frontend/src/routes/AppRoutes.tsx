@@ -22,7 +22,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={
-        <ProtectedRoute> <Home /></ProtectedRoute>
+        <Home />
        } />
       <Route path="/bookmarks" element={  <ProtectedRoute>
             <Bookmarks></Bookmarks>
