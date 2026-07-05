@@ -1,16 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import type { SearchUser } from "../types/chat.types";
 
+
+
+
 import { useCreateDirectConversation } from "../hooks/useCreateDirectConversation";
 
 interface Props {
-  users: SearchUser[];
-  onClose: () => void;
+    users: SearchUser[];
+    onClose: () => void;
 }
 
 const SearchResults = ({
-  users, onClose,
+    users, onClose,
 }: Props) => {
+ 
 const navigate = useNavigate();
 
 const { mutateAsync } =

@@ -4,10 +4,14 @@ import { getPostById } from "../api/getPostById";
 import type { Post } from "../types/post.types";
 
 export const usePosts = () => {
-  return useQuery<Post[]>({
+ try {
+   return useQuery<Post[]>({
     queryKey: ["posts"],
     queryFn: getPosts,
   });
+ } catch (error) {
+  console.log(error)
+ }
 };
 
 export const usePost = (postId: string) => {

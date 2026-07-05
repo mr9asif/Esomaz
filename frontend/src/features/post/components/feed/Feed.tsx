@@ -1,6 +1,7 @@
 import { useAuth } from "@/provider/UseAuth";
 import PostCard from "../../components/postCard/PostCard";
 import { useFollowingPosts } from "../../hooks/useFollowingPosts";
+
 import { usePosts } from "../../hooks/usePosts";
 import FeedSkeleton from "./FeedSkeleton";
 
@@ -14,6 +15,7 @@ export default function Feed({
   const { user } = useAuth();
 
   const forYouQuery = usePosts();
+  console.log("for",forYouQuery)
 
   const followingQuery =
     useFollowingPosts(user?.id || "");
@@ -23,13 +25,7 @@ export default function Feed({
       ? forYouQuery
       : followingQuery;
 
-      console.log("data", data)
-      console.log("TAB:", tab);
-console.log("FOR YOU:", forYouQuery.data);
-console.log(
-  "FOLLOWING:",
-  followingQuery.data
-);
+    console.log("d",data)
 
   if (isLoading) {
     <FeedSkeleton></FeedSkeleton>

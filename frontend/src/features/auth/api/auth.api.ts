@@ -27,21 +27,21 @@ export const registerUser = async (
   return data;
 };
 
-// export const getMe = async () => {
-//   const { data } = await api.get(
-//     "/user/me"
-//   );
-
-//   return data;
-// };
-
 export const getMe = async () => {
-  console.log("Base URL:", import.meta.env.VITE_API_URL);
+  const { data } = await api.get(
+    "/user/me"
+  );
 
-  const response = await api.get("/user/me");
-
-  return response.data;
+  return data;
 };
+
+// export const getMe = async () => {
+//   console.log("Base URL:", import.meta.env.VITE_API_URL);
+
+//   const response = await api.get("/user/me");
+
+//   return response.data;
+// };
 export const logout = async () => {
   const { data } = await api.post(
     "v1/auth/logout"

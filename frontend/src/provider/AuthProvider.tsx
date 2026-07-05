@@ -11,18 +11,18 @@ export const AuthProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-const { data, isLoading, isError, error } = useQuery({
+const { data, isLoading, } = useQuery({
   queryKey: ["me"],
   queryFn: getMe,
   retry: false,
 });
 
-console.log({
-  isLoading,
-  isError,
-  error,
-  data,
-});
+// console.log({
+//   isLoading,
+//   isError,
+//   error,
+//   data,
+// });
 if (isLoading) {
   return (
     <div className="flex min-h-screen items-center justify-center">
