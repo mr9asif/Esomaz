@@ -17,9 +17,23 @@ import userRouter from './modules/user/user.route.js';
 const app =express(); 
 
 // middleware
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://esomaz.vercel.app",
+];
+
 app.use(
   cors({
-   origin: process.env.CLIENT_URL, // your frontend URL
+    origin(origin, callback) {
+      // Allow requests with no origin (Postman, mobile apps, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );

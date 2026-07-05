@@ -12,11 +12,11 @@ router.get(
   notificationController.getUnreadCount
 );
 
-// router.patch(
-//   "/read-all",
-//   protect,
-//   notificationController.markAllAsRead
-// );
+router.patch(
+  "/read-all",
+  protect,
+  notificationController.markAllAsRead
+);
 
 router.patch(
   "/:id/read",
