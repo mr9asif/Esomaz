@@ -189,7 +189,7 @@ const RegisterForm = () => {
       <p className="text-center text-sm">
         Already have an account?{" "}
         <Link
-          to="/login"
+          to="/"
           className="text-black font-medium"
         >
           Login
