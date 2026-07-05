@@ -54,5 +54,7 @@ app.use("/api/search", searchRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-
+app.get("/api/test", (req, res) => {
+  res.json({ success: true, message: "API works" });
+});
 export default app;
