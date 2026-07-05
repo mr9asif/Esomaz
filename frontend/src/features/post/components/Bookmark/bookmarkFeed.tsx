@@ -5,16 +5,16 @@ import PostCard from "../postCard/PostCard";
 const BookmarksFeed = () => {
   const { data: posts, isLoading } =
     useBookmarks();
-    console.log("b", posts)
+   
 
   if (isLoading) {
     return (
       <div className="p-6">
-         return (
+       
     <div className="flex min-h-screen items-center justify-center">
       <Loader className="h-8 w-8 animate-spin" />
     </div>
-  );
+
       </div>
     );
   }
