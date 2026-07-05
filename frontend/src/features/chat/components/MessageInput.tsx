@@ -32,7 +32,7 @@ const MessageInput = () => {
     const value = e.target.value;
 
     setMessage(value);
-console.log("⌨️ Typing emit", conversationId);
+
 
 socket.emit("chat:typing", conversationId);
     if (!conversationId) return;
@@ -72,13 +72,15 @@ socket.emit("chat:typing", conversationId);
 
     console.log("attechmetn,", attachments)
 
-    
-    socket.emit("chat:send", {
-      conversationId,
-      content: message.trim(),
-      attachments,
-    });
+    const payload = {
+  conversationId,
+  content: message.trim(),
+  attachments,
+};
 
+
+
+socket.emit("chat:send", payload);
     socket.emit(
       "chat:stopTyping",
       conversationId
@@ -90,7 +92,8 @@ socket.emit("chat:typing", conversationId);
     console.error(error);
   }
 };
-
+console.log("Socket connected:", socket.connected);
+console.log("Socket id:", socket.id);
   const [files, setFiles] = useState<File[]>([]);
 
 const fileInputRef =
