@@ -2,7 +2,6 @@ import { Router } from "express";
 import { validateRequest } from "../../middleware/validateRequest.js";
 import { AuthController, logout } from "./auth.controller.js";
 
-
 import {
   loginValidationSchema,
   registerValidationSchema,
@@ -12,23 +11,18 @@ const router = Router();
 
 router.post(
   "/register",
-  validateRequest(
-    registerValidationSchema
-  ),
-  AuthController.register
+  validateRequest(registerValidationSchema),
+  AuthController.register,
 );
-
-
 
 router.post(
   "/login",
-  validateRequest(
-    loginValidationSchema
-  ),
+  validateRequest(loginValidationSchema),
 
-  AuthController.login
+  AuthController.login,
 );
+router.post("/google", AuthController.googleLogin);
 
-router.post('/logout', logout)
+router.post("/logout", logout);
 
 export default router;

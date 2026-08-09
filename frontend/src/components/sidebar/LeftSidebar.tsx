@@ -8,13 +8,9 @@ import {
   Home,
   Mail,
   Settings,
-  User
+  User,
 } from "lucide-react";
-import {
-  NavLink,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const menus = [
   {
@@ -23,9 +19,9 @@ const menus = [
     icon: Home,
   },
   {
- name:"Communities",
- path:"/communities",
- icon:Group
+    name: "Communities",
+    path: "/communities",
+    icon: Group,
   },
 
   {
@@ -48,26 +44,25 @@ const menus = [
     path: "/profile",
     icon: User,
   },
-    {
+  {
     name: "Settings",
     path: "/settings",
     icon: Settings,
   },
   {
-    name:"Help & Support",
-    path:"/help&support",
-    icon:HelpCircle
-  }
+    name: "Help & Support",
+    path: "/help&support",
+    icon: HelpCircle,
+  },
 ];
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
-  const {user}=useAuth();
+  const { user } = useAuth();
 
   const handleHomeClick = () => {
-
     if (location.pathname === "/") {
       window.scrollTo({
         top: 0,
@@ -83,7 +78,7 @@ const LeftSidebar = () => {
   };
 
   return (
-    <aside className="hidden lg:flex w-72 h-[calc(100vh-64px)] sticky top-20 flex-col justify-between p-4 overflow-hidden">
+    <aside className="hidden lg:flex w-72 h-[calc(100vh-64px)] sticky top-20 flex-col justify-between p-2 overflow-hidden">
       <div>
         <div className="space-y-2">
           {menus.map((item) => {
@@ -107,33 +102,31 @@ const LeftSidebar = () => {
             }
 
             return (
-          <NavLink
-  key={item.name}
-  to={
-    item.name === "Profile"
-      ? `/profile/${user?.username}`
-      : item.path
-  }
-  className={({ isActive }) =>
-    `w-full flex items-center gap-4 px-4 py-3 rounded-full transition ${
-      isActive
-        ? "bg-gray-100 font-semibold"
-        : "hover:bg-gray-100"
-    }`
-  }
->
-  <Icon size={24} />
-  <span className="text-lg">{item.name}</span>
-</NavLink>
+              <NavLink
+                key={item.name}
+                to={
+                  item.name === "Profile"
+                    ? `/profile/${user?.username}`
+                    : item.path
+                }
+                className={({ isActive }) =>
+                  `w-full flex items-center gap-4 px-4 py-3 rounded-full transition ${
+                    isActive ? "bg-gray-100 font-semibold" : "hover:bg-gray-100"
+                  }`
+                }
+              >
+                <Icon size={24} />
+                <span className="text-lg">{item.name}</span>
+              </NavLink>
             );
           })}
         </div>
 
-      <NavLink to='/post'>
-          <button className="mt-8 w-full rounded-full bg-black text-white py-3 font-semibold hover:opacity-90">
-          Post
-        </button>
-      </NavLink>
+        <NavLink to="/post" className="block mt-4">
+          <button className="w-full rounded-full bg-black py-3 font-semibold text-white transition hover:opacity-90">
+            Post
+          </button>
+        </NavLink>
       </div>
 
       <div className="rounded-full p-3 hover:bg-gray-100 cursor-pointer">

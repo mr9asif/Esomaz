@@ -1,4 +1,3 @@
-
 import { logout } from "@/features/auth/api/auth.api";
 import NotificationBell from "@/features/notification/components/NotificationBell";
 import { queryClient } from "@/lib/react_query";
@@ -9,69 +8,62 @@ import {
   LogOut,
   Settings,
   User,
-  Users
+  Users,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import SearchDropdown from "../ui/SearchDropdown";
 
 const Navbar = () => {
-const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
-const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-const desktopMenuRef =
-  useRef<HTMLDivElement>(null);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
 
-const mobileDrawerRef =
-  useRef<HTMLDivElement>(null);
+  const mobileDrawerRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
+  console.log("user", user);
   const navigate = useNavigate();
 
   useEffect(() => {
-  function handleClickOutside(event: MouseEvent) {
-    if (
-      desktopMenuRef.current &&
-      !desktopMenuRef.current.contains(event.target as Node)
-    ) {
-      setDesktopMenuOpen(false);
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        desktopMenuRef.current &&
+        !desktopMenuRef.current.contains(event.target as Node)
+      ) {
+        setDesktopMenuOpen(false);
+      }
     }
-  }
 
-  document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      queryClient.setQueryData(["me"], null);
+
+      setDesktopMenuOpen(false);
+      setMobileDrawerOpen(false);
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
-}, []);
-
-const handleLogout = async () => {
-  try {
-    await logout();
-
-    queryClient.setQueryData(["me"], null);
-
-    setDesktopMenuOpen(false);
-    setMobileDrawerOpen(false);
-
-    navigate("/");
-  } catch (error) {
-    console.error(error);
-  }
-};
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white border-b">
-
         <div className="max-w-7xl mx-auto h-16 px-4 lg:px-6 flex items-center justify-between">
-
           {/* ================= MOBILE ================= */}
 
           <div className="flex gap-6 lg:hidden items-center justify-between w-full">
-
-            <Link
-              to="/home"
-              className="text-2xl font-bold text-black"
-            >
+            <Link to="/home" className="text-2xl font-bold text-black">
               eSomaz
             </Link>
             <div className="hidden lg:block">
@@ -79,11 +71,8 @@ const handleLogout = async () => {
             </div>
 
             {user ? (
-              <div   ref={mobileDrawerRef} className="relative">
-
-                <button
-                     onClick={() => setMobileDrawerOpen(true)}
-                >
+              <div ref={mobileDrawerRef} className="relative">
+                <button onClick={() => setMobileDrawerOpen(true)}>
                   <img
                     src={
                       user.avatar ||
@@ -94,138 +83,114 @@ const handleLogout = async () => {
                   />
                 </button>
 
-               {/* Mobile Profile Drawer */}
+                {/* Mobile Profile Drawer */}
 
-<div
-  className={`fixed inset-0 z-50 lg:hidden ${
-   mobileDrawerOpen ? "visible" : "invisible"
-  }`}
->
-  {/* Overlay */}
+                <div
+                  className={`fixed inset-0 z-50 lg:hidden ${
+                    mobileDrawerOpen ? "visible" : "invisible"
+                  }`}
+                >
+                  {/* Overlay */}
 
-  <div
-    onClick={() => setMobileDrawerOpen(false)}
-    className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
-      mobileDrawerOpen ? "opacity-100" : "opacity-0"
-    }`}
-  />
+                  <div
+                    onClick={() => setMobileDrawerOpen(false)}
+                    className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
+                      mobileDrawerOpen ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
 
-  {/* Drawer */}
+                  {/* Drawer */}
 
-  <div
-    className={`absolute right-0 top-0 h-screen w-[75%] max-w-[320px] bg-white shadow-xl
+                  <div
+                    className={`absolute right-0 top-0 h-screen w-[75%] max-w-[320px] bg-white shadow-xl
     transition-transform duration-300 ease-in-out
-    ${
-      mobileDrawerOpen
-        ? "translate-x-0"
-        : "translate-x-full"
-    }`}
-  >
+    ${mobileDrawerOpen ? "translate-x-0" : "translate-x-full"}`}
+                  >
+                    <div className="p-6">
+                      <img
+                        src={
+                          user.avatar ||
+                          "https://i.postimg.cc/sXPgwMqt/default-profile.jpg"
+                        }
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
 
-    <div className="p-6">
+                      <h2 className="mt-4 text-xl font-bold">{user.name}</h2>
 
-      <img
-        src={
-          user.avatar ||
-          "https://i.postimg.cc/sXPgwMqt/default-profile.jpg"
-        }
-        className="w-16 h-16 rounded-full object-cover"
-      />
+                      <p className="text-gray-500">@{user.username}</p>
 
-      <h2 className="mt-4 text-xl font-bold">
-        {user.name}
-      </h2>
+                      <div className="mt-8 space-y-2">
+                        <NavLink
+                          to={`/profile/${user.username}`}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                          onClick={() => setMobileDrawerOpen(false)}
+                        >
+                          <User size={18} />
+                          Profile
+                        </NavLink>
 
-      <p className="text-gray-500">
-        @{user.username}
-      </p>
+                        <NavLink
+                          to="/bookmarks"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                          onClick={() => setMobileDrawerOpen(false)}
+                        >
+                          <Bookmark size={18} />
+                          Saved Posts
+                        </NavLink>
 
-      <div className="mt-8 space-y-2">
+                        <NavLink
+                          to="/communities"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                          onClick={() => setMobileDrawerOpen(false)}
+                        >
+                          <Users size={18} />
+                          Communities
+                        </NavLink>
 
-       <NavLink
-  to={`/profile/${user.username}`}
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setMobileDrawerOpen(false)}
->
-  <User size={18} />
-  Profile
-</NavLink>
+                        <NavLink
+                          to="/settings"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                          onClick={() => setMobileDrawerOpen(false)}
+                        >
+                          <Settings size={18} />
+                          Settings
+                        </NavLink>
 
-<NavLink
-  to="/bookmarks"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setMobileDrawerOpen(false)}
->
-  <Bookmark size={18} />
-  Saved Posts
-</NavLink>
+                        <NavLink
+                          to="/help&support"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                          onClick={() => setMobileDrawerOpen(false)}
+                        >
+                          <CircleHelp size={18} />
+                          Help & Support
+                        </NavLink>
 
-<NavLink
-  to="/communities"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setMobileDrawerOpen(false)}
->
-  <Users size={18} />
-  Communities
-</NavLink>
+                        <hr className="my-2" />
 
-<NavLink
-  to="/settings"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setMobileDrawerOpen(false)}
->
-  <Settings size={18} />
-  Settings
-</NavLink>
-
-<NavLink
-  to="/help&support"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setMobileDrawerOpen(false)}
->
-  <CircleHelp size={18} />
-  Help & Support
-</NavLink>
-
-<hr className="my-2" />
-
-<button
-  onClick={handleLogout}
-  className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
->
-  <LogOut size={18} />
-  Logout
-</button>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+                        >
+                          <LogOut size={18} />
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
-              <Link
-                to="/login"
-                className="text-blue-600 font-semibold"
-              >
+              <Link to="/login" className="text-blue-600 font-semibold">
                 Login
               </Link>
             )}
-
           </div>
 
           {/* ================= DESKTOP ================= */}
 
           <div className="hidden lg:flex items-center justify-between w-full">
-
             <div className="flex items-center gap-8">
-
-              <Link
-                to="/home"
-                className="text-2xl font-bold text-black"
-              >
+              <Link to="/home" className="text-2xl font-bold text-black">
                 eSomaz
               </Link>
 
@@ -243,109 +208,93 @@ const handleLogout = async () => {
 
               </div> */}
               <SearchDropdown></SearchDropdown>
-
             </div>
 
             <div className="flex items-center gap-6">
-
               <NotificationBell />
 
               {user ? (
-                <div   ref={desktopMenuRef} className="relative">
+                <div ref={desktopMenuRef} className="relative">
+                  <button onClick={() => setDesktopMenuOpen(!desktopMenuOpen)}>
+                    <img
+                      src={
+                        user.avatar ||
+                        "https://i.postimg.cc/sXPgwMqt/default-profile.jpg"
+                      }
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </button>
 
-               <button
-    onClick={() => setDesktopMenuOpen(!desktopMenuOpen)}
->
-  <img
-    src={
-      user.avatar ||
-      "https://i.postimg.cc/sXPgwMqt/default-profile.jpg"
-    }
-    className="w-10 h-10 rounded-full object-cover"
-  />
-</button>
-
-                  {desktopMenuOpen  && (
+                  {desktopMenuOpen && (
                     <div className="absolute right-0 top-12 w-56 bg-white border rounded-xl shadow-lg overflow-hidden">
-
                       <div className="p-4 border-b">
-
-                        <p className="font-semibold">
-                          {user.name}
-                        </p>
+                        <p className="font-semibold">{user.name}</p>
 
                         <p className="text-sm text-gray-500">
                           @{user.username}
                         </p>
-
                       </div>
 
-                     <NavLink
-  to={`/profile/${user.username}`}
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setDesktopMenuOpen(false)}
->
-  <User size={18} />
-  Profile
-</NavLink>
+                      <NavLink
+                        to={`/profile/${user.username}`}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                        onClick={() => setDesktopMenuOpen(false)}
+                      >
+                        <User size={18} />
+                        Profile
+                      </NavLink>
 
-<NavLink
-  to="/bookmarks"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setDesktopMenuOpen(false)}
->
-  <Bookmark size={18} />
-  Saved Posts
-</NavLink>
+                      <NavLink
+                        to="/bookmarks"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                        onClick={() => setDesktopMenuOpen(false)}
+                      >
+                        <Bookmark size={18} />
+                        Saved Posts
+                      </NavLink>
 
-<NavLink
-  to="/communities"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setDesktopMenuOpen(false)}
->
-  <Users size={18} />
-  Communities
-</NavLink>
+                      <NavLink
+                        to="/communities"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                        onClick={() => setDesktopMenuOpen(false)}
+                      >
+                        <Users size={18} />
+                        Communities
+                      </NavLink>
 
-<NavLink
-  to="/settings"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setDesktopMenuOpen(false)}
->
-  <Settings size={18} />
-  Settings
-</NavLink>
+                      <NavLink
+                        to="/settings"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                        onClick={() => setDesktopMenuOpen(false)}
+                      >
+                        <Settings size={18} />
+                        Settings
+                      </NavLink>
 
-<NavLink
-   to="/help&support"
-  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-  onClick={() => setDesktopMenuOpen(false)}
->
-  <CircleHelp size={18} />
-  Help & Support
-</NavLink>
+                      <NavLink
+                        to="/help&support"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                        onClick={() => setDesktopMenuOpen(false)}
+                      >
+                        <CircleHelp size={18} />
+                        Help & Support
+                      </NavLink>
 
-<hr className="my-2" />
+                      <hr className="my-2" />
 
-<button
-  onClick={handleLogout}
-  className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50"
->
-  <LogOut size={18} />
-  Logout
-</button>
-
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50"
+                      >
+                        <LogOut size={18} />
+                        Logout
+                      </button>
                     </div>
                   )}
-
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-
-                  <NavLink
-                    to="/"
-                    className="px-4 py-2 text-sm font-medium"
-                  >
+                  <NavLink to="/" className="px-4 py-2 text-sm font-medium">
                     Login
                   </NavLink>
 
@@ -355,16 +304,11 @@ const handleLogout = async () => {
                   >
                     Register
                   </NavLink>
-
                 </div>
               )}
-
             </div>
-
           </div>
-
         </div>
-
       </nav>
     </>
   );
