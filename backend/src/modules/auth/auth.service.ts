@@ -165,15 +165,12 @@ const loginWithGoogle = async (idToken: string) => {
       },
 
       data: {
-        // Connect Google account if not already connected
         googleId: user.googleId ?? googleUser.googleId,
 
-        // Keep email verification status
         isVerified: googleUser.emailVerified ? true : user.isVerified,
 
-        // Use Google avatar if user doesn't
-        // already have an avatar
-        avatar: user.avatar ?? googleUser.avatar,
+        // Always prefer the fresh Google avatar
+        avatar: googleUser.avatar ?? user.avatar,
       },
     });
   }

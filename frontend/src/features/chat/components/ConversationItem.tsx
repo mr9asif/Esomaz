@@ -20,6 +20,7 @@ const ConversationItem = ({ conversation }: Props) => {
   const receiver = conversation.participants.find(
     (participant: ConversationParticipant) => participant.user.id !== user?.id,
   );
+  console.log("re", receiver?.user);
 
   if (!receiver) {
     return null;
@@ -35,7 +36,11 @@ const ConversationItem = ({ conversation }: Props) => {
       {/* Avatar */}
       <div className="relative shrink-0">
         <img
-          src={receiver.user.avatar ?? "/default-avatar.png"}
+          src={
+            receiver.user.avatar?.match(/\((https?:\/\/[^)]+)\)/)?.[1] ??
+            receiver.user.avatar ??
+            "/default-avatar.png"
+          }
           alt={receiver.user.name}
           className="h-12 w-12 rounded-full object-cover"
         />
