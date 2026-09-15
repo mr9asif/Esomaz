@@ -93,8 +93,8 @@ eSomaz provides real-time communication between users.
 - Node.js
 - Express.js
 - TypeScript
-- MongoDB
-- Mongoose
+- Postgres Neon
+- prisma
 - JWT Authentication
 - Socket.IO
 
@@ -127,7 +127,7 @@ eSomaz provides real-time communication between users.
               │                │                │
               ▼                ▼                ▼
        ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-       │   MongoDB    │ │  Cloudinary  │ │  Socket.IO   │
+       │   Neon    │ │  Cloudinary  │ │  Socket.IO   │
        │   Database   │ │    Images    │ │  Real-Time   │
        └──────────────┘ └──────────────┘ └──────┬───────┘
                                                 │
