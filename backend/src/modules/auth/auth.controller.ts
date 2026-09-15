@@ -24,7 +24,7 @@ const login = async (req: Request, res: Response) => {
   try {
     const { identifier, password } = req.body;
     const result = await AuthService.loginUser(identifier, password);
-    console.log(result.token);
+
     res.cookie("token", result.token, cookieOptions);
 
     res.status(200).json({
